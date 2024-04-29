@@ -23,8 +23,8 @@ format:
     page-layout: full
 date: "today"
 editor: source
-markdown:
-    wrap: sentence
+# markdown:
+#     wrap: sentence
 editor_options: 
   chunk_output_type: console
 execute:
@@ -561,9 +561,93 @@ Una vez que el cerebro del ratón está incrustado en paraformaldehido se corta 
 
 # Resultados
 
+```{r librerias}
+#| code-fold: true
+#| code-summary: Ver librerías y datos
+
+# ---- librerias ----
+library(tidyverse)
+library(lme4)
+library(flextable)
+library(effects)
+library(performance)
+library(sjPlot)
+library(emmeans)
+library(gtsummary)
+library(report)
+library(effectsize)
+library(nlme)
+# library(glmmTMB)
+library(gtsummary)
+library(lmerTest)
+# library(rstanarm) # fit bayes and describe them
+library(bayestestR) # describe bayes
+library(insight)
+library(ez)
+
+```
+
+```{r dataframes}
+#| code-fold: true
+#| code-summary: Ver datos utilizados
+
+df_ent_pre <- read.csv("./datos/df_entrenamientos_pre.csv")
+df_ent_post <- read.csv("./datos/df_entrenamientos_post.csv")
+df_pruebas <- read.csv("./datos/df_pruebas.csv")
+
+```
+
+```{r recode_variables}
+#| code-fold: true
+#| code-summary: Ver limpieza de datos
+
+# ---- renombrar y Recodificar variables ----
+# renombrar tratamientos
+df_ent_post$tratamientos[df_ent_post$tratamientos == 'Fluoxetina-Control'] <- 'Flx'
+
+df_ent_post$tratamientos[df_ent_post$tratamientos == 'Fluoxetina+CUMS'] <- 'Flx-CUM'
+
+df_ent_post$tratamientos[df_ent_post$tratamientos == 'Ketamina+CUMS'] <- 'Ket-CUM'
+
+df_ent_post$tratamientos[df_ent_post$tratamientos == 'Salina+CUMS-F'] <- 'Sal-CUM-F'
+
+df_ent_post$tratamientos[df_ent_post$tratamientos == 'Salina+CUMS-K'] <- 'Sal-CUM-K'
+
+# recodificar a factores
+df_ent_pre$tratamientos <- as.factor(df_ent_pre$tratamientos)
+df_ent_pre$id <- as.factor(df_ent_pre$id)
+df_ent_pre$stage <- as.factor(df_ent_pre$stage)
+
+df_ent_post$tratamientos <- as.factor(df_ent_post$tratamientos)
+df_ent_post$id <- as.factor(df_ent_post$id)
+df_ent_post$stage <- as.factor(df_ent_post$stage)
+
+df_pruebas$tratamientos <- as.factor(df_pruebas$tratamientos)
+df_pruebas$id <- as.factor(df_pruebas$id)
+df_pruebas$stage <- as.factor(df_pruebas$stage)
+
+# table(df_ent_post$tratamientos) ver tratamientos
+
+```
+
+
 ## Entrenamientos
 
-### Latencia de escape
+### Latencia de escape post
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: tbl-latencias_post_tabla_df
+#| tbl-cap: Tabla df latencias post
+
+df_entpost_latencia <- df_ent_post |> 
+  dplyr::select(latencia, tratamientos, id, dia_completo)
+
+sjPlot::view_df(df_entpost_latencia, 
+                show.frq = T, show.prc = T, show.na = T)
+
+```
 
 #### Regresión bayesiana de efectos mixtos
 
@@ -577,11 +661,11 @@ Un análisis estadístico de esta prueba debería considerar los siguientes supu
 
 -   Modelar la censura de datos que ocurre como consecuencia del valor límite (**`60 s`**). La censura subestima la media y la varianza (disminución artificial de las latencias).
 
-    El RM-ANOVA intenta superar el primero de estos problemas, aunque tiene limitaciones. Está restringido a predictores dentro de sujetos (días o ensayos) siendo categóricos. Como mostró Young en 2009 [@young2009], analizar las latencias de escape con ANOVA produce una tasa más alta de{{< glossary "error de tipo I" add_to_table=true >}} y {{< glossary "error de tipo I" add_to_table=true >}} en comparación con otros modelos de nivel múltiple lineales y no lineales.
+El RM-ANOVA intenta superar el primero de estos problemas, aunque tiene limitaciones. Está restringido a predictores dentro de sujetos (días o ensayos) siendo categóricos. Como mostró Young en 2009 [@young2009], analizar las latencias de escape con ANOVA produce una tasa más alta de{{< glossary "error de tipo I" add_to_table=true >}} y {{< glossary "error de tipo I" add_to_table=true >}} en comparación con otros modelos de nivel múltiple lineales y no lineales.
 
-    @young2021 propusieron un modelo de *regresión censurada multinivel generalizada* de latencia. Utiliza una distribución con un mínimo de **`0`** y una cola superior larga (los datos de latencia tienen distribuciones sesgadas), como las distribuciones *gamma* y las distribuciones *Weibull*. Para predecir los datos censurados, utiliza un *marco bayesiano*.
+@young2021 propusieron un modelo de *regresión censurada multinivel generalizada* de latencia. Utiliza una distribución con un mínimo de **`0`** y una cola superior larga (los datos de latencia tienen distribuciones sesgadas), como las distribuciones *gamma* y las distribuciones *Weibull*. Para predecir los datos censurados, utiliza un *marco bayesiano*.
 
-    El modelo de regresión bayesiana tiene los siguientes parámetros:
+El modelo de regresión bayesiana tiene los siguientes parámetros:
 
     -   Variable Dependiente: Latencia
 
@@ -593,8 +677,7 @@ Un análisis estadístico de esta prueba debería considerar los siguientes supu
 
     -   Predictores: El modelo incluye efectos fijos y efectos aleatorios. Los efectos fijos son una interacción entre el tiempo (como una variable numérica de día centrado) y el tratamiento (una variable categórica). Esto permite al modelo estimar cómo el efecto del tiempo sobre la Latencia cambia a través de diferentes tratamientos. Los efectos aleatorios están especificados por (tiempo\|sujetos), indicando que la pendiente del tiempo puede variar por sujetos. Esto capta la idea de que la relación entre Latencia y tiempo podría diferir entre diferentes sujetos.
 
-    ```{markdown}
-
+  ```
     As shown in \autoref{fig:latcensored}, the `saline+CUM` groups show a higher proportion of censored data.   
 
     \begin{figure}[tp!]
@@ -737,9 +820,10 @@ Un análisis estadístico de esta prueba debería considerar los siguientes supu
     \label{fig:latcontra}
     \end{fullwidth}
     \end{figure}
-    ```
+```
 
     Para ver con análisis de supervivencia ver [@andersen2021] .
+    
 
 #### Análisis de ssupervivencia
 
@@ -751,6 +835,279 @@ Estrategias de búsqueda: El grupo de Garthe y Kempermann (Garthe et al., 2009) 
 
 ### Eficiencia
 
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: tbl-eficiencia_post_tabla_df
+#| tbl-cap: Tabla df eficiencia post
+
+df_entpost_eficiencia <- df_ent_post |> 
+  dplyr::select(eficiancia_so, tratamientos)
+
+sjPlot::view_df(df_entpost_eficiencia, 
+                show.frq = T, show.prc = T, show.na = T)
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: fig-eficiencia_scatter
+#| fig-cap: Eficiencia Scatter Plot
+
+ggplot(df_ent_post, 
+       aes(x = dia, 
+           y = eficiancia_so)) +
+  geom_jitter()+
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Eficiencia al Annulus Blanco",
+       subtitle = "formula = y ~ x",
+       caption = "Recta graficada con intervalos de confianza",
+       x = "tiempo",
+       y = "Eficiencia") +
+  facet_grid(~ tratamientos) +
+  # theme_classic()
+  ggthemes::theme_base()
+
+```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver modelado
+
+lmer_eficiencia <- lme4::lmer(eficiancia_so ~ dia_completo * tratamientos + 
+                                (1 + dia_completo | id), # efectos mixtos 
+                              data = df_ent_post)
+
+
+```
+
+
+```{r}
+
+equatiomatic::extract_eq(lmer_eficiencia)
+
+```
+
+This model includes both fixed effects of time, treatment, and their interaction. Importantly, it specifies random effects for each individual represented by id where:
+(1 | id) specifies a random intercept for each subject. This means that each subject can have their own baseline score that differs from the population average.
+(time | id) specifies a random slope for time for each subject. This means that the effect of time on the test score can vary among subjects. Essentially, some subjects might improve more or less over time compared to others.
+Together, (1 + time | id) implies that each individual has their unique starting point (intercept) and also their unique change over time (slope), and these random intercepts and slopes are allowed to covary within each subject.
+
+(1 + time | id) is more flexible, allowing for individual variability in both the intercept and the slope of time. This model is appropriate when you believe or need to test whether the effect of time on the test score varies from one individual to another. This might be suitable if individual trajectories are expected to differ due to unobserved factors or subject-specific responses to time.
+
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: tbl-eficiencia_resumen_modeloa
+#| tbl-cap: Eficiencia resumen modelo mixtoa
+
+
+sjPlot::tab_model(lmer_eficiencia,
+                  # show.reflvl = T, # nivel de referencia para factores
+                  # show.intercept = F,
+                  p.style = "numeric_stars"
+                  # title = "produccion_2009 ~ ha_maiz"
+                  )
+
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: tbl-eficiencia_resumen_modelob
+#| tbl-cap: Eficiencia resumen modelo mixtob
+
+
+# sjPlot::tab_model(lmer_eficiencia, 
+#                   # show.reflvl = T, # nivel de referencia para factores
+#                   # show.intercept = F,
+#                   p.style = "numeric_stars"
+#                   # title = "produccion_2009 ~ ha_maiz"
+#                   )
+
+tbl_regression(
+  lmer_eficiencia, 
+  add_pairwise_contrasts = T, 
+  pvalue_fun = ~style_pvalue(.x, digits = 3)
+) %>%
+  bold_p()
+
+```
+
+```{r}
+report::report(lmer_eficiencia)
+
+```
+
+Con base en el modelo antes mencionado, se estimaron las medias marginales (estimated marginal means) y sus respectivos intervalos de confianza. Debido a la complejidad del modelo, los intervalos se obtienen utilizando una aproximación asintótica (estimados de la distribución de muestreo a medida que la muestra tienda a infinito). Esto se conoce como confidence limits. Es importante recalcar que estos estimadores no son derivados exactos de nuestros datos, sino son modelos a partir de nuestra función utilizando nuestros datos. Estos intervalos se van a utilizar en los gráficos para representar la incertidumbre de nuestra media marginal calculada en el modelo.
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: fig-eficiencia_emmeans
+#| fig-cap: Eficiencia emmeans
+
+emmeans_eficiencia_post <- emmeans(lmer_eficiencia, ~ dia_completo | tratamientos, cov.reduce = FALSE)
+
+emmeans_eficiencia_post_df <- as.data.frame(emmeans_eficiencia_post)
+
+# latencias_post_emmeans_fluox <- latencias_post_emmeans |>
+#   dplyr::filter(!str_detect(tratamientos, "K"))
+
+ggplot(emmeans_eficiencia_post_df,
+       aes(
+         x = dia_completo,
+         y = emmean,
+         group = tratamientos,
+         color = tratamientos
+       )) +
+  geom_line(linewidth = 0.3, linetype = "dashed", position = position_dodge(0.08)) +
+  geom_point(size = 7, shape = 21, position = position_dodge(0.08)) +
+  geom_pointrange(aes(ymin = lower.CL, ymax = upper.CL),
+                size = 0.75, position = position_dodge(0.08)) +
+  # scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63")) +
+  # labs(title = "Latencias Reversa",
+  #      caption = "Graficado con medias estimadas del modelo e intervalos de confianza de 0.95",
+  #      x = "tiempo en dias",
+  #      y = "media estimada (link = log)") +
+  # theme_classic()
+  ggthemes::theme_base()
+
+```
+
+Contrastes significativos:
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: eficiencia_reversa_contrastes
+#| tbl-cap: eficiencia_reversa_contrastes
+
+# emmeans(glmer_1, pairwise ~ tratamientos | dia_completo, cov.reduce = FALSE)$contrasts |> 
+emmeans(emmeans_eficiencia_post, pairwise ~ tratamientos | dia_completo, cov.reduce = FALSE)$contrasts |> 
+  as_tibble() |> 
+  # dplyr::filter(!str_detect(contrast, "K")) |> 
+  # select(-df, -z.ratio, -SE) |> 
+  rename(tiempo = dia_completo,
+         diferencia_media_estimada = estimate) |> 
+  dplyr::filter(p.value <= 0.05) |> 
+  separate(contrast, into = c("tratamiento_1", "tratamiento_2"), sep = " - ") |> 
+  flextable() |> 
+  add_footer_lines("Tiempo = 0 representa el primer dia, T = 1 al segundo dia \n
+                   En cada dia se realizan 4 trials, representado aquí como 0.25") 
+  # color(~ tratamiento_1 == "(Fluoxetina+CUMS)", ~ tratamiento_1, color = "#00ADB5")  |> 
+  # color(~ tratamiento_2 == "(Fluoxetina+CUMS)", ~ tratamiento_2, color = "#00ADB5")  |> 
+  # color(~ tratamiento_1 == "(Fluoxetina-Control)", ~ tratamiento_1, color = "#222831")  |> 
+  # color(~ tratamiento_2 == "(Fluoxetina-Control)", ~ tratamiento_2, color = "#222831")  |> 
+  # color(~ tratamiento_1 == "(Salina+CUMS-F)", ~ tratamiento_1, color = "#FF2E63")  |> 
+  # color(~ tratamiento_2 == "(Salina+CUMS-F)", ~ tratamiento_2, color = "#FF2E63")  |> 
+  # colformat_double(j = c("diferencia_media_estimada", "p.value"), digits = 4)
+
+```
+
+Supuestos y evaluación del modelo
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: tbl-eficiencia_performance
+#| tbl-cap: eficiencia_performance
+
+performance_eficiencia <- performance(lmer_eficiencia)
+
+knitr::kable(performance_eficiencia)
+
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: fig-eficiencia_supuestos
+#| fig-cap: eficiencia_supuestos
+
+performance::check_model(lmer_eficiencia,
+                         check = c("normality", "qq", "linearity", "homogeneity", "outliers", "vif"))
+ # parece que no cumple del todo con los supuestos
+
+```
+
+Con RM-ANOVA
+
+```{r}
+
+df_ent_post_aov_eficiencia <- df_ent_post
+
+#omit rows with NA in specific column of data frame
+df_ent_post_aov_eficiencia <- df_ent_post_aov_eficiencia[!(is.na(df_ent_post_aov_eficiencia$eficiancia_so)), ]
+
+aov_eficiencia <- ezANOVA(
+  data = df_ent_post_aov_eficiencia,
+  dv = .(eficiancia_so),
+  wid = .(id),
+  within = .(stage),
+  between = .(tratamientos)
+)
+
+aov_eficienciars <- rstatix::anova_test(
+  data = df_ent_post_aov_eficiencia,
+  dv = eficiancia_so,
+  wid = id,
+  within = c(stage, tratamientos)
+)
+
+# removió columnas!!
+# 
+# Assuming dft is your data frame and it's in the right format
+ez_model <- ezANOVA(data = df_ent_post_aov_eficiencia,
+                    dv = .(eficiancia_so),       # Dependent variable
+                    wid = .(id),         # Column with subject IDs
+                    within = .(stage, tratamientos), # Within-subjects factors
+                    type = 3)
+print(ez_model)
+
+
+# summary(aov_peces_1)
+
+# poner summary en formato markdown
+sjPlot::tab_model(aov_peces_1, 
+                  # show.reflvl = T, # nivel de referencia para factores
+                  # show.intercept = F,
+                  p.style = "numeric_stars",
+                  title = "aumento~densidad*estación"
+                  )
+# report::report(aov_peces_1) # resumen de nuestro modelo
+
+```
+
+Definition: A between-subjects treatment, also known as an independent measures design or between-groups design, involves different groups of participants receiving different treatments. Each participant is exposed to only one of the treatment conditions.
+
+Example: Suppose you are testing the effectiveness of three different types of diets on weight loss. You would assign different participants to each diet, with one group trying Diet A, another trying Diet B, and a third trying Diet C. Each participant follows only one diet, and their weight loss is measured after a specified period.
+
+Statistical Analysis: In ANOVA, the variance among the means of these groups is analyzed to determine if there are statistically significant differences between the treatments. Each group's mean is compared against the others, with the variability between groups being a key focus.
+
+Within-Subjects Treatments
+Definition: A within-subjects treatment, also known as a repeated measures design or within-group design, involves the same group of participants receiving all treatments. Each participant is exposed to every treatment condition, usually at different times.
+
+Example: Using the same diet study, a within-subjects design would have each participant try Diet A, Diet B, and Diet C sequentially, with sufficient time between each diet to avoid carryover effects. The weight loss for each participant is then measured after each diet period.
+
+Statistical Analysis: In ANOVA, the focus is on the variance within each subject across different conditions. This design controls for individual differences since each participant serves as their own control. The analysis examines whether the changes in outcomes over the treatments (across conditions) are significant, considering the correlation and potential dependencies among the repeated measures on the same subjects.
+
+Key Differences
+Control of Variability: Within-subjects designs are generally more powerful statistically because they control for inter-subject variability (each participant acts as their own control). Between-subjects designs, however, must account for variability among participants, which can mask treatment effects unless the sample size is sufficiently large.
+Risk of Carryover Effects: Within-subjects designs can suffer from carryover effects, where the effect of one treatment could influence the outcomes of subsequent treatments. Between-subjects designs avoid this problem as each group receives only one treatment.
+Complexity and Practicality: Between-subjects designs are often simpler to implement and analyze but may require more participants to achieve similar power as within-subject designs. Within-subjects designs, while statistically powerful, can be more complex in terms of logistics (e.g., scheduling, ensuring compliance across multiple treatment conditions).
+Understanding these differences is crucial when designing an experiment and choosing the appropriate statistical analysis method. Each design has its advantages and disadvantages, depending on the research questions, practical constraints, and the nature of the treatments and outcomes being studied.
+
+This function automatically treats all factors as within-subjects unless specified otherwise and computes the appropriate error terms and Mauchly's test for sphericity (which tests an assumption of repeated measures ANOVA).
+
+Note
+Random Slopes: Both aov() and ezANOVA() primarily handle random intercepts well but might not be suitable for models with random slopes, which are better handled by lmer or similar functions.
+Data Format: Make sure your data format aligns with the requirements of the function you choose. ezANOVA() requires data in a long format, where each measurement instance (per time and treatment per subject) is on a separate row.
+
 
 ## Pruebas
 
@@ -760,7 +1117,7 @@ El análisis de las 3 pruebas del laberinto (adquisición, retención y aprendiz
 
 Como se mencionó antes, esta es una métrica mucho más sensible que las anteriores. Aquí, una menor distancia implica un mejor aprendizaje espacial. El resultado es similar: hay diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0158).
 
-```{markdown}
+```
 
 According to (Maei et al., 2009), mean distance to the paltaform outperforms the typical probe meassures (time in quadrant, time in zone, number of crossings). 
 
@@ -1093,6 +1450,22 @@ Ver
 
 ### Uso de efectos mixtos
 
+
+(Statistical Rethinking, McElreath, Richard):
+(1)  To adjust estimates for repeat sampling. When more than one observation arises from the same individual, location, or time, then traditional, single-level models may mislead us.
+
+(2)  To adjust estimates for imbalance in sampling. When some individuals, locations, or times are sampled more than others, we may also be misled by single-level models.
+
+(3)  To study variation. If our research questions include variation among individuals or other groups within the data, then multilevel models are a big help, because they model variation explicitly.
+
+(4)  To avoid averaging. Pre-averaging data to construct variables can be dangerous. Averaging removes variation, manufacturing false confidence. Multilevel models preserve the uncertainty in the original, pre-averaged values, while still using the average to make predictions.
+
+All four apply to contexts in which the researcher recognizes clusters or groups of measurements that may differ from one another. These clusters or groups may be individuals such as different students, locations such as different cities, or times such as different years. Since each cluster may well have a different average tendency or respond differently to any treatment, clustered data often benefit from being modeled by a golem that expects such variation.(Statistical Rethinking, McElreath, Richard). 
+
+multilevel regression deserves to be the default form of regression. Papers that do not use multilevel models should have to justify not using a multilevel approach. Certainly some data and contexts do not need the multilevel treatment. But most contemporary studies in the social and natural sciences, whether experimental or not, would benefit from it.(Statistical Rethinking, McElreath, Richard). 
+
+variation in treatment effects, in which individuals or groups vary in how they respond to the same circumstance. Multilevel models attempt to quantify the extent of this variation, as well as identify which units in the data responded in which ways. itting and interpreting multilevel models can be considerably harder than fitting and interpreting a traditional regression model (Statistical Rethinking, McElreath, Richard). 
+
 Ver
 
 -   [@meteyard2022]
@@ -1114,6 +1487,84 @@ Ver
 -   [@barr2013]
 
 -   [@vaux2012]
+
+
+### Bayes
+
+Bayesian statistical inference is much older than the typical tools of introductory statistics, most of which were developed in the early twentieth century. Versions of the Bayesian approach were applied to scientific work in the late 1700s and repeatedly in the nineteenth century. But after World War I, anti-Bayesian statisticians, like Sir Ronald Fisher, succeeded in marginalizing the approach. All Fisher said about Bayesian analysis (then called inverse probability) in his influential 1925 handbook was:27 […] the theory of inverse probability is founded upon an error, and must be wholly rejected (Statistical Rethinking, McElreath, Richard). 
+
+Bayesian methods remain computationally expensive, however. And so as data sets have increased in scale—millions of rows is common in genomic analysis, for example—alternatives to or approximations to Bayesian inference remain important, and probably always will
+
+Representa un enfoque distinto al de las pruebas de significancia de hipótesis nula.If we reject the null, we can’t really conclude that selection matters, because there are other neutral models that predict different distributions of alleles. And if we fail to reject the null, we can’t really conclude that evolution is neutral, because some selection models expect the same frequency distribution. Finding disconfirming cases is complicated by the difficulties of observation. scientists who already believe that the Ivory-billed Woodpecker is extinct will always be suspicious of a claimed falsification. Those who believe it is still alive will tend to count the vaguest evidence as falsification. whether the falsification is real or spurious. Measurement is complicated (Statistical Rethinking, McElreath, Richard). 
+
+Bayesian data analysis takes a question in the form of a model and uses logic to produce an answer in the form of probability distributions. counting the numbers of ways the data could happen, according to our assumption. preceding description doesn’t invoke anyone’s “beliefs” or subjective opinions. Bayesian data analysis is just a logical procedure for processing information. many scientists interpret non-Bayesian results in Bayesian terms, for example interpreting ordinary p-values as Bayesian posterior probabilities (Statistical Rethinking, McElreath, Richard). 
+
+believed that one always ought to perform a null hypothesis test, without
+exception. The researchers did not notice how small their statistical power was, nor did they seem
+to care: Power is not part of the null ritual that dominates experimental psychology. The essence
+of the ritual is the following. Set up a statistical null hypothesis of “no mean difference” or “zero correlation.” Don’t specify the predictions of your research hypothesis or of any alternative substantive hypotheses.se 5% as a convention for rejecting the null. If significant, accept your research hypothesis. he null ritual has sophisticated aspects we will not cover here, such as alpha adjustment and ANOVA procedures, but these do not change its essence. A p-value is the probability of the observed data (or of more extreme data points), given
+that the null hypothesis H0 is true, defined in symbols as p(D |H0). A significance test can never
+disprove the null hypothesis. Significance tests provide probabilities, not definite proofs. p-value is a probability of data, not of a hypothesis. Despite
+wishful thinking, p(D |H0) is not the same as p(H0 |D), and a significance test does not and cannot
+provide a probability for a hypothesis. One cannot conclude from a p-value that a hypothesis has
+a probability of 1 (gigerenzer, Stefan Krauss, and Oliver Vitouch). 
+
+
+### Modelamiento múltipl
+
+Th e Neyman-Pearson theory serves as the superego of Dr. Publish-Perish’s statistical thinking,
+demanding in advance the specification of precise alternative hypotheses, significance levels, and
+power to calculate the sample size necessary, as well as teaching the doctrine of repeated random
+sampling (Neyman, 1950, 1957). Moreover, the frequentist superego forbids the interpretation
+of levels of signifi cance as the degree of confidence that a particular hypothesis is true or false. Hypothesis testing, in its view, is about decision making (i.e., acting as if a hypothesis were true or false) but not about epistemic statements (i.e., believing in a hypothesis) (gigerenzer, Stefan Krauss, and Oliver Vitouch)..
+
+### Errores en regresión estándar
+
+Causal Salad: You put everything into a regression equation, toss with some creative story-telling, and hope the reviewers eat it. In general, this is not a valid approach, for well-known reasons. But it can get you published. Causal salad can discover causes too. But you have to get lucky. The Salad isn’t only regression. Really any procedure that hopes to take a list of variables (features) and return causal inference is Causal Salad. No amount of data reliably turns salad into sense.
+
+Second, there is Causal Design: Use a framework like do-calculus to derive a causal estimate, given a causal model. If such an estimate is possible—often it is not—this approach will tell you which variables to use and how to use them. Sometimes the result will resemble a regression equation. Often it will not. I include in this approach the idea of randomized and natural experiments, because these are justified only through some logic of causal design.
+
+Third, there is Full-Luxury Bayesian Inference: Program the entire causal model as a joint probability distribution and let the logic of probability theory work out the implications. In principle, this is equivalent to Causal Design—all of the same results can be derived either way, given the same causal model. In practice, the approaches are different. They have different strengths and require different procedures. https://elevanth.org/blog/2021/06/15/regression-fire-and-dangerous-things-1-3/
+
+Causal Design. This is just my label for a family of approaches that use explicit causal models to design and interpret statistical estimates. Causal models vary in form, but they are all graphs in the sense that they contains arrows, directional relationships in which some things are inputs for other things. X —> Y means that a change in X can result in a change in Y, but that a change in Y will have no impact on X. A statistical model, in contrast, is a set of associations. These associations do not have arrows. Scientific models do, even though we don’t (or can’t) always represent them as graphs.
+
+The first step is to stop thinking about regression and start thinking about a generative model of the data. So let’s think about each variable and which other variables influence it. Here is the simulation code again, to get us moving. https://elevanth.org/blog/2021/06/21/regression-fire-and-dangerous-things-2-3/
+
+bias amplification. Bias amplification arises when (1) the exposure of interest (M here) is confounded (by U here) and (2) we add a variable (B1 here) that is a strong predictor of the exposure (M here). When this happens, the additional variable tends to amplify the original confound and overall make inference worse. That is what we saw in Part 1. As a rule of thumb, it is better to add variables like B2, strong predictors of the outcome, than like B1, strong predictors of the exposure. I’ll drop a citation at the end of this post, if you want to chase the details.
+
+Bias-amplification happens when you think like a regression: Which variables should I add to the model? Instead we’re thinking like a graph. This provides better questions and principled answers. Schematically, thinking like a graph involves three stages:
+
+use the term Full-Luxury with some irony. Like all luxuries, this approach has costs. The machinery required to make it work can be complicated. And for some causal models, it is highly impractical or even impossible to reliably perform the calculations. It’s often true that we can make the machine more efficient by transforming the generative model a bit. This is one of several reasons that Causal Design, using analysis in the spirit of do-calculus, provides unique benefits that can be combined with Full-Luxury Inference. I’ll show you what I mean.
+
+https://go-bayes.github.io/rbb-causal/
+
+Many applied scientists equate omitted variable bias with confounding. For this reason, they seek to “control” for every variable that might be associated with both X and Y. If the relationship between X and Y holds after including such “controls,” many applied scientist will infer that there is a causal relationship between X and Y. We will see that this is not the case; quite the opposite, controlling for many variables is an invitation to confounding, leading to erroneous causal inference. Do not adopt a “causal salad” approach to regression.
+
+    “But the approach which dominates in many parts of biology and the social sciences is instead CAUSAL SALAD. Causal salad means tossing various “control” variables into a statistical model, observing changes in estimates, and then telling a story about causation. Causal salad seems founded on the notion that only omitted variables can mislead us about causation. But included variables can just as easily confound us. When tossing a causal salad, a model that makes good predictions may still mislead about causation. If we use the model to plan an intervention, it will get everything wrong. Richard McElreath “Statistical Rethinking” Chapter 1, p46.
+
+Suppose we are interested in the effect of X on Y in a scenario when Z fully mediates the relationship of X on Y.
+
+Selection bias is commonplace. Imagine that religious service attendance reduces psychological distress and that having a sense of meaning in life reduces distress. Imagine that church attenance does not affect sense of meaning in life. “Controlling for” distress will make it appear as though church attendance causes meaning in life because distress “shares” information.
+
+de @rubin2005
+
+Causal effects are defined as comparisons of potential outcomes under different treatments on a common set of units. Observed values of the potential outcomes are revealed by the assignment mechanism—a probabilistic model for the treatment each unit receives as a function of covariates and potential outcomes. Fisher made tremendous contributions to causal inference through his work on the design of randomized experiments, but the potential outcomes perspective applies to other complex experiments and nonrandomized studies as well. As noted by Kempthorne in his 1976 discussion of Savage’s Fisher lecture, Fisher never bridged his work on experimental design and his work on parametric modeling, a bridge that appears nearly automatic with an appropriate view of the potential outcomes framework, where the potential outcomes and covariates are given a Bayesian distribution to complete the model specification. Also, this framework crisply separates scientific inference for causal effects and decisions based on such inference, a distinction evident in Fisher’s discussion of tests of significance versus tests in an accept/reject framework. But Fisher never used the potential outcomes framework, originally proposed by Neyman in the context of randomized experiments, and as a result he provided generally flawed advice concerning the use of the analysis of covariance to adjust for posttreatment concomitants in randomized trials.
+
+Each unit can be exposed or not to a treatment, here called “active treatment” if exposed and “control treatment” if not exposed; We generally denote these by “treatment” and “control” without ambiguity. The column labeled “Covariates,” X,represents variables that take their values before the treatment assignment or, more generally, simply cannot be affected by the treatment, such as preaspirin headache pain or sex of the unit. The columns labeled “Potential Outcomes” present the values of the outcome variable Y for each unit at a particular point in time after the action (e.g., headache pain 2 hours after taking aspirin or not), Y(1) under the active treatment, and Y(0) under the control treatment. Any information that is to be analyzed is included in X, Y(1),andY(0), and thus the indexing of the units is completely random, that is, simply a random permutation of 1,...,N. The column labeled “Unit-Level Causal Effects” provides the collection of individual unit-level causal effects, which for the ith unit are, the comparison of Yi(1) and Yi(0), typically the difference, Yi(1) − Yi(0), but not always; the ratio or any such comparison could be used to define unit-level causal effects. Of course, we can never observe both Yi(1) and Yi(0) for any unit i, because we cannot unwind time and go back and expose the ith unit to the other treatment. This is called the “fundamental problem of causal inference” (Holland 1986). Each potential outcome is observable, but we can never observe all of them.
+
+One cannot compare medical costs for male smokers with medical costs for female nonsmokers and claim that this comparison is a causal effect of smoking without making heroic and unwarranted assumptions.
+
+Fisher’s unwillingness to utilize the marvelous contribution of formal notation for potential outcomes, originally due to Jerzy Neyman. As Savage (1976, p. 446) stated: I am surely not alone in having suspected that some of Fisher’s major views were adopted simply to avoid agreeing with his opponents (Neyman 1961, pp. 148–149).
+
+An assumption that is also implicit in the representation in Figure 1 is that the science—the covariates and the potential outcomes—is not affected by how or whether we try to learn about it, whether by completely randomized experiments, randomized blocks designs, observational studies, or another method. That is, whether I took an aspirin because I tossed a fair coin to decide or because I happened to have an aspirin nearby does not affect the pain that would be observed under either treatment. Or, more topically, whether I try to learn about the effects of hormone replacement therapy on postmenopausal women through a randomized experiment (e.g., the Woman’s Health Initiative Study Group 1998) or through an observational study (e.g., the Nurses Heath Study, Grodstein, Clarkson, and Manson 2003), the science does not change—the causal effects of taking versus not taking hormones for the units are not affected. Without these assumptions, causal inference using potential outcomes is far more complicated, although still possible in principle by, for example, allowing only some units to interfere with each other, as with models of additive carryover effects of drugs, or by allowing the act of observation to
+
+
+sigue con neyman y bayes..
+
+![](figuras/rubin_2005jpg.jpg)
+
+
+
 
 ### Presentación de datos
 
