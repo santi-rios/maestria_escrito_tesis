@@ -1,0 +1,1292 @@
+---
+title: "Caracterización de los efectos de la Fluoxetina sobre el aprendizaje espacial y la flexibilidad cognitiva en un modelo de estrés crónico en ratón"
+# subtitle: ""
+# description: ""
+abstract: |
+    El estrés crónico tiene efectos profundos sobre distintos aspectos de la cognición, incluyendo la flexibilidad cognitiva dependiente del hipocampo. Estos impactos cognitivos pueden ser estudiados en modelos de roedores utilizando el Laberinto Acuático de Morris (MWM).  Sin embargo, estos estudios han dependido predominantemente del análisis de métricas y métodos estadísticos que no necesariamente modelan la relación entre el estrés crónico y la flexibilidad cognitivia dependiente del hipocmapo.Aunque estos métodos han aportado valiosas perspectivas, sus limitaciones para manejar conjuntos de datos biológicos complejos son cada vez más reconocidos. Este estudio explora las ventajas de utilizar técnicas de análsis que modelen mejor la relación para el estudio de la flexibilidad cognitiva. A través de un análisis comparativo que involucra a ratones sometidos a estrés crónico y tratamiento farmacológico con fluoxetina, demostramos cómo estos enfoques pueden proporcionar interpretaciones más matizadas de los datos, acomodando la variabilidad individual y la estructura jerárquica de los diseños experimentales comunmente utilizados en esta área. Nuestros hallazgos revelan que estos enfoques no solo ofrecen una mayor flexibilidad y precisión predictiva, sino que también mejoran la comprensión de los efectos cognitivos del estrés y la eficacia de posibles intervenciones. Al integrar metodologías estadísticas avanzadas con protocolos experimentales rigurosos, esta investigación contribuye al perfeccionamiento de los modelos de neurociencia cognitiva y apoya el desarrollo de estrategias terapéuticas dirigidas para las alteraciones cognitivas relacionadas con el estrés.
+keywords: |
+    Morris Water Maze, Cognitive Flexibility, Mixed Models.
+title-block-banner: true
+author:
+  - name: Garcia Rios Santiago
+    email: santiago_gr@ciencias.unam.mx
+    affiliations:
+      - name: Facultad de Ciencias
+        url: https://www.fciencias.unam.mx/
+format: 
+  html:
+    lang: es  # figure, note, warning, code
+    embed-resources: true # self-contained file
+    # code-fold: true # retraer código
+    # code-summary: "Mostrar código"
+    theme: "sandstone" # cyborg, quartz, slate, solar, superhero, vapor
+    page-layout: full
+date: "today"
+editor: source
+markdown:
+    wrap: sentence
+editor_options: 
+  chunk_output_type: console
+execute:
+  echo: true  
+  warning: false
+  cache: true
+toc: true
+number-sections: true
+glossary:
+  path:  glossary.yml
+  popup: hover
+  show: true
+# bibliography: references.bib
+---
+
+## Introducción
+
+importance: \| Better statistical modeling of the risk factors associated with cognitive flexibility in accute stress could result in better treatments for depression. Common statistic inference used in MWM are defficient in identifying the complex behavioral interactions that arrise as consequence of accute stress, depression and cognitive flexibility.
+
+
+### Estrés, desórdenes de ánimo y flexibilidad Cognitiva
+
+Estímulo no placentero, aversivo y/o amenazante para la homeostasis de un individuo [@lucassen2016].
+
+
+Richard Lazarus define al estrés cen torno a una relación entre el individuo y el ambiente, el cual es experimentado de manera significativa o demandande que exede los recursos para lidiar con él (ver coping theory, Lazarus & Folkman, 1984).
+
+
+-   [@hill2012]
+
+-   [@petkovic2022]
+
+
+Estresores crónicos, impredecibles e incontrolables son causa mayor de desordenes depresivos y de ansiedad [@hill2012a].
+
+Diversos factores afectan la respuesta al estrés y la susceptibilidad de que desencadene trastornos, como depresivos o de ansiedad. Estos van desde aspectos psicológicos (experiencia subjetiva del estrés, recursos para lidiar con estresores), hasta biológicos (cascadas neuroendócrinas, procesamiento de información) [@tafet2016].
+
+Si nos mantenemos estresados, nuestra respuesta fisiológica no será suficiente.
+
+##### Estructuras cerebrales relacionadas
+
+Se han relacionado diversas vías que relevan la información de los estresores ambientales al sistema nervioso central ({{< glossary SNC add_to_table=true >}}). Entre estos, el {{< glossary tálamo >}} y sus proyecciones a la {{< glossary amígdala >}}, y córtices sensoriales y de asociación que mandan proyecciones a distintas áreas, como la corteza prefrontal ({{< glossary PFC add_to_table=true >}})., incluyendo la corteza orbitofrontal ({{< glossary COF add_to_table=true >}}), la corteza prefrontal medial ({{< glossary mPFC add_to_table=true >}}) y el cortex del cíngulo anterior ({{< glossary CCA add_to_table=true >}}) [@tafet2016].
+
+##### Regulación del eje hipotálamo-hipofisario-suprarrenal
+
+La activación del eje hipotálamo-hipofisario-suprarrenal ({{< glossary HPA add_to_table=true >}}) tiene consecuencias importantes sobre los receptores de glucocorticoides ({{< glossary GRC add_to_table=true >}}) del {{< glossary hipocampo >}}.
+
+La activación crónica del eje {{< glossary HPA add_to_table=true >}} puede generar problemas en la fisiología del organismo, incluyendo bucles de {{< glossary "retroalimentación negativa" >}} que resulten en la activación persistente del sistema [@tafet2016].
+
+##### Papel de Neurotransmisores
+
+**Serotonina**
+
+La mayoría de las neuronas serotoninérgicas en el {{< glossary SNC add_to_table=true >}} se encuentran dentro de los límites de los {{< glossary "núcleos del rafé" >}}. El {{< glossary "núcleo dorsal del rafe" >}} tiene proyecciones a la {{< glossary PFC >}}, {{< glossary amígdala >}}, {{< glossary "núcleo accumbens" >}}, e {{< glossary hipocampo >}} ventral, entre otras estructuras del {{< glossary prosencéfalo >}}. Este {{< glossary "núcleo dorsal del rafe" >}} se ha asociado con la activación de estructuras del {{< glossary "sistema límbico" >}}. Además, el {{< glossary "núcleo de rafé" >}} medial proyecta al {{< glossary hipocampo >}} dorsal. Por lo tanto, alteraciones a estos sistemas se han asociado a desórdenes de ánimo [@tafet2016].
+
+La serotonina ({{< glossary 5-HT add_to_table=true >}}) se une a receptores pre y post sinápticos (se han identificado hasta 14 tipos en 7 familias). Se cree que la administración crónica de antidepresivos ( {{< glossary SSRI add_to_table=true >}} ) (y el subsecuente aumento de {{< glossary 5-HT add_to_table=true >}} en el espacio sináptico) desensibiliza o regula a la baja los {{< glossary autoreceptores >}} somatodentríticos de tipo $5-HT_{1A}$ en el {{< glossary "núcleo de rafé" >}}, a la vez que regula a la alta $5-HT_{1A}$ post-sinápticos y desensibiliza $5-HT_{2A}$ [@tafet2016].
+
+**Dopamina**
+
+La dopamina está relacionada con la regulación del eje {{< glossary HPA add_to_table=true >}}, así como en la fisiopatología de la depresión. Los principales grupos de neuronas dopaminérgicas en el SNC incluyen el campo retro-rubro (A8), la sustancia negra pars compacta (A9) y el área tegmental ventral (A10), de donde emergen las vías mesolímbica y mesocortical. La vía mesolímbica se proyecta principalmente hacia el núcleo accumbens y otras estructuras límbicas, incluyendo la amígdala, el hipocampo, el núcleo de la estría terminal y el septum, y está implicada en el procesamiento y refuerzo de estímulos gratificantes, motivación y la experiencia subjetiva del placer. La vía mesocortical se proyecta principalmente hacia la corteza prefrontal (PFC), el cíngulo anterior (ACC) y la corteza entorrinal, y juega un papel crucial en funciones cognitivas como la concentración y la memoria de trabajo. Además, los estrsores ambientales incrementan la actividad del la amígdala, incrementando la concentración de dopamina en la vía mesocortical (particularmente en PFC), confiriendo un aumento de la saliencia relacinada a estímulos negativos [@tafet2016].
+
+**Norepinefrina**
+
+El principal grupo de neuronas que contienen norepinefrina en el SNC se localiza en el locus coeruleus (LC), desde donde surgen diversas proyecciones que inervan ampliamente áreas corticales y subcorticales, incluyendo la amígdala, el hipocampo y el núcleo paraventricular del hipotálamo. Estas proyecciones al área tegmental ventral han demostrado potenciar la liberación de dopamina, mientras que las proyecciones al núcleo del rafe regulan la liberación de serotonina (5-HT). También se ha observado una regulación recíproca entre la norepinefrina y la 5-HT, no solo a través de conexiones entre ambos sistemas aminérgicos, sino también mediante estructuras límbicas como el hipocampo. Además, las conexiones recíprocas entre la norepinefrina y las neuronas que contienen factor de liberación de corticotropina (CRF) sugieren un papel crucial del LC en la regulación de las respuestas neurales y neuroendocrinas al estrés. En respuesta a estresores agudos, se libera norepinefrina en diferentes estructuras del SNC, resultando en un aumento de la alerta y la hipervigilancia, en el contexto de respuestas adaptativas al estrés. La activación del LC también ha sido asociada con la estimulación del hipotálamo lateral, que participa en la activación de la rama simpática del sistema nervioso autónomo, complementando así la respuesta adaptativa al estrés [@tafet2016].
+
+##### Inflamación
+
+Las concentraciones elevadas de citoquinas proinflamatorias producidas por el estrés agudo (interleucina-1, la interleucina-6 y el factor de necrosis tumoral-alfa), se han vinculado a los efectos de diversos estímulos ambientales y esta activación inmunitaria también se ha observado en la depresión mayor. Además, se ha encontrado que la depresión mayor puede inducir respuestas inflamatorias incrementadas al estrés. Los estresores ambientales activan la rama simpática del sistema nervioso autónomo, resultando en la liberación de catecolaminas que, a su vez, activan sus receptores en las células inmunes y estimulan la liberación de citoquinas proinflamatorias. Las respuestas inflamatorias crónicas en el SNC pueden resultar en la liberación excesiva de citoquinas proinflamatorias, lo que puede llevar a concentraciones reducidas de neurotrofinas (incluido el BDNF), provocando neuroplasticidad deteriorada y disminución de la neurogénesis (especialmente en el hipocampo), asociadas con el origen de trastornos cognitivos y del estado de ánimo. Las citoquinas proinflamatorias también están involucradas en la regulación del eje HPA, estimulando la liberación de CRF y resultando en hipercortisolismo, lo que ha sido asociado con una sensibilidad reducida de los GR y resistencia a los glucocorticoides. Niveles elevados de cortisol, como los observados durante el estrés crónico, pueden llevar a una síntesis disminuida de 5-HT debido a la actividad reducida de la enzima limitante de la velocidad, la triptófano hidroxilasa.
+
+##### Neuroplasticidad
+
+Muchos factores neurotróficos (especialmente neurotrofinas) se han asociado a la respuesta del estrés crónico, incluyendo el factor de crecimiento nervioso, el factor neurotrófico derivado del cerebro (BDNF), neurotrofina-3, neurotrofina-4/5 y neurotrofina-6. Entre estas, el BDNF ha recibido particular atención debido a su papel en la regulación del desarrollo cerebral, la neuroplasticidad y la neurogénesis. Los estudios sugieren que niveles reducidos de BDNF pueden conducir a síntomas depresivos, mientras que su regulación positiva está asociada con la recuperación clínica. Estudios in vitro han mostrado que el BDNF puede disminuir la captación de serotonina (5-HT), indicando su posible papel en la regulación del transportador de serotonina (5-HTT). El estrés crónico y la activación resultante del eje hipotalámico-pituitario-adrenal (HPA) pueden dañar neuronas en ciertas estructuras del SNC, especialmente en el hipocampo, donde se han encontrado altos niveles de receptores de glucocorticoides (GRs) [@tafet2016].
+
+La neurogénesis en el sistema nervioso central (SNC) adulto puede ser estimulada por condiciones específicas, especialmente aquellas relacionadas con una actividad hipocampal aumentada y niveles elevados de serotonina (5-HT), pero puede ser inhibida por situaciones estresantes y niveles altos de glucocorticoides. Bajo condiciones de estrés crónico y con la activación incrementada del eje hipotalámico-pituitario-adrenal (HPA), la inhibición de la neurogénesis hipocampal puede interferir con la formación de nuevas cogniciones, contribuyendo así a provocar y mantener condiciones que inducen depresión. Según esta hipótesis, las intervenciones terapéuticas exitosas podrían requerir la recuperación de la tasa normal de neurogénesis hipocampal. Esta recuperación podría estar asociada con un efecto directo de los antidepresivos al incrementar los niveles de 5-HT o indirectamente a través de la modulación del eje HPA y el aumento de los niveles de BDNF, lo cual se ha asociado con una regulación positiva de la neuroplasticidad y el aumento de la neurogénesis. Sin embargo, esta hipótesis sigue siendo controvertida debido a la falta de confirmación del aumento en la neurogénesis tras tratamientos antidepresivos a largo plazo [@tafet2016]. Por ejemplo, reducir la neurogénesis por otros factores que no involucren estrés no causa fenotipos de tipo depresivos.
+
+De acuerdo a [@vollmayr2003], la tasa de proliferación celular en el giro dentado se regula a la baja de manera aguda por el estrés, pero el desarrollo de comportamiento de desesperanza aprendida no correlaciona con este proceso.
+
+El estrés crónico se ha asociado a cambios en el volumen de varias regiones cerebrales, incluido el hipocampo. En la literatura, se han reportado variaciones en el volumen del hipocampo en la depresión, que pueden estar relacionadas con diferencias en la duración de la enfermedad, la delimitación anatómica, la lateralización, las condiciones de vida temprana y el genotipo. En general, los cambios en el hipocampo, la amígdala y la corteza prefrontal en el trastorno depresivo mayor (MDD) son hallazgos bien replicados en la psiquiatría. No está claro si la pérdida de volumen del hipocampo refleja una causa o una consecuencia del MDD, pero se puede prever que volúmenes más bajos del hipocampo en los pacientes están asociados con una mayor duración y recurrencia de episodios depresivos, el tamaño de sus respuestas integradas de cortisol, y una historia de estrés temprano en la vida. Además, un volumen más pequeño del hipocampo podría predisponer al desarrollo de psicopatologías [@lucassen2016].
+
+De acuerdo con investigaciones lideradas por Igor Branchini [@branchi2023] y [@dellicolli2024], los niveles altos de plasticidad inducidos por medicamentos, como los antidepresivos serotoninérgicos y los psicodélicos, no son beneficiosos por sí mismos. Estos fármacos inducen una alta plasticidad (a veces llamados psicoplastógenos) que hacen que el cerebro y el comportamiento sean más susceptibles a cambios según factores contextuales, como las condiciones de vida. Esta suceptibilidad puede ser benéfica si las condiciones de vida mejoran. Sin embargo, si las condiciones de vida no mejoran (o empeoran), esta plasticidad inducida por los fármacos puede ser detrimental.
+
+#### Paul Willner y el Modelo de Estrés Crónico
+
+El modelo de estrés crónico leve (o impredecible/variable) (CUM) fue desarrollado como un modelo animal de depresión hace más de 20 años \[Katz and colleagues in the early 1980s demonstrated that exposure of rodents to severe stressors resulted in a reduction in locomotor activity and of their consumption of rewarding, palatable substances (namely sucrose; reviewed in Katz, 1982).\], Observaron que afectaba conductas de tipo depresivas, como el sueño y el acicalamiento (Willner, 1997).
+
+Estos investigadores observaron que la exposición prolongada a una serie de estresores leves pero impredecibles, los animales desarrollarían un estado de disminución en la saliencia de la recompensa similar a la anhedonia observada en el trastorno depresivo mayor \@hill2012a.
+
+Con base en esto, este modelo ha sigo utilizado para examinan variables neurobiológicas asociadas con la depresión, aunque no se ha examinado críticamente para validar que los cambios neurobiológicos inducidos por CMS sean paralelos a los documentados en el trastorno depresivo. (1) provoca una serie de cambios neurobiológicos que reflejan aquellos vistos en los trastornos depresivos y (2) puede ser una herramienta adecuada para investigar nuevos sistemas que podrían estar alterados en la depresión, y así ayudar en el desarrollo de nuevos objetivos para el tratamiento de la depresión \@hill2012a.
+
+Validez de predicción (rendimiento en prueba predice el rendimiento que queremos modelar; en este caso se ve con fármacos). Validez de apariencia (similitudes fenomenológicas -- comparación con DSM-V); validez de constructo (modelo tiene bases teóricas razonables -- mecanismos neurobiológicos) (Willner, 2017)
+
+
+Estresores crónicos, impredecibles e incontrolables son causa mayor de desordenes depresivos y de ansiedad [@hill2012a].
+
+Si nos mantenemos estresados, nuestra respuesta fisiológica no será suficiente.
+
+#### Paul Willner y el Modelo de Estrés Crónico
+
+Katz and colleagues in the early 1980s demonstrated that exposure of rodents to severe stressors resulted in a reduction in locomotor activity and of their consumption of rewarding, palatable substances (namely sucrose; reviewed in Katz, 1982).
+
+Observaron que afectaba conductas de tipo depresivas, como el sueño y el acicalamiento (Willner, 1997).
+
+Valadez de predicción (rendimiento en prueba predice el rendimiento que queremos modelar; en este caso se ve con fármacos). Validez de apariencia (similitudes fenomenológicas -- comparación con DSM-V); validez de constructo (modelo tiene bases teóricas razonables -- mecanismos neurobiológicos) (Willner, 2017)
+
+
+Cognición, habilidad de procesar información, valorarla y utilizar el conocimiento por medio de conductas dirigidas. Aprendizaje, memoria, atención, razonamiento, sentimientos, toma de desiciones.
+
+Afecta distintos aspectos cognitivos (memoria, aprendizaje...), conductas "maladaptativas" (Bondi et al., 2008; Maramis et al., 2021)
+
+Hipocampo regula distintos apectos de la cognición (flexibilidad cognitiva y aprendizaje espacial) (Anacker y Hen, 2017)
+
+Abundancia de receptors a glucocorticoidies en hipocampo lo hace muy sensible al estrés crónico (Lucassen et al., 2016)
+
+### Depresión
+
+Caracterizada por sentimientos persistentes de tristeza, pérdida de interés o placer, y una variedad de síntomas físicos y cognitivos, el trastorno depresivo mayor tiene un impacto profundo en la calidad de vida de un individuo. De acuerdo con la Organización Panamericana de la Salud (OPS), la proporción de la población mundial con depresión en 2015 fue de 4.4% (3.6% en hombres y 5.1% en mujeres). Además, se estima que para 2020, la depresión sea la segunda causa a nivel mundial de discapacidad y que un 20% de la población mundial sufra de algún trastorno afectivo que requiera tratamiento médico en algún momento de su vida [@cerecero-garcía2020] . Este panorama resalta la necesidad urgente de comprender mejor los mecanismos subyacentes de la depresión y desarrollar tratamientos más efectivos y accesibles.
+
+trastorno depresivo mayor -- estado de ánimo bajo, anhedonia, cambios en peso, sueño, fatiga, sentimientos de culpa, concentración baja
+
+TA generalizada -- preocupaciones excesivas, persistentes e incontrolables, dificultad para concentrarse
+
+El impacto de la depresión es significativo y multifacético. Aquí están algunas de las formas en que la depresión puede afectar a las personas y a la sociedad:
+
+<<<<<<< HEAD
+• Salud y bienestar: La depresión puede causar una variedad de síntomas físicos y emocionales, como tristeza persistente, falta de interés o placer en las actividades, dificultad para dormir o dormir demasiado, fatiga, problemas de concentración, y pensamientos de muerte o suicidio. Esto puede afectar seriamente la calidad de vida de una persona.
+
+• Discapacidad: La OMS clasifica la depresión como una de las principales causas de discapacidad en todo el mundo. Las personas con depresión pueden tener dificultades para funcionar en su trabajo, en la escuela, o en sus actividades diarias.
+
+• Mortalidad: La depresión está asociada con un mayor riesgo de suicidio. Además, la depresión puede contribuir a un peor pronóstico para varias condiciones de salud física, incluyendo enfermedades del corazón y diabetes.
+
+• Costo económico: La depresión puede tener un gran impacto económico, tanto en términos de costos de atención de la salud como de pérdida de productividad. Se estima que la depresión y la ansiedad cuestan a la economía mundial aproximadamente 1 billón de dólares cada año en pérdida de productividad.
+
+•	Salud y bienestar: La depresión puede causar una variedad de síntomas físicos y emocionales, como tristeza persistente, falta de interés o placer en las actividades, dificultad para dormir o dormir demasiado, fatiga, problemas de concentración, y pensamientos de muerte o suicidio. Esto puede afectar seriamente la calidad de vida de una persona.
+
+•	Discapacidad: La OMS clasifica la depresión como una de las principales causas de discapacidad en todo el mundo. Las personas con depresión pueden tener dificultades para funcionar en su trabajo, en la escuela, o en sus actividades diarias.
+
+•	Mortalidad: La depresión está asociada con un mayor riesgo de suicidio. Además, la depresión puede contribuir a un peor pronóstico para varias condiciones de salud física, incluyendo enfermedades del corazón y diabetes.
+
+•	Costo económico: La depresión puede tener un gran impacto económico, tanto en términos de costos de atención de la salud como de pérdida de productividad. Se estima que la depresión y la ansiedad cuestan a la economía mundial aproximadamente 1 billón de dólares cada año en pérdida de productividad.
+
+
+En este contexto, la investigación sobre los efectos de fármacos como la fluoxetina, conocidos por su potencial antidepresivo, es particularmente relevante. Estudiar cómo estos fármacos pueden influir en procesos desregulados en la depresión, omo la {{< glossary "flexibilidad cognitiva" add_to_table=true >}} y la neurogénesis hipocampal, no solo es crucial para entender mejor la fisiopatología de la depresión, sino también para abrir nuevas vías en el tratamiento de este trastorno debilitante.
+
+### Depresión y cognición
+
+Los trastornos depresivos van más allá de los síntomas emocionales, afectando profundamente las capacidades cognitivas de los individuos. Estos problemas cognitivos, que incluyen dificultades en la atención, memoria y la flexibilidad cognitiva, son a menudo algunos de los aspectos más debilitantes de la depresión. La {{< glossary "flexibilidad cognitiva" add_to_table=true >}} hace referencia a la capacidad de una persona para adaptarse y cambiar su pensamiento en respuesta a situaciones cambiantes o nuevas. Esta habilidad implica poder cambiar de perspectiva o enfoque mental y adaptarse a nuevas reglas o expectativas. La flexibilidad cognitiva es una parte importante de la función ejecutiva, un conjunto de habilidades cognitivas que nos permiten planificar, organizar, tomar decisiones, mantener la atención, y regular el comportamiento [@anacker2017]. Esta capacidad de adaptar el pensamiento y el comportamiento a situaciones nuevas y cambiantes, es crucial para manejar las complejidades de la vida diaria.
+
+En personas con depresión, la disminución de la flexibilidad cognitiva puede manifestarse en una dificultad para desvincularse de pensamientos negativos y adaptarse a nuevos contextos o perspectivas, lo que a su vez puede perpetuar y agravar los síntomas depresivos. De manera similar, en los desórdenes de ansiedad también se puede observar una falta de flexibilidad cognitiva como pensamientos negativos recurrentes que agravian el padecimiento [@uddin2021].
+
+La mayoría de los pacientes con trastornos depresivos experimentan, en cierta medida, deterioros cognitivos. Parece que los trastornos cognitivos constituyen un síntoma patológico central de la depresión y no deberían ser considerados simplemente como secundarios a ella. Por lo tanto, los síntomas cognitivos deben ser vistos como una dimensión parcialmente independiente del trastorno depresivo mayor y un objetivo importante de cualquier tratamiento que se implemente [@maramis2021].
+
+La flexibilidad conductual es la manifestación física de la flexibilidad cognitiva. Como veremos más adelante, la flexibilidad conductual puede ser evaluada mediante el aprendizaje reversa. Esta tarea es vulnerables al estrés. El estrés crónico e impredecible perjudica tanto el aprendizaje de reversión [@hurtubise2017].
+
+##### Neurogénesis
+
+En este sentido, estudiar cómo la neurogénesis hipocampal adulta regula la flexibilidad cognitiva podría representar un enfoque terapéutico prometedor en los trastornos de depresión [@anacker2017].
+
+### Neurogénesis Hipocampal Adulta (NHA)
+
+El hipocampo está implicado en diversas funciones cognitivas, incluyendo el aprendizaje contextual, la navegación, la discriminación de novedades y los procesos de memoria que surgen como resultado de la integración, separación y completación de la información proyectada y transmitida a través de sus distintas subregiones anatómicas. Por ejemplo, navegar por un nuevo entorno requiere varios procesos computacionales, como prestar atención a los puntos de referencia, mapear su organización espacial relativa al agente, fijarse en una ubicación objetivo y trazar la mejor trayectoria espacial para alcanzarla. Las subregiones del hipocampo desempeñan roles distintos clave en tales procesos computacionales. Anatómicamente, el término formación hipocampal generalmente se refiere al giro dentado (DG), el cornu ammonis (CA) y la corteza subicular. Además, CA se divide en cuatro subregiones, siendo CA1 y CA3 las más prominentes, CA2 forma una zona intermedia pequeña entre estas dos, y CA4 se considera una subregión polimórfica del DG. A pesar de la intensa investigación, comprender el papel de cada subregión hipocampal en procesos computacionales específicos y el resultado de su integración para lograr funciones cognitivas complejas ha sido un desafío y actualmente solo se entiende parcialmente [@sharpeningberdugovega2023].
+
+Hipocampo es fundamental para la cognición
+
+Adquisición de memorias explícitas -- amnesia anterógrada (Penfield and Milner, 1958)
+
+Memoria episódica -- eventos pasados de nuestra vida
+
+Amnesia anterógrada (formar nuevas memorias)
+
+two thirds of his hippocampi, parahippocampal cortices, entorhinal cortices, piriform cortices, and amygdalae in an attempt to cure his epilepsy.
+
+working memory and procedural memory were intact
+
+complete tasks that require recall from short-term memory and procedural memory but not long-term episodic memory
+
+hree-digit number for as long as 15 min by continuous rehearsal, organizing the digits according to an elaborate mnemonic scheme. Yet when his attention was diverted to a new topic, he forgot the whole event.
+
+providing a spatial and temporal framework for relating experiences, creating a 'cognitive map' of the organism's experienced world (Lisman, 2017). internal representation of the layout of an environment, capturing what entities exist in the environment, where these entities are located relative to each other, and how these entities interact over the course of an event.
+
+Oshea - Frontiers
+
+Garthe 2009 -- plosOne
+
+Anacker -- nature reviews
+
+La **neurogénesis hipocampal adulta** (NHA) es un fenómeno que desafía la antigua creencia que el cerebro adulto es incapaz de generar nuevas neuronas a lo largo de la vida. La {{< glossary NHA add_to_table=true >}} implica la proliferación de células progenitoras neurales, su diferenciación en neuronas, y su integración eventual en circuitos neuronales. Este fenómeno no solo es crucial para la plasticidad cerebral y la formación de recuerdos, sino que también se ha vinculado con la regulación del estado de ánimo y la respuesta al estrés [@anacker2017].
+
+Altman's pioneering studies gave the first evidence on the presence of undifferentiated cells in the granular cell layer of the dentate gyrus (DG) in the hippocampus of adult rats. The 3H-thymidine tagged cells were numerous not only in neonates and infant rats DG, but in adult rats as well (http://dx.doi.org/10.1002/cne.901240303 ; http://dx.doi.org/10.1038/207953a0). Eriksson \[http://dx.doi.org/10.1038/3305\], using immunohistochemical techniques postmortem, was the first to demonstrate the generation of new neurons from dividing progenitor cells in the DG of the hippocampus in human brains.
+
+
+En roedores la neurogénesis adulta está bien descrita en dos zonas: {{< glossary "zona subventricular" add_to_table=true >}} y {{< glossary "zona subgranular" add_to_table=true >}} en el {{< glossary "giro dentado" add_to_table=true >}}. En la zona subventricular, las células madre neurales se diferencian en distintos tipos de neuronas olfativas. En el giro dentado, las células madre neurales producen neuronas glutamatérgicas que se integran en la capa granular y proyectan sus axones hacia la región de CA3 del hipocampo [@denoth-lippuner2021].
+
+![Neurogénesis Hipocampal Adulta en roedores.](figuras/nha.png){fig-align="center"}
+
+Sin embargo, la existencia de la neurogénesis hipocampal en adultos humanos ha sido un tema controvertido en los últimos años. Por un lado, algunos estudios, como el de @sorrells2018, no han encontrado evidencia de neurogénesis en adultos. Por otro lado, investigaciones como la de @boldrini2018 han llegado a la conclusión opuesta. Estas discrepancias se deben en gran medida a las diferencias en las metodologías utilizadas para detectar la neurogénesis y a las diversas interpretaciones de los resultados. Es probable que este debate continúe en los próximos años hasta que se desarrollen metodologías más precisas y confiables. Además, la creciente evidencia de diferencias en los procesos de neuroplasticidad entre distintos mamíferos sugiere que debemos ser cautelosos al extrapolar las conclusiones de estudios que analicen la NHA en roedores (que abarcan aspectos conductuales, celulares, genéticos, etc.) a implicaciones en humanos, según señalan @larosa2018.
+
+Ver
+
+-   [@bartkowska2022]
+
+-   [@miller2019]
+
+#### Células Madre Neurales
+
+Las células madre neurales (NSCs) generan nuevas neuronas a lo largo de la vida en el cerebro de los mamíferos. Las neuronas nacidas en la adultez moldean la función cerebra. La supervivencia y maduración de células nacidas en la adultez es un factor importante a considerar en las funciones cognitivas [@denoth-lippuner2021].
+
+Estas neuronas nacidas en la adultez se vuelven funcionalmente activas y se considera que contribuyen al aprendizaje y la memoria, especialmente durante su fase de maduración, cuando presentan una mayor plasticidad [@gonçalves2016].
+
+#### NHA, depresión y flexibilidad cognitiva
+
+El estudio de la flexibilidad cognitiva tiende a enfocarse a la corteza prefrontal, aún cuando existe evidencia que otras estructuras, como el hipocampo, están involucradas. Sumado a esto, procesos del hipocampo altamente sensibles al estrés (como la neurogénesis hipocampal) también regulan aspectos relacionados a la depresión y a la flexibilidad cognitiva. Sin embargo, la relación entre estos conceptos --- estrés-depresión-neurogénesis-flexibilidad cognitiva --- apenas se comienza a estudiar.
+
+La flexibilidad cognitiva es una parte importante de la \[\[función ejecutiva\]\], un conjunto de habilidades cognitivas que nos permiten planificar, organizar, tomar decisiones, mantener la atención, y regular el comportamiento. Algunos elementos clave de la flexibilidad cognitiva incluyen:
+
+
+•	\*\*\[\[Adaptabilidad\*\*\]\]: La capacidad de cambiar de estrategia o enfoque en respuesta a nueva información o cambios en el entorno.
+
+•	Tolerancia a la ambigüedad: La capacidad de manejar la incertidumbre o la ambigüedad sin experimentar un estrés excesivo.
+
+•	\[\[Multitarea\]\]: La habilidad de manejar y procesar varias tareas o informaciones a la vez.
+
+•	\[\[Cambio de perspectiva\]\]: La capacidad de ver las cosas desde diferentes ángulos o puntos de vista.
+
+•	\[\[Pensamiento divergente\]\] La capacidad de generar una variedad de ideas o soluciones aun problema.
+
+
+Los mecanismos exactos a través de los cuales la NHA facilita la flexibilidad cognitiva aún no se comprenden completamente., se sugiere que las terminales sinápticas de las nuevas neuronas compiten (thorny excrescences) con neuronas viejas, que pueden representar engramas viejos, hasta desplazar estructuralmente a la conexión vieja,
+
+Facilita el reaprendizaje al inducir una degradación de engramas previos mediante la interferencia sináptica, mientras que la ausencia de nuevas neuronas impide este reaprendizaje al no eliminar los engramas viejos, lo que genera un conflicto entre engramas antiguos y nuevos (Akers et al., 2014).
+
+las neuronas inmaduras pueden reclutar interneuronas que inhiben a las neuronas maduras del giro dentado, mientras que una baja neurogénesis mantiene una alta excitabilidad en esta región. Esta elevada excitabilidad, asociada a una baja NHA, podría resultar en una mayor activación de engramas (tanto viejos como nuevos) manifestándose como una disminución en la flexibilidad cognitiva (Anacker & Hen, 2017).
+
+En los modelos de roedores, la {{< glossary NHA add_to_table=true >}} parece jugar un papel crucial en los trastornos depresivos y en la regulación de la flexibilidad cognitiva. Un estudio clave que vincula la {{< glossary NHA add_to_table=true >}} con la depresión fue realizado por @hill2015. En este estudio, se incrementó la {{< glossary NHA add_to_table=true >}} en ratones transgénicos para examinar su impacto en comportamientos de tipo depresivos y ansiosos. Esta investigación encontró que el protocolo de estrés inducía comportamientos ansiosos y depresivos, así como alteraciones en la neurogénesis. Además, descubrieron que el aumento de la {{< glossary NHA add_to_table=true >}} era suficiente para disminuir estos síntomas depresivos y ansiosos, independientemente de cualquier regulación del eje hipotálamo-pituitario-adrenal (HPA), subrayando así el efecto significativo de la neurogénesis en las emociones.
+
+Asimismo, se ha demostrado que tanto el ejercicio físico como los fármacos antidepresivos promueven la {{< glossary NHA add_to_table=true >}} y la reducción de síntomas depresivos y ansiosos, tanto en modelos animales como en estudios clínicos [@anacker2017]. Adicionalmente, investigaciones en modelos murinos han establecido una conexión entre la {{< glossary NHA add_to_table=true >}} y la flexibilidad cognitiva.
+
+Ver
+
+-   [@deng2010]
+
+-   [@anacker2017a]
+
+-   [@toni2011]
+
+##### Laberinto acuático de Morris
+
+La relación entre neurogénesis y flexibilidad cognitiva se puede estudiar mediante el uso del laberinto acuático de Morris y un protocolo de aprendizaje reversa. El laberinto acuático de Morris, junto con la prueba de condicionamiento contextual al miedo, es una de las herramientas más empleadas para evaluar la memoria y el aprendizaje episódico dependientes del hipocampo [@hernández-mercado2022].
+
+El laberinto acuático de Morris representa el estándar de facto para probar la función del hipocampo en roedores de laboratorio. Sin embargo, en el campo de la neurogénesis hipocampal adulta, el uso de este paradigma para evaluar la relevancia funcional de las nuevas neuronas ha dado resultados sorprendentemente inconsistentes [@garthe2013]. Existe una inconsistencia en los resultados debido a la diversidad en los protocolos, configuraciones experimentales y análisis estadísticos. Muchos autores han expresado sus preocupaciones sobre cómo los parámetros clásicos de medición en el laberinto pueden no ser adecuados para identificar los cambios funcionales específicos generados por la modulación de la neurogénesis hipocampal adulta. En este sentido, existe una necesidad de parámetros más específicos y sensibles que reflejen la funcionalidad única del hipocampo.
+
+En este laberinto, la flexibilidad cognitiva se estudia a través de un "aprendizaje reversa", donde se evalúa la capacidad de reaprendizaje cuando la plataforma de escape se traslada a una nueva posición. Las pruebas de aprendizaje reversa son útiles para evaluar la flexibilidad cognitiva en roedores, primates no humanos y humanos (Uddin, 2021). En 2009, un estudio demostró una relación entre la función de la NHA y el desempeño en el aprendizaje reversa en el laberinto acuático de Morris (Garthe et al., 2009). Desde entonces, más investigaciones han llegado a conclusiones similares (Hernández-Mercado & Zepeda, 2022).
+
+Ver
+
+-   [@waterkapadia2016]
+
+-   [@garthe2013a]
+
+###### Shotrcum de MWM
+
+In the Morris water maze task, the newborn neurons improved only the hippocampus-dependent aspects of the task performance (Dupret et al., 2008) and improved the flexible use of advanced learning strategies (Garthe et al., 2016) en @kempermann2022
+
+Si bien, el {{< glossary MWM add_to_table=true >}} es la prueba más utilizada para evaluar la función hipocampal, la forma en que se analizan las conductas y datos no siempre evalúan esta relación.
+
+Por ejemplo, @maei2009 reportan que la mayoría de los artículos que utilizan el {{< glossary MWM add_to_table=true >}} evalúan las pruebas con métricas no óptimas para evaluar el aprendizaje espacial. La principal razón de estudiar métricas menos sensibles (tiempo en cuadrante, conteo de cruces a localización de plataforma) sobre otras más sensibles al aprendizaje espacial (entropía, distancia media) parece ser solo por simplicidad y facilidad, más que por otra cuestión.
+
+La importancia recalca en que utilizar mejores métricas y analisis destacan la importancia de las nuevas neuronas.
+
+Por ejemplo, en un estudio, @garthe2009 suprimieron la neurogénesis adulta con temozolomida ({{< glossary TMZ add_to_table=true >}}) en ratones y evaluaron su rendimiento en una tarea del laberinto acuático de Morris, observando un déficit de aprendizaje altamente específico. Aunque la supresión no afectó la potenciación a largo plazo ({{< glossary LTP add_to_table=true >}}) general, si redujo la contribución de las nuevas neuronas a la plasticidad. Los ratones tratados mostraron limitaciones en adoptar estrategias de búsqueda espacialmente precisas, destacando el papel crucial de las nuevas neuronas en la flexibilidad y precisión del aprendizaje espacial. Estos hallazgos subrayan la importancia de las células granulares adultas en la generación de mapas métricos del entorno y vinculan directamente la plasticidad celular del hipocampo con la funcionalidad cognitiva. Estas estrategias espaciales no son comunmente analizadas en los entrenamientos del {{< glossary MWM add_to_table=true >}}. Tipicamente, se evalúa la latencia (tiempo que tarda en llegar a la plataforma), la cual solo es una métrica de aprendizaje en general (y puede depender de otras áreas), pero no espacial especificamente.
+
+Sumado a esto, también existen críticas a los análisis estadísticos clásicamente utilizados.
+
+Como recalca [@young2009] y [@young2021], los entrenamientos del MWM suelen ser evaluados con el análisis de varianza de medidas repetidas tradicional. Sin embargo, otros modelados que incluyan regresiones con efectos mixtos son más efectivos en detectar tendencias reales de aprendizaje y ofrecen mejores ajustes de los datos, superando las limitaciones del método tradicional que incluyen dependencia en pruebas post hoc y falta de capacidad para capturar tendencias no lineales. En comparación con estos métodos, los ANOVA tradicionales producen más {{< glossary "error de tipo I" add_to_table=true >}} y {{< glossary "error de tipo I" add_to_table=true >}}.
+
+(camilli1987; levy1978; vasey1987).
+
+La interpretación de los datos obtenidos en el MWM es crucial para el entendimiento de los impactos cognitivos que tiene el estrés crónico.
+
+#### Bases fisiológicas del reapredizaje
+
+Los mecanismos exactos a través de los cuales la NHA facilita la flexibilidad cognitiva aún no se comprenden completamente. A nivel de engramas, se sugiere que las nuevas neuronas facilitan el reaprendizaje al inducir una degradación de engramas previos mediante la interferencia sináptica, mientras que la ausencia de nuevas neuronas impide este reaprendizaje al no eliminar los engramas viejos, lo que genera un conflicto entre engramas antiguos y nuevos (Akers et al., 2014).
+
+Fisiológicamente, el control inhibitorio ejercido por las nuevas neuronas podría ser clave en el reaprendizaje. Las neuronas inmaduras pueden reclutar interneuronas que inhiben a las neuronas maduras del giro dentado, mientras que una baja neurogénesis mantiene una alta excitabilidad en esta región. Esta elevada excitabilidad, asociada a una baja NHA, podría resultar en una mayor activación de engramas (tanto viejos como nuevos) manifestándose como una disminución en la flexibilidad cognitiva (Anacker & Hen, 2017).
+
+En humanos con síntomas depresivos y ansiosos, la falta de flexibilidad cognitiva se manifiesta en la presencia de pensamientos negativos recurrentes y persistentes (engramas viejos), así como en la ansiedad generalizada en diferentes contextos (Uddin, 2021). Por otro lado, la flexibilidad cognitiva está asociada con una mejora de estos síntomas, facilitando el enfrentamiento de problemas desde diferentes enfoques o permitiendo el reaprendizaje de experiencias negativas desde una perspectiva de autocompasión (engramas nuevos) (Güler, 2022). Comprender cómo ciertos tratamientos, como los fármacos antidepresivos, pueden mejorar la flexibilidad cognitiva y la neurogénesis hipocampal es fundamental no solo para aliviar los síntomas emocionales de la depresión, sino también para restaurar y mejorar la función cognitiva.
+
+### Fármacos Antidepresivos
+
+Los tratamientos farmacológicos contra la depresión que se utilizan en el presente presentan varias problemáticas:
+
+<<<<<<< HEAD
+• Resistencia al tratamiento: Una proporción significativa de personas con depresión no responden adecuadamente a los antidepresivos disponibles en la actualidad. Se estima que alrededor del 30-60% de los individuos con depresión sufren de lo que se conoce como depresión resistente al tratamiento, donde dos o más antidepresivos han fallado en aliviar adecuadamente los síntomas.
+
+• Efectos secundarios: Los medicamentos antidepresivos actuales pueden tener una variedad de efectos secundarios, algunos de los cuales pueden ser graves o intolerables para ciertos individuos. Estos pueden incluir problemas sexuales, aumento de peso, insomnio, náuseas, sequedad de boca, y más. Un medicamento que tenga menos o más leves efectos secundarios sería valioso.
+
+• Inicio de la acción: Muchos antidepresivos actuales tardan semanas en comenzar a tener un efecto. Esto puede ser difícil para las personas que sufren de depresión, ya que necesitan alivio inmediato de sus síntomas. Los medicamentos que actúan más rápidamente podrían proporcionar un alivio más rápido.
+
+• Diversidad de mecanismos de acción: Los medicamentos antidepresivos existentes se dirigen principalmente a los neurotransmisores serotonina, norepinefrina y, en menor medida, dopamina. Sin embargo, está claro que la depresión implica una amplia gama de sistemas y procesos biológicos, y hay otros objetivos potenciales para los medicamentos antidepresivos que aún no se han explorado plenamente.
+
+•	Resistencia al tratamiento: Una proporción significativa de personas con depresión no responden adecuadamente a los antidepresivos disponibles en la actualidad. Se estima que alrededor del 30-60% de los individuos con depresión sufren de lo que se conoce como depresión resistente al tratamiento, donde dos o más antidepresivos han fallado en aliviar adecuadamente los síntomas.
+
+•	Efectos secundarios: Los medicamentos antidepresivos actuales pueden tener una variedad de efectos secundarios, algunos de los cuales pueden ser graves o intolerables para ciertos individuos. Estos pueden incluir problemas sexuales, aumento de peso, insomnio, náuseas, sequedad de boca, y más. Un medicamento que tenga menos o más leves efectos secundarios sería valioso.
+
+•	Inicio de la acción: Muchos antidepresivos actuales tardan semanas en comenzar a tener un efecto. Esto puede ser difícil para las personas que sufren de depresión, ya que necesitan alivio inmediato de sus síntomas. Los medicamentos que actúan más rápidamente podrían proporcionar un alivio más rápido.
+
+•	Diversidad de mecanismos de acción: Los medicamentos antidepresivos existentes se dirigen principalmente a los neurotransmisores serotonina, norepinefrina y, en menor medida, dopamina. Sin embargo, está claro que la depresión implica una amplia gama de sistemas y procesos biológicos, y hay otros objetivos potenciales para los medicamentos antidepresivos que aún no se han explorado plenamente.
+
+
+Parece que la falta de efectividad proviene del desconocimiento del mecanismo de acción de estos fármacos.
+
+Como se mencionó previamente, varias terapias que en modelos murinos incrementan la neurogénesis (ejercicio aeróbico, fármacos antidepresivos, modelos transgénicos) parecen también reducir los síntomas depresivos (Anacker & Hen, 2017). Varios fármacos antidepresivos (clásicos y no clásicos) podrían mitigar síntomas depresivos promoviendo la neurogénesis hipocampal, aunque podrían existir otros mecanismos de acción adicionales que contribuyan a esta acción (como efectos anti inflamatorios) (Hovorka et al., 2022).
+
+#### Historia
+
+Los primeros antidepresivos desarrollados fueron los inhibidores de la monoamino oxidasa, que mejoraban el ánimo a costa de efectos secundarios importantes, como toxicidad hepática y crisis hipertensivas. Posteriormente, se desarrollaron los antidepresivos tricíclicos (ATCs) como la imipramina y la clomipramina, que actúan principalmente bloqueando la recaptación de serotonina y noradrenalina. Debido a su falta de especificidad y efectos secundarios, los ATCs se prescriben actualmente para casos muy particulares de depresión. A finales de los años 80, surgieron los antidepresivos de segunda generación, incluyendo los inhibidores selectivos de la recaptación de serotonina (ISRS), los inhibidores de la recaptación de serotonina y noradrenalina (IRSN), antidepresivos serotonérgicos específicos y otros fármacos relacionados. Los ISRS, como el escitalopram, la fluoxetina y la sertralina, son los medicamentos más recetados para los trastornos de depresión y ansiedad, siendo la primera línea farmacológica debido a su tolerabilidad y eficacia.
+
+#### Uso actual y perspectivas
+
+Actualmente, la depresión es tratada farmacológicamente utilizando medicamentos conocidos como "Inhibidores Selectivos de la Recaptura de Serotonina" (ISRS). Su mecanismo de acción inmediato es a través de la regularización del sistema serotoninérgico mediante el incremento de la concentración de serotonina en el espacio sináptico. Sin embargo, su mecanismo de acción antidepresiva parece involucrar otros mecanismos, como la neurogénesis hipocampal adulta (Haroon et al., 2017).
+
+Además, los ISRS se utilizan en el tratamiento del trastorno de pánico y el trastorno obsesivo-compulsivo. Sin embargo, tienen la desventaja de generar efectos terapéuticos semanas o meses posteriores al inicio de su tratamiento, tener una efectividad comprometida, y un 70% de los pacientes responden de manera incompleta a los ISRS, siendo el resto difícil de tratar (pacientes con depresión resistente a los fármacos) (Lin et al., 2023).
+
+Como se ha mencionado antes, estos fármacos podrían tener efectos sobre la plasticidad del hipocampo que faciliten la recuperación de síntomas depresivos y promuevan la flexibilidad cognitiva. Por ejemplo, el tratamiento crónico con fluoxetina (ISRS y agonista parcial de 5-HT2B) (Lin et al., 2023) promueve la neurogénesis hipocampal y reduce las conductas depresivas en modelos murinos de estrés (Segi-Nishida, 2017). Sumado a estos efectos, se ha observado que el tratamiento crónico con fluoxetina promueve la flexibilidad cognitiva en ratones en una prueba conductual que involucra discriminación de patrones espaciales (hipocampo), búsqueda de recompensa y evitación de castigos (Marwari & Dawe, 2018).
+
+#### Mecanismo de acción
+
+Por último, hay que destacar que utilizando técnicas de inmunohistoquímica y electrofisiología en ratones (Kobayashi et al., 2010) y primates (Callithrix jacchus) (Ohira et al., 2019), se han descrito otros procesos de plasticidad hipocampal inducidos por antidepresivos que podrían jugar un papel sobre la flexibilidad cognitiva. Estos grupos han descrito que la fluoxetina puede revertir a neuronas granulares maduras del hipocampo a un fenotipo inmaduro, un fenómeno denominado "demaduración". Al mismo tiempo, este fármaco parece reducir el número de neuronas con redes perineuronales en el giro dentado, un fenómeno que promueve la plasticidad en el cerebro adulto.
+
+En conjunto, estos resultados podrían significar que existen otros mecanismos independientes de la NHA que reinstauren un estado de inmadurez al giro dentado que representa un sustrato importante en la cognición y regulación del comportamiento (Umemori et al., 2018).
+
+#### Fluoxetina
+
+Es e; antidepresivo más recetado entre los adolescentes [@kryst2022].
+
+#### Más allá de la plasticidad y depresión
+
+Es importante destacar que las nuevas neuronas, o neuronas inmaduras, no regulan directamente el estado de ánimo, sino que al incrementar la plasticidad neuronal, como ocurre al facilitar la neurogénesis con ISRS, se crea una ventana temporal que permite la oportunidad para el cambio. Sin embargo, este cambio inducido por la plasticidad puede ser tanto positivo como negativo.
+
+Un estudio realizado por Alboni et al. (Alboni et al., 2017) comparó los efectos de la fluoxetina en ratones sometidos a estrés crónico en diferentes ambientes. Se observó que en un ambiente enriquecido, la fluoxetina mejoraba las conductas depresivas y ansiosas de los ratones. Por el contrario, en un ambiente no enriquecido, los ratones tratados con fluoxetina mostraban un empeoramiento en las pruebas de estrés y ansiedad en comparación con los ratones control. Esto sugiere que la plasticidad inducida por el antidepresivo hace al individuo más susceptible a la influencia del ambiente, sea este positivo o negativo. En línea con esta idea, otros autores (Moncrieff et al., 2022) hacen énfasis en no ver a los fármacos antidepresivos como sustancias que tratan un desbalance químico, sino como sustancias que facilitan procesos de plasticidad que pueden ayudar con un procesamiento adaptativo de la información con los estímulos apropiados (Branchi, 2022).
+
+Esta observación tiene importantes implicaciones clínicas en el uso de antidepresivos. Podría explicar por qué la respuesta a los antidepresivos está relacionada con factores como el empleo, mayor ingreso económico o un nivel educativo superior (Rush et al., 2004) (Chiarotti et al., 2017). De manera similar, un estudio liderado por Jacobsen y colaboradores (Jacobsen et al., 2023), encontró que una menor flexibilidad cognitiva correlacionaba con mejoras en los síntomas depresivos y de ansiedad solo en el grupo con menor nivel educativo, mientras que en el grupo con mayor nivel educativo ocurría lo contrario. Dado que puede ser poco realista cambiar completamente el ambiente de muchos pacientes con depresión, es viable enfocarse en complementar el tratamiento farmacológico con terapias que guíen la plasticidad inducida por estos fármacos hacia resultados positivos. Un ejemplo de esto es la terapia cognitivo-conductual, la cual se enfoca en guiar de manera adaptativa los pensamientos y conductas de los pacientes (Alboni et al., 2017).
+
+## Pregunta de Investigación
+
+¿Podrá la ketamina, al igual que la fluoxetina, revertir déficits de flexibilidad cognitiva asociados al daño (disminución NHA) hipocampal inducido por un modelo de estrés crónico?
+
+## Hipótesis
+
+Una dosis única de ketamina, similar al tratamiento crónico con fluoxetina, mejorará la flexibilidad cognitiva en una prueba de aprendizaje espacial, mitigando así los efectos del estrés crónico revirtiendo este déficit cognitivo (aprendizaje reversa) en ratones.
+
+## Objetivos y estrategia metodológica
+
+Debido a las limitaciones de los enfoques actuales para analizar la relación entre flexibilidad cognitiva, aprendizaje espacial y estrés crónico, el enfoque de este estudio es demostrar la apliación y beneficios de los analisis novedosos en el contexto de estrés crónico y la función cognitiva en ratones utilizando fluoxetina.
+
+Al emplear metodologías más robustas, esta investigación no solo busca comparar los paradigmas tradicionales con los nuevos, sino también contribuir a un mejor entendimiento de los efectos que tiene el estrés crónico y sus implicaciones para modelos teóricos e intervenciones terapéuticas.
+
+Todos los ratones a utilizar en este experimento se obtendrán a partir de la cruza de ratones macho de la cepa C57BL/6 y hembras de la cepa BALB/c. Estos pies de cría se obtendrán del bioterio de la Facultad de Ciencias, UNAM, donde se tiene el convenio con la Comisión de tica Académica y Responsabilidad Científica (CEARC) con Folio:PI_2020_12_03
+
+### Objetivo General
+
+Investigar y comparar los efectos de la ketamina y la fluoxetina en el aprendizaje espacial y la flexibilidad cognitiva en ratones sometidos a un modelo de estrés crónico.
+
+Inducir estados de ansiedad y depresión en ratones para evaluar su relación con déficits cognitivos.
+
+Para ello, los ratones serán sometidos a un protocolo de estrés crónico moderado impredecible (conocido como CUMS en la literatura) durante 21 días para generar un estado depresivo. Los estresores que se utilizarán en el protocolo de estrés crónico moderado impredecible son los siguientes:
+
+• Privación de agua y comida (8 horas)
+
+• Interrupción ciclo luz/oscuridad.
+
+• Cama mojada (200ml en 100g de aserrín por 19hrs)
+
+• Cajas inclinadas a 45 grados por 24 horas
+
+• Levantamiento por la cola (5 minutos)
+
+• Asilamiento en cajas individuales (2 horas)
+
+Este protocolo está basado en el trabajo de Monteiro (Monteiro et al., 2015) y representa una forma confiable de inducir estados de tipo depresivos y ansiosos en ratones C57BL/6. De acuerdo a la revisión de Svitlana Antoniuk (Antoniuk et al., 2019), este tipo de estrés crónico reduce la neurogénesis hipocampal en roedores.
+
+Posteriormente se llevará a cabo un protocolo del laberinto espacial de Morris para evaluar el desempeño cognitivo. Este protocolo consiste en hacer nadar durante 60 segundos a los ratones en un recipiente con agua a 27℃. En estos 60 segundos, los ratones deben de encontrar una plataforma oculta guiándose únicamente por pistas visuales que se encuentran en el cuarto de prueba. Esta prueba se realiza 4 veces seguidas por cada ratón durante 5 días. Al termino de estas pruebas de entrenamiento, se realizan 2 pruebas de retención de memoria, donde se deja nadar al ratón durante 60 segundos en el mismo recipiente, pero ahora sin la plataforma oculta. Por último, se realiza una última prueba donde la plataforma se cambia de lugar. Esta última prueba, conocida como aprendizaje reversa, se utilizar para dilucidar la flexibilidad cognitiva en los ratones (ver qué tan efectivamente pueden reaprender la prueba) (Garthe y Kempermann, 2013).
+
+### Objetivo 2
+
+Inducir estados de ansiedad y depression en ratones para evaluar su relación con deficits cognitivos
+
+CUMS (Monteiro et al., 2015) y Laberinto acuático de Morris
+
+*Investigar los cambios en el giro dentado en los grupos de ratones sometidos al estrés crónico*.
+
+Para obtener y analizar el tejido neuronal, se sacrificarán los ratones por perfusión. Los cerebros, fijados en paraformaldehdo, son rebanados en congelación en un criostato y son almacenados en anticongelante en un congelador hasta su uso para análisis inmunohistoquímico.
+
+Una vez que el cerebro del ratón está incrustado en paraformaldehido se corta en secciones muy finas con un microtomo y se coloca en un portaobjetos las secciones correspondientes al hipocampo. Para remover el paraformaldehido y rehidratar el tejido, se utiliza xileno, seguido de una serie de lavados de alcohol de concentraciones decrecientes para rehidratar el tejido. Para realizar la Inmunotinción, se añade el anticuerpo primario, que está diseñado para unirse a la protenía de interés. En nuestro caso queremos observar la expresión de doblecortina (Anticuerpo a doblecortina policlonal - HPA036121-25UL sigmaaldrich), la cual es una proteína asociada a microtúbulos que solo se expresa en células neuronales precursoras o inmaduras. Finalmente, se examina la muestra bajo un microscopio (Zeiss primostar 3) y se analiza la intensidad y localización de la tinción.
+
+### Objetivo 3
+
+Investigar los mecanismos subyacentes por los cuales la Ketamina y Fluoxetina ejercen sus efectos sobre el aprendizaje especial y la flexibilidad cognitiva en el contexto del estrés crónico
+
+Inmunohistoquímica en Giro Dentado
+
+Evaluar las modificaciones morfológicas en el hipocampo asociadas al estrés y a la recuperación mediante el uso de fluoxetina o ketamina.
+
+Se administrará un antagonista de NMDA (Ketamina 15mg/kg) o un inhibidor de la recaptura de serotonina (Fluoxetina 15mg/kg) para observar sus efectos sobre la flexibilidad cognitiva. La ketamina se administrará una sola vez vía intraperitoneal. Por otro lado, la fluoxetina se administrará diario durante 3 semanas vía subcutánea.
+
+Al terminar las pruebas conductuales de flexibilidad cognitiva, se realizará el protocolo de inmunohistoquímica para ver los cambios en giro dentado asociados al uso de fármacos. Por último, se hará una correlación de Pearson del número de neuronas inmaduras (positivas a doblecortina) con la prueba de aprendizaje espacial. Esto nos dará una idea de la relación entre flexibilidad cognitiva y neurogénesis.
+
+## Antecedentes
+
+### Antidepresivos y NHA
+
+Un estudio investigó si los ISRS y los antidepresivos tricíclicos (ATC) incrementaban los progenitores neurales (NPCs) y las células en división en el giro dentado (DG) humano en individuos con trastorno depresivo mayor (MDD). Se utilizaron hipocampos completos congelados de sujetos no tratados con MDD (N=5), tratados con antidepresivos (MDDT, N=7) y controles (C, N=7), los cuales fueron fijados, seccionados e inmunoteñidos para marcadores de NPCs y células en división (nestina y Ki-67, respectivamente), NeuN y GFAP, en etiquetado simple y doble. Los números de NPCs y células en división en el DG se estimaron mediante estereología. Se obtuvieron datos clínicos mediante autopsia psicológica y exámenes toxicológicos y neuropatológicos en todos los sujetos. Los NPCs disminuyeron con la edad (p=0.034) y las mujeres tenían más NPCs que los hombres (p=0.023). Corrigiendo por edad y sexo, los MDDT tratados con ISRS tenían más NPCs que los MDD no tratados. Parece que los antidepresivos aumentan el número de NPC en el GD anterior de los humanos, aunque queda la duda si este fenómeno es crítico o necesario para el efecto antidepresivo [@boldrini2009].
+
+-   [@malberg2000]
+
+### Antidepresivos y Flexibilidad Cognitiva
+
+El estudio investigó los efectos de los enantiómeros (R) y (S) de la fluoxetina en paradigmas de comportamiento cognitivo y proliferación celular en el hipocampo de ratones hembra C57BL/6J. En una tarea de secuenciación conductual, los ratones tratados con (R)-fluoxetina mostraron una rápida adquisición de secuenciación conductual y flexibilidad cognitiva en etapas de aprendizaje reversa, en comparación con (S)-fluoxetina. Además, (R)-fluoxetina incrementó la proliferación celular en el hipocampo, especialmente en la lámina suprapiramidal del giro dentado. (R)-fluoxetina también mostró efectos superiores en pruebas de laberinto elevado más cruz, natación forzada y suspensión de cola. Estos resultados sugieren que (R)-fluoxetina, con una vida media más corta que (S)-fluoxetina, tiene efectos antidepresivos superiores y mejora de manera más consistente el aprendizaje y la memoria espacial [@marwari2018].
+
+### NHA y Cognición
+
+Aprendizaje, memoria y olvido (Akers y Martínez-Canabal, 2014) y Epp
+
+-   Akers Science - increasing neurogenesis after the formation of a memory was sufficient to induce forgetting in adult mice
+
+Reconocer contextos aversivos (Martínez-Canabal et al., 2019)
+
+-   Martínez 2019 - Scientific Reports -- aumentar NHA previene recuperación de conductas de miedo asociadas a un contexto.
+
+    We found that enhancing neurogenesis after, but not before, extinction prevented fear recovery. In contrast, neurogenesis ablation after, but not before, extinction promoted fear recovery. Using the neuronal activity marker c-Fos, we identified brain regions recruited in these opposing neurogenesis-mediated changes during fear recovery. together, our findings indicate that neurogenesis manipulation after extinction learning modifies fear recovery by recruiting brain network activity that mediates the expression of preexisting contextual fear and extinction memories.
+
+Flexibilidad cognitiva (Anacker y Hen, 2017) y Aprendizaje espacial (Garthe, 2009)
+
+### Hipocampo es sensible al estrés crónico y depresión
+
+Postmortem -- volumen de hipocampo correlaciona con persistencia de trastorno depresivo (Cobb et al., 2013)
+
+Resonancia magnética de alto campo: pacientes con trastorno depresivo NO medicadas tienen un menor volumen de GD, CA1 y CA3 (Huang et al., 2013).
+
+En este estudio, se incrementó la NHA en ratones transgénicos para examinar su impacto en comportamientos de tipo depresivos y ansiosos. Los investigadores encontraron que el protocolo de estrés inducía comportamientos ansiosos y depresivos, así como alteraciones en la neurogénesis. Además, descubrieron que el aumento de la NHA era suficiente para disminuir estos síntomas depresivos y ansiosos, independientemente de cualquier regulación del eje hipotálamo-pituitario-adrenal (HPA), subrayando así el efecto significativo de la neurogénesis en las emociones. Asimismo, se ha demostrado que tanto el ejercicio físico como los fármacos antidepresivos promueven la NHA y la reducción de síntomas depresivos y ansiosos, tanto en modelos animales como en estudios clínicos (Anacker & Hen, 2017).
+
+Bax (pro apoptótico) se elimina de manera inducible (TAM) de las células madre neurales y progiene de ratones adultos
+
+aumenta NHA, pero no afecta conductas depresivas/ansiosas \[OF, EPM, TST\]
+
+#### NHA está directamente involucrada con las conductas de tipo depresivas-ansiosas
+
+[@hill2015a]
+
+Estrés crónico afecta NHA e induce conductas de tipo ansiosas-depresivas.
+
+Antidepresivos aumentan NHA, pero tienen otros efectos
+
+Vincular directamente NHA con conductas de tipo ansioso-depresivas.
+
+En este estudio, se incrementó la NHA en ratones transgénicos para examinar su impacto en comportamientos de tipo depresivos y ansiosos. Los investigadores encontraron que el protocolo de estrés inducía comportamientos ansiosos y depresivos, así como alteraciones en la neurogénesis. Además, descubrieron que el aumento de la NHA era suficiente para disminuir estos síntomas depresivos y ansiosos, independientemente de cualquier regulación del eje hipotálamo-pituitario-adrenal (HPA), subrayando así el efecto significativo de la neurogénesis en las emociones. Asimismo, se ha demostrado que tanto el ejercicio físico como los fármacos antidepresivos promueven la NHA y la reducción de síntomas depresivos y ansiosos, tanto en modelos animales como en estudios clínicos (Anacker & Hen, 2017).
+
+Bax (pro apoptótico) se elimina de manera inducible (TAM) de las células madre neurales y progiene de ratones adultos
+
+aumenta NHA, pero no afecta conductas depresivas/ansiosas \[OF, EPM, TST\]
+
+Aumentar NHA no afecta respuesta del eje HPA en respuesta al estrés crónico
+
+## Modelado
+
+El correcto modelamiento de factores de riesgo en la depresión puede mejorar la predicción de la progresión clínica a tratamientos en la depresión, haciendo posible identificar mejores terapias individuales o sujetos con mayor riesgo de prevalencia de trastorno depresivo mayor. Las inferencias estadísticas tradicionales (modelos lineales) son deficientes para identificar las interacciones conductuales complejas entre fenómenos como el estrés, depresión y flexibilidad cognitiva (Utilizing Random Effects Machine Learning Algorithms for Identifying Vulnerability to Depression).
+
+## Resumen
+
+-   Estrés crónico afecta NHA e induce conductas de tipo ansiosas-depresivas.
+
+-   Terapias Antidepresivas aumentan NHA
+
+-   ¿qué procesos cognitivos afecta el estrés crónico y cuál es su relación con la NHA?
+
+## Metodología
+
+![Diseño Experimental](figuras/diseno_experimental.png){fig-align="center"}
+
+### CUM
+
+Ver
+
+-   [@willner2017]
+
+-   [@strekalova2011]
+
+-   [@strekalova2011]
+
+-   [@markov2022]
+
+### Tratamiento con Fluoxetina
+
+Ver
+
+-   [@sawyer2011]
+
+-   [@turner2011]
+
+### Perfusión
+
+Para obtener y analizar el tejido neuronal, se sacrificarán los ratones por perfusión. Para esto, se inyectará a los ratones con pentobarbital sódico a una dosis anestésica total irreversible. Este fármaco se adquiere en farmacia veterinaria bajo receta y autorización del M.V.Z encargado del bioterio de la Facultad de Ciencias. Se utiliza la marca Pet's Pharma® N° de Registro: Q-7972-004, la cual se diluye 1:3 en solución salina estéril (0.9%) para obtener 1ml de solución por 100g de peso del animal, que corresponde a 210 mg/kg. La inyección se administra vía intraperitoneal. Tras 3 minutos, se observa si el animal ya no muestra locomoción, reflejo del párpado ante un soplo de aire y reflejo de movimiento corporal ante la presión mecánica sobre la cola. Solo hasta que ya no se observen dichos reflejos, se procede a abrir la caja torácica y perfundir con 50 ml de solución de sacarosa al 30% y 50 ml de paraformaldehído al 3.7%. Los fluidos sobrantes (mezcla de sangre con las soluciones) se almacenan y se rotulan como desechos tóxicos y se desechan de acuerdo con los procedimientos de la comisión de desechos peligrosos de la Facultad de Ciencias. Se colecta el cerebro de los animales y el resto de los tejidos se almacenan en una bolsa etiquetada como desechos biológicos para su apropiada disposición en el congelador del bioterio de la Facultad de Ciencias, anotando número de animales y fecha en la bitácora oficial. Todos los procedimientos de perfusión se llevan a cabo bajo la campana de extracción, utilizando guantes de nitrilo, bata, cofia y mascarilla con filtro para vapores orgánicos y aldehídos. Los cerebros, fijados en paraformaldehído, son rebanados en congelación en un criostato y son almacenados en anticongelante en un congelador hasta su uso para análisis posteriores.
+
+### Cálculo de N
+
+Se realizó un experimento piloto con las mismas condiciones y equipos que se utilizarán en el experimento final. Para el piloto, se utilizó una n=4 por grupo. Los resultados indican una diferencia de medias entre los grupos. Además, el piloto indica que los animales tratados con los fármacos aprenden tan bien las tareas como los animales controles. Esto es un signo de que los animales inyectados no están sufriendo de estrés y/o ansiedad con estos fármacos, ya que los estresores disminuyen la capacidad de aprendizaje en estas pruebas \[9\].
+
+El resultado de la prueba piloto indica lo siguiente para la medición de número de cruces en el objetivo reversa de la prueba de laberinto de Morris (un número mayor indica un mayor reaprendizaje en la tarea, es decir, mayor flexibilidad cognitiva): grupo control \[media de 0.75 y desviación estándar de ± 0.50\] y grupo ketamina \[media 1.50 y desviación estándar de ± 0.58\]. Con estos datos, se hicieron los siguientes cálculos para obtener una n adecuada por grupo para obtener un poder de 80%.
+
+oder 90%, el resultado sería de N = 10.94, por lo tanto, N = 11.
+
+Por este motivo, solicitamos realizar el experimento con N = 8 por grupo, y en caso de no obtener resultados significativos, pero sí una tendencia clara, poder incrementar la N a 11 como límite máximo.
+
+### Mantenimiento de Animales
+
+
+Los animales se mantienen de manera constante en cajas comunales de acrílico con rejilla de acero inoxidable, son mantenidos a temperatura ambiente controlada de 20°C controlada por termostato y un calentador ambiental eléctrico de aceite. La humedad ambiental se regula mediante un humidificador y se mantiene alrededor de 50%, con un ciclo de luz/oscuridad de 12:12. Los ratones se mantienen en una cama mezcla de viruta comercial para roedores con ocote molido de grano fino para ratones en una mezcla de 1:1, esto con el fin de darles una cama cómoda (viruta) pero con capacidad extra de absorción de agua y amoniaco (ocote). El alimento es ad libitum (LabDiet  - 5001). Los animales se cambian de cama y se lavan sus cajas dos veces por semana. Se mantienen en colonias de entre 2 y 5 animales. Adicionalmente se les coloca material de enriquecimiento y nidificación (como tubos de cartón y papel picado) dentro de sus cajas.
+
+## Resultados
+
+### Latencia de escape
+
+Este parámetro mide los segundos que tardan los ratones en llegar a la plataforma en los días de entrenamiento. Hay 4 entrenamientos en la plataforma original y 2 en la plataforma reversa. Evalúa un aprendizaje general de la prueba, aunque no toma en cuenta si este aprendizaje depende del hipocampo. La latencia de escape es una de las métricas más utilizadas para evaluar el aprendizaje en el MWM [@garthe2013].
+
+Un análisis estadístico de esta prueba debería considerar los siguientes supuestos [@young2021]:
+
+-   Considerar que los datos dentro de un mismo día para el mismo animal y los datos del mismo animal a través de los días están altamente correlacionados.
+
+-   Modelar el efecto piso para el rendimiento que crea una curvatura en la relación entre la latencia y los ensayos.
+
+-   Modelar la censura de datos que ocurre como consecuencia del valor límite (**`60 s`**). La censura subestima la media y la varianza (disminución artificial de las latencias).
+
+    El RM-ANOVA intenta superar el primero de estos problemas, aunque tiene limitaciones. Está restringido a predictores dentro de sujetos (días o ensayos) siendo categóricos. Como mostró Young en 2009 [@young2009], analizar las latencias de escape con ANOVA produce una tasa más alta de{{< glossary "error de tipo I" add_to_table=true >}} y {{< glossary "error de tipo I" add_to_table=true >}} en comparación con otros modelos de nivel múltiple lineales y no lineales.
+
+    @young2021 propusieron un modelo de *regresión censurada multinivel generalizada* de latencia. Utiliza una distribución con un mínimo de **`0`** y una cola superior larga (los datos de latencia tienen distribuciones sesgadas), como las distribuciones *gamma* y las distribuciones *Weibull*. Para predecir los datos censurados, utiliza un *marco bayesiano*.
+
+    El modelo de regresión bayesiana tiene los siguientes parámetros:
+
+    -   Variable Dependiente: Latencia
+
+    -   Variables Independientes: Interacción entre tiempo y tratamiento, y pendientes aleatorias para el tiempo dentro de los sujetos.
+
+    -   Distribución: Gamma con una función de enlace logarítmica.
+
+    -   Variable Dependiente y Censura: El modelo tiene en cuenta la censura en la variable de Latencia. La censura ocurre cuando el valor de una observación solo se conoce parcialmente; por ejemplo, en datos de tiempo hasta el evento, cuando el evento no ha ocurrido para algunos sujetos durante el período de estudio. Esta especificación del modelo sugiere que algunas observaciones de Latencia están censuradas a la derecha.
+
+    -   Predictores: El modelo incluye efectos fijos y efectos aleatorios. Los efectos fijos son una interacción entre el tiempo (como una variable numérica de día centrado) y el tratamiento (una variable categórica). Esto permite al modelo estimar cómo el efecto del tiempo sobre la Latencia cambia a través de diferentes tratamientos. Los efectos aleatorios están especificados por (tiempo\|sujetos), indicando que la pendiente del tiempo puede variar por sujetos. Esto capta la idea de que la relación entre Latencia y tiempo podría diferir entre diferentes sujetos.
+
+    ```{markdown}
+
+    As shown in \autoref{fig:latcensored}, the `saline+CUM` groups show a higher proportion of censored data.   
+
+    \begin{figure}[tp!]
+    \begin{fullwidth}
+    \includegraphics[scale=0.5]{figuras/latencias_violin.png}
+    \caption{Scape Latencies after Stress. A. Scatter Plot showing in red the censored data. B. Violin plot shows a higher density of values around the 60 seconds mark for the saline-CUM groups, highlighting the censored data in this groups.}
+    \label{fig:latcensored}
+    \end{fullwidth}
+    \end{figure}
+
+    As shown in \autoref{fig:latanova}, if we use a linear approach model, we could model this test with a RM-ANOVA as a linear relationship between day and latency. Although this is the traditional approach, not accounting for the censored data underestimates the initial and final performance and overestimates the middle performance (consequence of fitting a straight line to a curved data).
+
+    The repeated-measures ANOVA \autoref{fig:latanova} (formula: Latency ~ treatments * stage
+    + Error(id/stage)) suggests that:
+
+      - The main effect of stage is statistically significant and large (F(1, 251) = [89.66], p < 0.001, 95% CI [0.02, 1.00])
+
+      - The main effect of treatment is statistically significant and large (F(4,
+    251) = [3.309],p < 0.05 ;CI [0.57, 1.00])
+      - The interaction between treatments and stage is statistically significant
+    and large (F(4, 251) = [4.162],p < 0.01 ; 95% CI [0.07, 1.00])
+
+    Effect sizes were labelled following Field's (2013) recommendations.
+
+    \begin{figure}[tp!]
+    \begin{fullwidth}
+    \includegraphics[scale=0.5]{figuras/anova.png}
+    \caption{repeated-measures ANOVA.}
+    \label{fig:latanova}
+    \end{fullwidth}
+    \end{figure}
+
+    With this information, we can already conclude some insightful thoughts. For example, we have evidence that on the first day of the trial, the `saline + CUM` groups have the worst performance. However, on the second day, no effect is perceived. 
+
+    However, using a mixed effects models regression, we could get more information with our data, like: 
+
+    - *Day Slopes*: This would represent the learning rate for each group. If we would only use a linear regression (\autoref{fig:latanova}), we might get the impression that all groups have the same slope. However, this is a consequence of failing to capture the curvature of our data and floor effects as performance improves. 
+
+    - *Interactions*: significant `Treatments x Time` interaction can arise for any number of reasons including differences in values on the first day of testing (an intercept effect), identical initial performance but differences that emerge later in testing (a slope effect), or a difference in initial performance that increases or decreases later in testing (intercept and slope effects).
+
+
+    To compare this effects, we used 3 models:
+
+    - The previously mentioned Bayesian regression with Censored Data.
+
+    - Generalized Mixed Effects Model without Censored Data.
+
+    - Linear Mixed Effects Model without Censored Data. 
+
+    First, if we compare the Intercept and Slopes of this models, we can see how not accounting for the censored data underestimates the effects:
+
+
+    **Bayesian Model**:
+
+    \begin{center}
+    \begin{tabular}{||c c c||} 
+     \hline
+     Treatment & Intercept & Slope \\ [0.5ex] 
+     \hline\hline
+     Flx         & 30.63  & -1.59  \\ 
+     \hline
+     Flx-CUM     & 52.33  & -1.51  \\
+     \hline
+     Ket-CUM     & 69.86  & -1.47  \\
+     \hline
+     Sal-CUM-F   & 71.76  & -1.67  \\
+     \hline
+     Sal-CUM-K   & 85.00  & -1.37  \\ [1ex] 
+     \hline
+    \end{tabular}
+    \end{center}
+
+    **GLM Model**:
+
+    \begin{center}
+    \begin{tabular}{||c c c||} 
+     \hline
+     Treatment & Intercept & Slope \\ [0.5ex] 
+     \hline\hline
+     Flx         & 27.34  & -1.59  \\ 
+     \hline
+     Flx-CUM     & 38.43  & -1.51  \\
+     \hline
+     Ket-CUM     & 45.90  & -1.47 \\
+     \hline
+     Sal-CUM-F   & 50.17  & -1.67 \\
+     \hline
+     Sal-CUM-K   & 48.429  & -1.37 \\ [1ex] 
+     \hline
+    \end{tabular}
+    \end{center}
+
+
+    **Linear Model** (slope units shown in original units for this model):
+
+    \begin{center}
+    \begin{tabular}{||c c c||} 
+     \hline
+     Treatment & Intercept & Slope  \\ [0.5ex] 
+     \hline\hline
+     Flx         & 30.42  & -20.00 \\ 
+     \hline
+     Flx-CUM     & 28.65  & -13.73  \\
+     \hline
+     Ket-CUM     & 32.61  & -14.18  \\
+     \hline
+     Sal-CUM-F   & 47.17  & -29.23 \\
+     \hline
+     Sal-CUM-K   & 42.35  & -21.25  \\ [1ex] 
+     \hline
+    \end{tabular}
+    \end{center}
+
+    The relevance of this effects is more clearly shown if we plot the estimated means of the models (\autoref{fig:latmodeles})
+
+    \begin{figure}
+    \begin{fullwidth}
+    \includegraphics[scale=0.5]{figuras/bay_effect_plots.png}
+    \caption{Model Effects. A. Bayesian Regression with Censored Data. B. GLM without censored Data. C. Linear mixed effect model without censored data. Plotted with 66 credible intervals. }
+    \label{fig:latmodeles}
+    \end{fullwidth}
+    \end{figure}
+
+    As we can see in \autoref{fig:latmodeles}, failing to account for the curvature of the data with a linear model (fig C) gives the impression that all treatments behave in a similar fashion. Using a GLM (fig. B) is able to better shape the curvature of our data, accounting for the floor effects. If we incorporate the censored data (fig. A), we can give a better estimate of the real values, highlighting that there is a more pronaunced difference between the treatments. This can be seen more clearly in \autoref{fig:latproba}.
+
+    \begin{figure}
+    \begin{fullwidth}
+    \includegraphics[scale=0.5]{figuras/plot_predicted.png}
+    \caption{Latency probabilities. This plot highlights the initial difference of the saline treatments. Plotted with 89 percent credible intervals.}
+    \label{fig:latproba}
+    \end{fullwidth}
+    \end{figure}
+
+    Based on the bayesian regression, we can get the adjusted means, contrast them (adjusting them with Tukey) and plot the posterior distributions from the contrasts, as shown in figure \autoref{fig:latcontra}.
+
+    \begin{figure}
+    \begin{fullwidth}
+    \includegraphics[scale=0.5]{figuras/lat_lay_contrasts.jpg}
+    \caption{Bayes Regression Contrasts. Adjusted with Tukey HSD.}
+    \label{fig:latcontra}
+    \end{fullwidth}
+    \end{figure}
+    ```
+
+    Para ver con análisis de supervivencia ver [@andersen2021] .
+
+### Estrategias de búsqueda
+
+PENDIENTE: sacar estrategias. Podemos dividir las estrategias en egocéntricas(\`0\`) y alocéntricas (\`1\`). De esta manera podemos realizar una regresión logística.
+
+Estrategias de búsqueda: El grupo de Garthe y Kempermann (Garthe et al., 2009) definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma durante los entrenamientos. De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. El análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo (Hernández-Mercado & Zepeda, 2022).
+
+### Pruebas
+
+El análisis de las 3 pruebas del laberinto (adquisición, retención y aprendizaje reversa) se puede realizar con distintas métricas. De acuerdo a Maei y Frankland (Maei, Zaslavsky, Teixeira, et al., 2009), las medidas más utilizadas, en orden, son: porcentaje de tiempo en cuadrante blanco (4 cuadrantes), porcentaje de tiempo en zona blanco (definida como un círculo alrededor de la localización de la plataforma) y número de cruces (cruces alrededor de la localización de la plataforma). Sin embargo, los parámetros que reflejan con mayor precisión el desempeño en estas pruebas son: distancia promedio al blanco y entropía de Shannon (Maei, Zaslavsky, Wang, et al., 2009). Esta última métrica parece ser la más sensible al aprendizaje de la prueba del laberinto acuático. Está definida como la incertidumbre con la que se conoce una variable. Esta incertidumbre reduce con información (aprendizaje). En este sentido, una certidumbre de "0" significaría que el ratón pasó todo el tiempo en la localización de la plataforma blanco. Por otro lado, si el ratón exploró todo el laberinto acuático durante la prueba, la entropía sería máxima.
+
+### Pruebas - Distancia Media
+
+Como se mencionó antes, esta es una métrica mucho más sensible que las anteriores. Aquí, una menor distancia implica un mejor aprendizaje espacial. El resultado es similar: hay diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0158).
+
+```{markdown}
+
+According to (Maei et al., 2009), mean distance to the paltaform outperforms the typical probe meassures (time in quadrant, time in zone, number of crossings). 
+
+\begin{figure}
+\begin{fullwidth}
+\includegraphics[scale=0.5]{figuras/1.jpg}
+\caption{Target.}
+\label{fig:l}
+\end{fullwidth}
+\end{figure}
+
+\begin{figure}
+\begin{fullwidth}
+\includegraphics[scale=0.5]{figuras/2.jpg}
+\caption{NE}
+\label{fig:la}
+\end{fullwidth}
+\end{figure}
+
+\begin{figure}
+\begin{fullwidth}
+\includegraphics[scale=0.5]{figuras/3.jpg}
+\caption{SO.}
+\label{fig:latco}
+\end{fullwidth}
+\end{figure}
+
+## Probe time in Quadrants
+
+We used the Dirichlet distribution to determine whether the fraction of time spent in the quadrants is uniformly distributed (Maugard et al., 2019). This allowed to overcome the problem of the constant-sum constraints of the MWM assay, in which the data points (i.e., the time that is spent in each quadrant of the maze as a fraction of the overall time of the assay) are not independent of each other (a requirement of the tests, e.g., ANOVA). 
+
+This analysis was followed by single-sample t tests with Bonferroni correction for multiple comparisons to characterize the preference for a particular quadrant in the groups showing a divergence from uniformity.
+
+Probe 1 Quadrant Time
+
+\begin{center}
+\begin{tabular}{||c c c||} 
+ \hline
+ Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
+ \hline\hline
+ Flx         & 4.18576e-05  & YES  \\ 
+ \hline
+ Flx-CUM     & 1.28023e-09  & YES  \\
+ \hline
+ Ket-CUM     & 3.26186e-06  & YES  \\
+ \hline
+ Sal-CUM-F   & 0.0193724  & YES  \\
+ \hline
+ Sal-CUM-K   & 5.28868e-05  & YES  \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+
+Probe 2 Quadrant Time
+
+\begin{center}
+\begin{tabular}{||c c c||} 
+ \hline
+ Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
+ \hline\hline
+ Flx        & 0.02  & YES  \\ 
+ \hline
+ Flx-CUM     & 0.0672  & NO  \\
+ \hline
+ Ket-CUM     & 0.3148  & NO  \\
+ \hline
+ Sal-CUM-F   & 0.0150616  & YES  \\
+ \hline
+ Sal-CUM-K   & 0.456421  & NO  \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+Probe 3 Quadrant Time
+
+\begin{center}
+\begin{tabular}{||c c c||} 
+ \hline
+ Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
+ \hline\hline
+ Flx         & 0.0028  & YES  \\ 
+ \hline
+ Flx-CUM     & 2.55151e-08  & YES  \\
+ \hline
+ Ket-CUM     & 1.28023e-09  & YES  \\
+ \hline
+ Sal-CUM-F   & 0.274735  & NO  \\
+ \hline
+ Sal-CUM-K   & 9.79929e-07  & YES  \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+
+PENDIENTE: Creo que se puede usar el mismo analisis para tiempo en zona. 
+```
+
+### Pruebas - Entropía
+
+### Porcentaje en Cuadrantes
+
+En el análisis de porcentaje en cuadrante, la cual es una de las métricas menos sensibles, no tenemos resultados interesantes. Parece haber un olvido en la prueba 2 (retención) en todos los grupos sometidos a CUMS, aunque no hay nada significativo.
+
+### Porcentaje en Zonas
+
+Esta es una métrica más sensible que cuadrante. De manera interesante, podemos ver que todos los grupos (excepto el control) presentan un olvido en la prueba 2 y un reaprendizaje en la prueba 3. En cuanto a la prueba 2, de manera muy interesante existe una diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0204, IC = -29.87199 a -1.994670). Se ha observado que aumentar la neurogénesis después de un aprendizaje puede fomentar el olvido (Martinez-Canabal, 2015), lo que en teoría facilitaría el reaprendizaje en la prueba reversa (flexibilidad cognitiva). Sin embargo, parece ser que todos los grupos tienen un reaprendizaje similar en la prueba reversa
+
+### Complementarias
+
+#### Campo abierto
+
+Tiempo En periferia
+
+Tiempo en Centro
+
+#### Lab En Cruz
+
+Brazos Cerrados
+
+Brazos Abiertos
+
+#### Nado Forzado
+
+Inmovilidad Total
+
+Inmovilidad por Minuto
+
+#### Preferencia a Sacarosa
+
+## Discusión
+
+### MWM estadística y métricas
+
+Ver
+
+-   [@spatialpereira2015]
+
+-   [@modelingfaes2010]
+
+-   [@maugard2019]
+
+    -   Analysis of Compositional Data with Positive Correlations among Components using a Nested Dirichlet Distribution with Application to a Morris Water Maze Experiment - https://arxiv.org/html/2401.04841v1
+
+### Estadística
+
+-   [@reed2010]
+
+-   [@mayo2022]
+
+-   [@leek2015]
+
+-   [@johansson2011]
+
+-   [@nakagawa2007]
+
+-   [@makowski2019]
+
+-   [@rouder2018; @etz2018]
+
+-   [@reed2010a]
+
+-   [@shmueli2010]
+
+### Uso de efectos mixtos
+
+Ver
+
+-   [@meteyard2022]
+
+-   [@luke2017]
+
+-   [@vasey1987]
+
+-   [@camilli1987]
+
+-   [@levy1978]
+
+-   [@schielzeth2020]
+
+-   [@bates2015]
+
+-   [@aarts2014]
+
+-   [@barr2013]
+
+-   [@vaux2012]
+
+### Presentación de datos
+
+Ver
+
+-   [@zaloumis2015]
+
+-   [@cumming2007]
+
+### Sobre la depresión
+
+Otros sistemas deben de ser estudiados, como otros sitemas de neurotransmisión, BDNF, HPA, sistema inmune, gut-brain axis [@tian2022].
+
+### Flexibilidad Cognitiva
+
+La \[flexibilidad cognitiva\] juega un papel importante en padecimientos mentales, incluyendo la depresión, ansiedad, autismo. Las investigaciones han mostrado que la falta de flexibilidad cognitiva puede ser un síntoma y un factor de riesgo para estos trastornos mentales.
+
+La falta de flexibilidad cognitiva en personas con depresión puede manifestarse de varias maneras. Por ejemplo, pueden tener dificultades para adaptarse a nuevas situaciones o cambios en su vida. También pueden quedarse atrapados en patrones de pensamiento negativo (\[\[rumiaciones\]\]) y tener dificultades para ver las cosas desde diferentes perspectivas. Este tipo de pensamiento rígido puede empeorar los síntomas de la depresión y dificultar la recuperación.
+
+Además, existe evidencia que muestra que la depresión puede afectar negativamente la flexibilidad cognitiva. Los estudios han encontrado que las personas con depresión a menudo tienen un rendimiento más pobre en tareas que requieren flexibilidad cognitiva en comparación con aquellos sujetos sin diagnóstico de depresión. Esto podría ser debido a varios factores, incluyendo la dificultad para concentrarse, la fatiga, y el pensamiento negativo asociado con la depresión. Por lo tanto, mejorar la flexibilidad cognitiva puede ser une enfoque en el tratamiento de la depresión. Las terapias \[\[cognitivo-conductuales\]\], por ejemplo, a menudo trabajan para aumentar la flexibilidad cognitiva al ayudar a los individuos a reconocer y cambiar patrones de pensamiento rígidos o negativos .
+
+### Fármacos
+
+Los SSRI tienen grandes limitaciones, como un retraso en su inicio terapéutico (semanas a meses) (ver Liu B, From serotonin to neuroplasticity: evolvement of theories for major depressive disorde), un reducción en menos del 50% de los pacientes (ver Aleksandrova Antidepressant effects of ketamine and the roles of AMPA glutamate receptors and other mechanisms beyond NMDA receptor antagonism), un 33% de los pacientes tienen depresión resistente a tratamientos (al menos 2 antidepresivos son inefectivos) (ver Aleksandrova ). Debido a esto, nuevos enfoques terapéuticos deben ser buscados.
+
+En una búsquedas sistemáticas en bases de datos electrónicas hasta el 12 de abril de 2022, se encontró que en animales naïve, la fluoxetina crónica en adolescentes produjo efectos ansiogénicos relacionados con la dosis, evidenciados por una reducción en el tiempo pasado en los brazos abiertos del laberinto elevado en cruz. No se reportaron efectos significativos de la fluoxetina en comportamientos tipo depresión en animales naïve, mientras que en roedores expuestos al estrés, la fluoxetina disminuyó significativamente el tiempo de inmovilidad en la prueba de **nado forzado** comparado con el vehículo. Estos resultados sugieren que aunque el tratamiento crónico con fluoxetina muestra efectos positivos en modelos animales de depresión, podría aumentar la ansiedad en animales adolescentes de manera relacionada con la dosis. Aunque las implicaciones clínicas de estos datos deben interpretarse con extrema precaución, se recomienda un monitoreo cercano de los pacientes adolescentes bajo tratamiento con fluoxetina [@kryst2022a].
+
+Más de 20 años han generado evidencia que Fluoxetina tiene muchos efectos que regulan la NHA; proliferación de progenitores, supervivencia y maduración.
+
+Ver
+
+-   [@ohira2019]
+
+-   [@kobayashi2010]
+
+-   [@segi-nishida2017]
+
+-   [@hagihara2019]
+
+-   [@neurogenesisdependentdavid2009]
+
+fluoxetina (ISRS y agonista parcial de 5-HT2B) (Lin et al., 2023) promueve la neurogénesis hipocampal y reduce las conductas depresivas en modelos murinos de estrés (Segi-Nishida, 2017). Sumado a estos efectos, se ha observado que el tratamiento crónico con fluoxetina promueve la flexibilidad cognitiva en ratones en una prueba conductual que involucra discriminación de patrones espaciales (hipocampo), búsqueda de recompensa y evitación de castigos (Marwari & Dawe, 2018). Por último, hay que destacar que utilizando técnicas de inmunohistoquímica y electrofisiología en ratones (Kobayashi et al., 2010) y primates (Callithrix jacchus) (Ohira et al., 2019), se han descrito otros procesos de plasticidad hipocampal inducidos por antidepresivos que podrían jugar un papel sobre la flexibilidad cognitiva. Estos grupos han descrito que la fluoxetina puede revertir a neuronas granulares maduras del hipocampo a un fenotipo inmaduro, un fenómeno denominado "demaduración". Al mismo tiempo, este fármaco parece reducir el número de neuronas con redes perineuronales en el giro dentado, un fenómeno que promueve la plasticidad en el cerebro adulto. En conjunto, estos resultados podrían significar que existen otros mecanismos independientes de la NHA que reinstauren un estado de inmadurez al giro dentado que representa un sustrato importante en la cognición y regulación del comportamiento (Umemori et al., 2018).
+
+La ketamina --- un antagonista no competitivo del receptor a glutamato NMDA ---, tradicionalmente utilizada como agente anestésico, ha sido investigada en las últimas décadas por sus potenciales propiedades antidepresivas en dosis subanestésicas para tratar trastornos del estado de ánimo (Zanos & Gould, 2018).
+
+Una limitación significativa de los inhibidores selectivos de la recaptación de serotonina (ISRS) es el tiempo que tardan en manifestar sus efectos positivos, que puede variar de semanas a meses. Además, hasta un tercio de los pacientes no responde a los ISRS. En contraste, la ketamina muestra efectividad pocas horas después de su primera dosis, con efectos que pueden durar hasta 3 semanas en pacientes con depresión resistente a otros tratamientos (Rawat et al., 2022). A pesar de su potencial de abuso, la ketamina no parece tener un mecanismo de adicción mediado por la señalización dopaminérgica mesolímbica, típica de las drogas de abuso clásicas (Simmler et al., 2022). Aunque el estudio de Simmler encontró que la ketamina no induce plasticidad en el núcleo accumbens ni en el área tegmental ventral, no explora otros mecanismos que expliquen la formación de un consumo de hábito que se observa en algunas personas que consumen este fármaco. Sin embargo, de manera interesante, otras investigaciones han encontrado que este fármaco induce procesos de plasticidad en áreas relacionadas con la depresión, como el hipocampo (Rawat et al., 2022).
+
+Desde la primera evidencia clínica del uso de ketamina en pacientes con depresión (Berman et al., 2000), se ha intentado comprender su mecanismo de acción terapéutico. Estos mecanismos incluyen desde incrementos en vías celulares relacionadas con la plasticidad (BDNF, eEF2K, mTOR) hasta la regulación de receptores AMPA en la corteza prefrontal e hipocampo. Un aspecto menos estudiado es su efecto en el giro dentado. Basándose en esta idea, Rawat y colaboradores demostraron que la ketamina activa neuronas inmaduras del giro dentado 24 horas después de la inyección en un modelo de estrés en ratones (Rawat et al., 2022). Mediante manipulación quimiogenética, mostraron que esta población de neuronas inmaduras del giro dentado es crucial para la acción antidepresiva de la ketamina. A partir de estos hallazgos, surge la interesante posibilidad de que la activación rápida de neuronas inmaduras del giro dentado por la ketamina pueda facilitar la flexibilidad cognitiva
+
+Demaduración"
+
+Kobayashi, 2010, Ohira, 2019
+
+↓ Calbindina, ↑ Calretinina
+
+Sin cambios en tamaño/morfología (Impedancia de entrada/constance temporal de membrana)
+
+PV inmaduras + remover PNN
+
+![higihara, 2019](figuras/higihara,2019.png)
+
+#### Controversias
+
+-   [@jakobsen2017]
+
+-   [@moncrieff2018]
+
+-   https://doi.org/10.1038/s41386-024-01857-8
+
+-   [@naber2018]
+
+-   [@bosman2018; @berwian2017]
+
+-   [@bosman2018]
+
+-   [@khan2012]
+
+-   [@initialkirsch2008]
+
+-   [@holper2020]
+
+-   Falta efectos sobre microbiota. Antimicrobial activity of antidepressants on normal gut microbiota: Results of the in vitro study; Serotonin Reuptake Inhibitors and the Gut Microbiome: Significance of the Gut Microbiome in Relation to Mechanism of Action, Treatment Response, Side Effects, and Tachyphylaxis; https://gut.bmj.com/content/70/Suppl_2/A49
+
+
+Cessation of therapy with a selective serotonin (5-HT) reuptake inhibitor (SSRI) is often associated with an early onset and disabling discontinuation syndrome, the mechanism of which is surprisingly little investigated (https://doi.org/10.1038/s41386-024-01857-8)
+
+mice (once daily, 12 days. brain tissue levels of 5-HT and/or its metabolite 5-HIAA tended to decrease during continuous paroxetine, levels increased above controls after discontinuation, notably in hippocampus. depolarisation (high potassium)-evoked 5-HT release was reduced by continuous paroxetine but increased above controls post-discontinuation. Extracellular hippocampal 5-HIAA also decreased during continuous paroxetine and increased above controls post-discontinuation. paroxetine discontinuation increased c-Fos expression in midbrain 5-HT (TPH2 positive) neurons, adding further evidence for a hyperexcitable 5-HT system. behavioural experiments paroxetine discontinuation increased anxiety-like behaviour, which partially correlated in time with the measures of increased 5-HT function.
+
+All antidepressants had an inhibitory effect on the growth of all studied microorganisms. growth activity of the normal gut microbiota individual strains. (Antimicrobial activity of antidepressants on normal gut microbiota: Results of the in vitro study). antimicrobial properties that comes with the potential of disrupting microbial hemostasis.
+
+Disturbance to the g-b axis may be a cause of MDD
+
+gut microbiota dysbiosis in response to antidepressants). Probiotics, prebiotics and fecal microbiota transplantation are shown to be promising strategies to ameliorate antidepressant-associated dysbiosis (https://gut.bmj.com/content/70/Suppl_2/A49).
+
+difference of gut microbiota composition among individuals may affect the efficacy of SSRIs antidepressants (https://www.sciencedirect.com/science/article/abs/pii/S0165032723003154).
+
+### Otras áreas de estudio
+
+#### Regulación de NHA en otras áreas
+
+La NHA es importante en la separación de patrones [@clelland2009].
+
+Ver
+
+-   [@cameron2015]
+
+-   [@frança2017a]
+
+denate gyrus is needed for memory maintenance. Since hyperpolarization interferes with anterograde and retrograde neuronal signaling, it is possible that the memory engram in the dentate gyrus and the entorhinal to hippocampus trisynaptic circuit was erased by long-term, but not with short-term hyperpolarization. DG output is required for memory retrieval. actively functional anterograde and retrograde neuronal signaling is necessary to preserve synaptic memory engrams along the entorhinal cortex to the hippocampal trisynaptic circuit. Carretero-Guillén, A., Treviño, M., Gómez-Climent, M.Á. et al. Dentate gyrus is needed for memory retrieval. Mol Psychiatry (2024). https://doi.org/10.1038/s41380-024-02546-0
+
+-   Other studies have found that the DG is involved in memory retrieval, but not in memory recall; however, it may be difficult to disentangle these two processes (goncalves et al., 2016).
+
+
+#### Tratamientos no farmacológicos
+
+-   [@environmentalclemenson2015]
+
+-   [@treatmentsduval2006]
+
+#### Alimentación y eje GBA
+
+-   [@poulose2017]
+
+#### BDNF y neurotrofinas
+
+-   [@cubillos2022]
+
+#### Glia
+
+-   [@wang2022]
+
+-   [@cope2019]
+
+#### Sexo
+
+Si bien, en humanos, la depresión se da más en mujeres, en estudios animales se suele estudiar más en machos.
+
+Por ejemplo, el sexo parece tener un efecto en la neurogénesis hipocampal y los procesos cognitivos dependientes de esta [@yagi2019].
+
+Además, los fármacos antidepresivos tienen un efecto diferencial en el sexo [@legates2019] y [@pawluski2014]
+
+-   [@desá-calçada2015]
+
+#### Epigenética
+
+-   [@epigeneticyao2016]
+
+<<<<<<< HEAD
+#### LPT
+
+-   Adult born - electrophysiological characteristics are initially distinct from those of mature DG neurons: they have higher input resistance, lower threshold voltage, and a slower membrane time constant and they are more prone to long-term potentiation (LTP). Since DGCs have very low firing probabilities, only a small population of DGCs is activated by these inputs at any given time, resulting in sparse representation of contexts and events. The sparseness of these DG representations---also known as ''engrams''---is thought to be crucial for creating non-overlapping (or orthogonal) responses to different experiences, thereby keeping memories distinct. The sparseness of coding in the DG is largely due to strong inhibitory inputs from interneuron populations in the DG and hilus. Sparse representations in the DG are relayed to CA3, a hippocampal area characterized by recurrent connections that is hypothesized to function as an auto-association network; it has been shown to play a role in pattern completion, i.e., to recall a memory upon an incomplete cue or only a partial activation of its neuronal representation. However, CA3 is also thought to be able to perform pattern separation, and whether it performs one or the other task seems to depend on the input it receives directly from the EC and, particularly in the case of pattern separation, from the DG. implement pattern separation and pattern completion, both essential functions for episodic memory formation and recall: the former permits generalization and recall from incomplete inputs, whereas the latter ensures that similar memories are kept distinct from each other. (goncalves et al., 2016).
+
+
+#### Otros sistemas de neurotransmisión
+
+Su mecanismo de acción inmediato es a través de la regularicación del sistema serotoninérgico. Sin embargo, su mecanismo de acción antidepresiva parece involucrar otros sistemas de neurotransmisión. Uno de estos sistemas indirectamente involucrados en el mecanismo de los ISRS es el \[\[sistema glutamatérgico\]\].
+
+Además, el \[\[sistema glutamatérgico del cerebro juega un papel importante en la neurogénesis hipocampal\]\]. El glutamato es el neurotransmisor excitatorio principal en el cerebro, y su función se extiende a muchos aspectos de la neuroplasticidad, que incluye la neurogénesis.
+
+En el hipocampo, el glutamato y sus receptores, especialmente los\[\[ receptores NMDA y AMPA\]\], están involucrados en la regulación de la formación, supervivencia y diferenciación de las nuevas neuronas. Esto se debe a que el glutamato y sus receptores juegan un papel importante en la excitación neuronal y la plasticidad sináptica, procesos que son esenciales para el funcionamiento normal de las nuevas neuronas y para la integración de estas células en las redes neuronales existentes.
+
+Por ejemplo, se ha demostrado que la activación de los receptores NMDA en las células madre neuronales del hipocampo puede promover la neurogénesis. A la inversa, la disfunción del sistema glutamatérgico, como la sobreexcitación neuronal debido a niveles excesivos de glutamato, puede ser perjudicial para las células neuronales y puede disminuir la neurogénesis.
+
+Cabe destacar que los investigadores también están estudiando el sistema glutamatérgico como un posible objetivo para medicamentos que podrían mejorar la neurogénesis hipocampal. Por ejemplo, algunos estudios sugieren que los medicamentos que modulan el sistema glutamatérgico, como la \[ketamina\], podrían tener efectos antidepresivos rápidos y pueden aumentar la neurogénesis en el hipocampo. Sin embargo, este es un campo de investigación en desarrollo, y se requieren más estudios para comprender completamente estos procesos y su relevancia para las enfermedades neurológicas y psiquiátricas.
+
+Ver
+
+-   [@duman2019]
+
+-   [@gerhard2016]
+
+Antagonista de GluN2B impide aprendizaje reversa en prueba de Water Maze (Dong et al., 2012)
+
+GluN2B-containing NMDA receptors, Taannehoiz, rene hen
+
+fluoxetine, imipramine, and ketamine, directly bind to TrkB, facilitating BDNF action and plasticity (Casarotto et al., 2021).
+
+#### Papel del sistema serotoninérgico
+
+La hipótesis serotoninérgica de la depresión sugiere una relación entre concentraciones bajas de serotonina en el cerebro y los estados depresivos. Esta relación fue sugerida por primera vez en los sesentas y ganó relevancia en los noventas gracias al estudio de los SSRI.
+
+Moncrieff y colaboradores %%\[\[moncrieff.etal_SerotoninTheoryDepression_2022\]\]%% realizaron una revisión sistemática umbrella y llegaron a la conclusión que no existe evidencia que respalde una asociación entre serotonina y depresión, ni evidencia de la hipótesis que bajos niveles o actividad de serotonina cause depresión. Además encontraron que el uso prolongado de antidepresivos reduce las concentraciones de serotonina %%\[\[moncrieff.etal_SerotoninTheoryDepression_2022#\^d6ae0c\]\]%% %%\[\[moncrieff.etal_SerotoninTheoryDepression_2022#\^f63a7f\]\]%%.
+
+En el presente, esta hipótesis sigue siendo influyente de distintas maneras; en libros de texto que la siguen enseñando, en investigaciones que siguen tratando de buscar la relación serotonina-depresión o en la mayoría del público en general que cree que la depresión se debe a un desbalance químico. Estos factores que mantienen a esta línea de pensamiento relevante generan situaciones que dificultan el entendimiento y el tratamiento de la depresión. Por un lado, se invierten recursos en investigaciones que tratan de seguir encontrando la relación serotonina-depresión. Por otro lado, pensar que la depresión se debe a este desbalance químico genera en el público en general una idea de cómo esta entiende su humor, generando expectativas negativas sobre sus diagnósticos depresivos --- se ve como más difícil regular su comportamiento si piensan que tienen un defecto biológico---. Por último, la idea que la depresión se debe a un desbalance químico (y que los SSRIs tratan esta deficiencia) también influencia en la toma de decisiones de los terapeutas y pacientes sobre el uso de medicamentos. El resultado de esta idea es que tanto pacientes como médicos se ven conflictuados en dejar los medicamentos antidepresivos, potencialmente creando una dependencia en el consumidor ---%%\[\[moncrieff.etal_SerotoninTheoryDepression_2022#\^335373\]\]%%
+
+Ver
+
+-   [@latestlin2023]
+
+-   [@karayol2021]
+
+-   [@albert2019]
+
+-   [@zmudzka2018]
+
+-   [@yohn2017]
+
+-   [@moncrieff2022]
+
+#### Cepa de ratones utilizada
+
+Ver
+
+-   [@kim2018]
+
+-   [@kempermann1997]
+
+-   [@kim2017]
+
+-   [@crusio1990]
+
+-   [@carola2004]
+
+#### PFC y amígdala
+
+Otras estructuras que son importantes en el estrés, además del hipocampo, son la amígdala y la corteza prefrontal [@mcewen2016].
+
+La PFC es de suma importancia en la flexibilidad cognitiva [@park2017] y [@kim2023] y [@yun2023] y [@kim2024].
+
+Ver
+
+-   [@liu2017]
+
+#### NHA en humanos?
+
+-   [@adultli2023]
+
+-   [@dajani2015]
+
+-   [@dynamicsspalding2013] - A recent report confirmed earlier findings of neurogenesis in humans and estimated rates of neuronal birth and death by measuring the 14C content of genomic DNA in neurons from post-mortem tissue (Spalding et al., 2013).
+
+-   [@terreros-roncal2022]
+
+-   [@zhao2020]
+
+-   [@thome2017]
+
+-   quantifying neurogenesis in human subjects in vivo, even if through indirect or correlative measurements. Recent efforts in this direction, for example, using PET imaging (Tamura et al., 2016), hold significant promise.
+
+-   big unanswered question is which of these behavioral, cellular, and molecular readouts are most relevant to antidepressant action in human (10.1016/j.neuron.2009.04.017).
+
+#### NHA en otras áreas?
+
+-   [@jurkowski2020]
+
+#### Ketamina
+
+La ketamina --- un antagonista no competitivo del receptor a glutamato NMDA ---, tradicionalmente utilizada como agente anestésico, ha sido investigada en las últimas décadas por sus potenciales propiedades antidepresivas en dosis subanestésicas para tratar trastornos del estado de ánimo (Zanos & Gould, 2018). Una limitación significativa de los inhibidores selectivos de la recaptación de serotonina (ISRS) es el tiempo que tardan en manifestar sus efectos positivos, que puede variar de semanas a meses. Además, hasta un tercio de los pacientes no responde a los ISRS. En contraste, la ketamina muestra efectividad pocas horas después de su primera dosis, con efectos que pueden durar hasta 3 semanas en pacientes con depresión resistente a otros tratamientos (Rawat et al., 2022). A pesar de su potencial de abuso, la ketamina no parece tener un mecanismo de adicción mediado por la señalización dopaminérgica mesolímbica, típica de las drogas de abuso clásicas (Simmler et al., 2022). Aunque el estudio de Simmler encontró que la ketamina no induce plasticidad en el núcleo accumbens ni en el área tegmental ventral, no explora otros mecanismos que expliquen la formación de un consumo de hábito que se observa en algunas personas que consumen este fármaco. Sin embargo, de manera interesante, otras investigaciones han encontrado que este fármaco induce procesos de plasticidad en áreas relacionadas con la depresión, como el hipocampo (Rawat et al., 2022). Desde la primera evidencia clínica del uso de ketamina en pacientes con depresión (Berman et al., 2000), se ha intentado comprender su mecanismo de acción terapéutico. Estos mecanismos incluyen desde incrementos en vías celulares relacionadas con la plasticidad (BDNF, eEF2K, mTOR) hasta la regulación de receptores AMPA en la corteza prefrontal e hipocampo. Un aspecto menos estudiado es su efecto en el giro dentado. Basándose en esta idea, Rawat y colaboradores demostraron que la ketamina activa neuronas inmaduras del giro dentado 24 horas después de la inyección en un modelo de estrés en ratones (Rawat et al., 2022). Mediante manipulación quimiogenética, mostraron que esta población de neuronas inmaduras del giro dentado es crucial para la acción antidepresiva de la ketamina. A partir de estos hallazgos, surge la interesante posibilidad de que la activación rápida de neuronas inmaduras del giro dentado por la ketamina pueda facilitar la flexibilidad cognitiva (Figura 1).
+
+Anestésico (1960)
+
+efectividad pocas horas después de su primera dosis, con efectos que pueden durar hasta 3 semanas en pacientes con depresión resistente a otros tratamientos (Berman et al., 2000)
+
+Aprobada por FDA en 2019
+
+Antagonista no competitivo de NMDA
+
+(.5 mg/k --
+
+Berman - Biol Psychiatry
+
+Hamilton Depression Rating Scale - g mood, feelings of guilt, suicide ideation, insomnia, agitation or retardation, anxiety, weight loss, and somatic symptoms
+
+V-2 -- isoniazida --tb \| clorpromazina (antihistaminico)
+
+Simmler et al., 2022 - Nature
+
+Ver
+
+-   [@rawat2022]
+
+    -   Se conoce poco de sus efectos sobre su dinámica en Giro dentado
+
+    -   Ketamina activa neuronas inmaduras en paralelo a sus efectos antidepresivos/ansiolíticos
+
+    -   social interaction (SIT), social novelty (SNT), and tail suspension (TST)
+
+        Efectos conductuales de ketamina se perdieron al silenciar las neuronas inamduras
+
+        designer receptors exclusively activated by designer drugs (DREADDs)
+
+        hM4Di -- variants de receptors muscarínicos activados por CNO
+
+        ASCL1 -- diferenciación
+
+        Supress excitability newborn neurons after they have integrated into the hippocampal circuitr
+
+        Ratones Ascl1-Cre - hM4Di (Tunc-Ozcan et al., 2019
+
+        designer receptor exclusively activated by designer drugs (DREADD), hM4Di, is a synthetic variant of the human muscarinic receptor. hM4Di interacts specifically and with high efficacy exogenous ligand clozapine-N-oxide (CNO), and it initiates the canonical inhibitory Gi pathway thereby inhibiting cellular activity56--58. Expression of hM4Di in the absence of CNO, or exposure of wild-type neurons to CNO, does not affect neuronal activity; the hM4Di receptor and CNO are inert elements until combined40,56,58. Furthermore, there are no observed morphological effects before or after tamoxifen and CNO administration40. Upon administration of tamoxifen (TAM), the hM4Di mouse expresses the HA-tagged hM4Di in Type-2 transient amplifying progenitors (NPCs) and their progeny, as well as in a small subset of Type 1 neural stem cells (NSCs)59. Three weeks after TAM treatment, the tagged Type-2 cells have matured, and HA-tagged hM4Di is expressed almost exclusively in NeuN+Calb-- immature neurons59, at which point, hM4Di mice were given either CNO (to block activation of ABINs) or vehicle, and, 2 h later, ketamine or saline. Twenty-four hours later these mice underwent behavioral testing (Fig. 2a). In vehicle-treated mice, ketamine administration resulted in a significantly increased social interaction ratio (p \< 0.0001) (Fig. 2b), increased preference for novelty (p \< 0.001) (Fig. 2c), and decreased time immobile (p \< 0.001) (Fig. 2d). CNO administration prevented these behavioral changes in ketaminetreated mice but had no effect in saline-treated mice compared t
+
+Ketamina tiene efectos sobre neuronas inmaduras del GD y esto está relacionado con su acción antidepresiva. Pero no hay estudios que relacionen este efecto con la flexibilidad cognitiva-memoria espacial
+
+-   [@yamada2019]
+
+-   [@bridgingkim2023]
+
+-   [@xu2022]
+
+-   [@hashimoto2019]
+
+-   [@carreno2020]
+
+-   [@kraus2019]
+
+-   [@marchi2022]
+
+-   rapid increase of BDNF in the hippocampus stimulates neurogenesis in the DG, which is important for the sustained antidepressant actions of ketamine (TrkB dependent adult hippocampal progenitor differentiation mediates sustained ketamine antidepressant response).
+
+<<<<<<< HEAD
+-   Ketamine seems to accelerate the maturation phase of hippocampal immature neurons, but it has less effect on the numbers of neural progenitors (Trk, B. TrkB dependent adult hippocampal progenitor differentiation mediates sustained ketamine antidepressant response, Potential link between antidepressant-like ef\[87\] fects of ketamine and promotion of adult neurogenesis in the ventral hippocampus of mice).
+
+-   Ly et al. \[95\] demonstrated how psychedelic compounds such as lysergic acid diethylamide (LSD), N,N-dimethyltryptamine (DMT), and 2,5-dimethoxy-4-iodoamphetamine (DOI) may increase dendritic arbor complexity, promote dendritic spine growth and stimulate synapse formation, thereby highlighting the potential of psychedelics for treating depression and related disorders.
+
+-   NMDA receptor antagonists also augment the release of dopamine (Moghaddam et al, 1997), glutamate, and serotonin in the medial prefrontal cortex (mPFC) of rats [@Jiménez-Sánchez2014]\`
+
+-   ketamine rapidly accelerates BDNF expression and release through different signaling, NMDA receptor antagonism, especially on the GABAergic interneurons that control the glutamatergic activity. Subsequently, the ketamine-induced glutamate release stimulates postsynaptic AMPA, depolarization and activation of L-type voltage-dependent Ca2+ channels leading to a rapid BDNF release. addition, the ketamine NMDA receptor antagonism increases BDNF translation through the deactivation of eukaryotic elongation factor 2 (EEF2) (Carli et al., 2021). rapid increase of BDNF in the hippocampus stimulates neurogenesis in the DG, which is important for the sustained antidepressant actions of ketamine (TrkB dependent adult hippocampal progenitor differentiation mediates sustained ketamine antidepressant response). Ketamine seems to accelerate the maturation phase of hippocampal immature neurons, but it has less effect on the numbers of neural progenitors (Trk, B. TrkB dependent adult hippocampal progenitor differentiation mediates sustained ketamine antidepressant response, Potential link between antidepressant-like ef\[87\] fects of ketamine and promotion of adult neurogenesis in the ventral hippocampus of mice).
+=======
+-  Ketamine seems to accelerate the maturation phase of hippocampal immature neurons, but it has less effect on the numbers of neural progenitors (Trk, B. TrkB dependent adult hippocampal progenitor differentiation mediates sustained ketamine antidepressant response, Potential link between antidepressant-like ef[87] fects of ketamine and promotion of adult neurogenesis in the ventral hippocampus of mice).
+
+-  Ly et al. [95] demonstrated how psychedelic compounds such as lysergic acid diethylamide (LSD), N,N-dimethyltryptamine (DMT), and 2,5-dimethoxy-4-iodoamphetamine (DOI) may increase dendritic arbor complexity, promote dendritic spine growth and stimulate synapse formation, thereby highlighting the potential of psychedelics for treating depression and related disorders.
+
+### Métodologías para el estudio de depresión
+
+Ver
+
+-   [@planchez2019]
+
+-   [@yan2010]
+
+#### Preferencia a sacarosa
+
+-   [@markov2022]
+
+#### Nado forzado
+
+-   [@yankelevitch-yahav2015; @bogdanova2013]
+
+#### Campo Abierto
+
+-   [@seibenhener2015]
+
+#### Laberinto Elevado
+
+-   [@walf2007]
+
+### Discusión General
+
+Parece que los efectos más prominentes en nuestro modelo se encuentran en la prueba 2 (retención) y en el primer día de entrenamiento reversa. En especial en el grupo de Ketamina+CUMS, parece haber un olvido en la prueba 2, además de que parece que adoptan de manera más rápida un uso de estrategias alocéntricas en las pruebas reversa. Esto pareciera ser un indicativo de flexibilidad cognitiva dependiente del hipocampo (Hernández-Mercado & Zepeda, 2022), aunque este efecto se pierde rápidamente en la prueba reversa.
+
+Una posibilidad que explica este fenómeno es nuestro protocolo de entrenamiento reversa. Muchos estudios que evalúan la flexibilidad cognitiva en el laberinto acuático de Morris parecen utilizar más de una prueba reversa. Esta complejidad adicional parece mostrar que las nuevas neuronas del giro dentado facilitan una adaptabilidad rápida a los nuevos contextos (Garthe & Kempermann, 2013).
+
+Por ejemplo, un trabajo reciente realizado por Amelchenko y colaboradores (Amelchenko et al., 2023) utilizó un protocolo de entrenamiento reversa seguido de un protocolo de laberinto de Morris con discriminación contextual en ratones de distintas edades. Este último paradigma introduce una complejidad que demanda al ratón diferenciar el contexto (color de la piscina) además de las pistas espaciales para localizar la plataforma correcta. El nivel de neurogénesis correlacionó con el desempeño en ambas pruebas (reversa y discriminación). Sin embargo, similar a nosotros, las diferencias en el protocolo reversa solo se observaron en el primer día de entrenamiento. Sin embargo, las diferencias en los distintos grupos de edades se hicieron evidentes con el segundo protocolo (discriminación contextual). En otro trabajo se observó como otro fármaco antagonista del receptor NMDA, memantina, empeoraba la flexibilidad cognitiva en ratones (Saab et al., 2011). Estos investigadores usaron 3 protocolos reversa cada tercer día, y observaron que la memantina empeoraba el reaprendizaje de manera gradual en cada nueva localización de la plataforma.
+
+Estos trabajos y nuestros resultados parecen indicar que necesitamos aumentar la complejidad del aprendizaje reversa, ya sea cambiando la localización de la plataforma una segunda o tercera vez, o agregando una prueba de discriminación contextual al laberinto.
+
+Por último, en un inicio se tenía contemplado hacer pruebas que evaluaran conductas de tipo depresivas y conductas de tipo ansiosas (Laberinto en cruz, campo abierto, nado forzado y preferencia a sacarosa). Sin embargo, estas pruebas no están enfocadas hacia mi pregunta de investigación, la cual busca responder la relación entre flexibilidad cognitiva y el uso de fármacos que alteran la plasticidad del giro dentado. Aunque podría ser interesante explorar estas pruebas, nuestro modelo parece no ser ideal. En específico, la cruza de ratones que utilizamos no es la adecuada para estas pruebas conductuales. Estas pruebas son altamente específicas para las cruzas de ratones utilizadas por factores que van desde sensibilidad a la sacarosa (Sclafani, 2006) hasta la actividad locomotora y exploratoria en estas pruebas de ansiedad/depresión (Carola et al., 2004). Estos autores sugieren utilizer ratones con un perfil genético bien definido para realizar estas pruebas.
+
+## Conclusiones
+
+## Literatura Citada
+
+::: {#refs}
+:::
+
+## Glosario
+
+{{< glossary table=true >}}
