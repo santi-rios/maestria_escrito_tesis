@@ -584,6 +584,9 @@ library(lmerTest)
 library(bayestestR) # describe bayes
 library(insight)
 library(ez)
+library(rstatix)
+library(Rtrack)
+library(viridisLite)
 
 ```
 
@@ -629,6 +632,62 @@ df_pruebas$stage <- as.factor(df_pruebas$stage)
 # table(df_ent_post$tratamientos) ver tratamientos
 
 ```
+
+```{r rtrack_experimentos}
+#| code-fold: true
+#| code-summary: Ver preparación de datos
+
+rtrack_experimento_fluoxetina_g1 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo_1/experimento/Experiment.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo_1/experimento/Data",
+    threads = 0) # use all available CPU cores
+
+# library(parallel)
+# detectCores()
+# 12
+
+```
+
+```{r rtrack_estrategias}
+#| code-fold: true
+#| code-summary: Código extracción de métricas con Rtrack
+
+estrategias_fluoxetina_g1 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g1)
+# output es un dataframe
+# modificar threshold del ml algorithm
+
+dim(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4)$calls)
+# parece que elimina 12 (quedan 271 - 12)
+```
+
+
+```{r rtrack_exportar}
+
+Rtrack::export_results(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/exportado.csv")
+# exportar estrategias
+Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, file = "./datos/rtrack/exportado_estrategias.csv")
+# thresholded
+thresholded_fg1 = Rtrack::threshold_strategies(estrategias_fluoxetina_g1,
+    0.4)
+Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, tracks = rownames(thresholded_fg1$calls),
+    file = "./datos/rtrack/exportado_estrategias_thresholded.csv")
+
+```
+
+```{r rtrack_rdata}
+# comprimido de rtrack_experiment
+save(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/fluoxetina_g1_experiment.RData")
+# load("./datos/rtrack/fluoxetina_g1_experiment.RData")
+
+
+```
+
+
+Ver más en:
+
+
+Garthe, Alexander, Joachim Behr, and Gerd Kempermann. 2009. “Adult-Generated Hippocampal Neurons Allow the Flexible Use of Spatially Precise Learning Strategies.” PloS One 4 (5): e5464. https://doi.org/10.1371/journal.pone.0005464.
+Graziano, Alessandro, Laura Petrosini, and Alessandro Bartoletti. 2003. “Automatic Recognition of Explorative Strategies in the Morris Water Maze.” Journal of Neuroscience Methods 130 (1): 33–44. https://doi.org/10.1016/S0165-0270(03)00187-0.
+Morris, R. 1984. “Developments of a Water-Maze Procedure for Studying Spatial Learning in the Rat.” Journal of Neuroscience Methods 11 (1): 47–60. https://doi.org/10.1016/0165-0270(84)90007-4.
+Wolfer, D P, and H P Lipp. 1992. “A New Computer Program for Detailed Off-Line Analysis of Swimming Navigation in the Morris Water Maze.” Journal of Neuroscience Methods 41 (1): 65–74. https://doi.org/10.1016/0165-0270(92)90124-v.
 
 
 ## Entrenamientos
@@ -832,6 +891,19 @@ El modelo de regresión bayesiana tiene los siguientes parámetros:
 PENDIENTE: sacar estrategias. Podemos dividir las estrategias en egocéntricas(\`0\`) y alocéntricas (\`1\`). De esta manera podemos realizar una regresión logística.
 
 Estrategias de búsqueda: El grupo de Garthe y Kempermann (Garthe et al., 2009) definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma durante los entrenamientos. De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. El análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo (Hernández-Mercado & Zepeda, 2022).
+
+```{r}
+
+Rtrack::plot_strategies(estrategias_fluoxetina_g1, experiment = rtrack_experimento_fluoxetina_g1, factor = "Tratamiento",
+    exclude.probe = TRUE)
+
+# con threshold
+
+Rtrack::plot_strategies(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4), experiment = rtrack_experimento_fluoxetina_g1,
+    factor = "Tratamiento", exclude.probe = TRUE)
+
+```
+
 
 ### Eficiencia
 
@@ -1113,6 +1185,7 @@ Data Format: Make sure your data format aligns with the requirements of the func
 
 El análisis de las 3 pruebas del laberinto (adquisición, retención y aprendizaje reversa) se puede realizar con distintas métricas. De acuerdo a Maei y Frankland (Maei, Zaslavsky, Teixeira, et al., 2009), las medidas más utilizadas, en orden, son: porcentaje de tiempo en cuadrante blanco (4 cuadrantes), porcentaje de tiempo en zona blanco (definida como un círculo alrededor de la localización de la plataforma) y número de cruces (cruces alrededor de la localización de la plataforma). Sin embargo, los parámetros que reflejan con mayor precisión el desempeño en estas pruebas son: distancia promedio al blanco y entropía de Shannon (Maei, Zaslavsky, Wang, et al., 2009). Esta última métrica parece ser la más sensible al aprendizaje de la prueba del laberinto acuático. Está definida como la incertidumbre con la que se conoce una variable. Esta incertidumbre reduce con información (aprendizaje). En este sentido, una certidumbre de "0" significaría que el ratón pasó todo el tiempo en la localización de la plataforma blanco. Por otro lado, si el ratón exploró todo el laberinto acuático durante la prueba, la entropía sería máxima.
 
+
 ### Distancia Media
 
 Como se mencionó antes, esta es una métrica mucho más sensible que las anteriores. Aquí, una menor distancia implica un mejor aprendizaje espacial. El resultado es similar: hay diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0158).
@@ -1227,6 +1300,28 @@ En el análisis de porcentaje en cuadrante, la cual es una de las métricas meno
 Esta es una métrica más sensible que cuadrante. De manera interesante, podemos ver que todos los grupos (excepto el control) presentan un olvido en la prueba 2 y un reaprendizaje en la prueba 3. En cuanto a la prueba 2, de manera muy interesante existe una diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0204, IC = -29.87199 a -1.994670). Se ha observado que aumentar la neurogénesis después de un aprendizaje puede fomentar el olvido (Martinez-Canabal, 2015), lo que en teoría facilitaría el reaprendizaje en la prueba reversa (flexibilidad cognitiva). Sin embargo, parece ser que todos los grupos tienen un reaprendizaje similar en la prueba reversa
 
 ### Cruces al annulus
+
+### Mapas de calor
+
+```{r}
+
+
+
+fluoxg1Flx_reversal_metrics = 
+  rtrack_experimento_fluoxetina_g1$metrics[rtrack_experimento_fluoxetina_g1$factors$Tratamiento == "Fluoxetina-CUMS" &
+    (rtrack_experimento_fluoxetina_g1$factors$`_Day` == 9) ]
+
+Rtrack::plot_density(fluoxg1Flx_reversal_metrics, title = "FLX reversal", col = viridis(738), resolution = 900, feature.col = "#54c667", feature.lwd = 2, legend = FALSE)
+
+
+fluoxg1SalF_reversal_metrics = 
+  rtrack_experimento_fluoxetina_g1$metrics[rtrack_experimento_fluoxetina_g1$factors$Tratamiento == "Salina-CUMS" &
+    (rtrack_experimento_fluoxetina_g1$factors$`_Day` == 9) ]
+
+Rtrack::plot_density(fluoxg1SalF_reversal_metrics, title = "Sal reversal", col = viridis(738), resolution = 900, feature.col = "#54c667", feature.lwd = 2, legend = FALSE)
+
+
+```
 
 ## Otras
 
