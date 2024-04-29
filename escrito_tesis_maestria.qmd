@@ -148,10 +148,7 @@ El estrés crónico se ha asociado a cambios en el volumen de varias regiones ce
 
 De acuerdo con investigaciones lideradas por Igor Branchini [@branchi2023] y [@dellicolli2024], los niveles altos de plasticidad inducidos por medicamentos, como los antidepresivos serotoninérgicos y los psicodélicos, no son beneficiosos por sí mismos. Estos fármacos inducen una alta plasticidad (a veces llamados psicoplastógenos) que hacen que el cerebro y el comportamiento sean más susceptibles a cambios según factores contextuales, como las condiciones de vida. Esta suceptibilidad puede ser benéfica si las condiciones de vida mejoran. Sin embargo, si las condiciones de vida no mejoran (o empeoran), esta plasticidad inducida por los fármacos puede ser detrimental.
 
-<<<<<<< HEAD
 ##### Paul Willner y el Modelo de Estrés Crónico
-=======
-#### Paul Willner y el Modelo de Estrés Crónico
 
 Estresores crónicos, impredecibles e incontrolables son causa mayor de desordenes depresivos y de ansiedad [@hill2012a].
 
@@ -182,42 +179,20 @@ Entre los sistemas que afecta (ver revisión de @hill2012a), están:
 Sistema serotoninérgico: ere are almost as many studies demonstrating a null effect of CMS on 5-HT as there are studies demonstrating that CMS results in a reduction in 5-HT levels. Similar to its effects in the frontal cortex, CMS appears to impair serotonergic neurotransmission within the hippocampus. Specifically, exposure to CMS reduces both 5-HT content (Vancassel et al., 2008; Sheikh et al., 2007; Li et al., 2003, 2009a; Yi et al., 2008; Xu et al., 2008; Rasheed et al., 2008; Ahmad et al., 2010; Shi et al., 2010; Kang et al., 2005; Chen et al., 2009; Zhang et al., 2004). However, there exist several discrepant findings, including reports of no effects of CMS on 5-HT or serotonergic turnover in the hippocampus (Dalla et al., 2005; Tannenbaum and Anisman, 2003; Yalcin et al., 2008; Johnson and Yamamoto, 2009, 2010; Dang et al., 2009a,b; Patterson et al., 2010; Laugeray et al., 2010; Gronli et al., 2007), and even one anomalous report of an increase in hippocampal serotonergic activity following CMS (Bekris et al., 2005).With respect to serotonergic receptors within the hippocampus, all of the work to date has focused on the 5-HT1A receptor due to its ubiquitous regulation by multiple antidepressant regimens (Haddjeri et al., 1998). With radioligand binding to whole hippocampal membrane fractions, CMS has been found to either decrease (Papp et al., 1994a) or have no effect on 5-HT1A receptor binding (Haidkind et al., 2003). Thus, except for an occasional anomalous study reporting no effect of CMS (van Riel et al., 2003) or a CMS-induced increase (Li et al., 2009a) in hippocampal 5-HT1A receptor mRNA, these data generally demonstrate that CMS exposure results in a reduction in 5-HT1A receptor activity throughout the hippocampus. With respect to other serotonergic receptors, CMS has been reported not to affect 5-HT1B mRNA in whole hippocampus, while two studies have demonstrated increases in 5-HT7 mRNA in the hippocampus following CMS ((Li et al., 2009a) [whole hippocampi]; (Yau et al., 2001) [CA3 only]) @hill2012a (tabla).
 
 ![](figuras/hill2012_t1a.jpg)
-
-=======
-![](figuras/hill2012_t1a.jpg)
-
->>>>>>> ef71e3a089e62a7525e49516c83aecfb8c9e73bc
 ![](figuras/hill2012_t1b.jpg)
 ![](figuras/hill2012_t1c.jpg)
 
 
-<<<<<<< HEAD
-##### Efectos sobre cognición
-=======
 ###### Efectos sobre cognición
->>>>>>> ef71e3a089e62a7525e49516c83aecfb8c9e73bc
 
 El CUM tiene efectos sobre varios aspectos de la Cognición (habilidad de procesar información, valorarla y utilizar el conocimiento por medio de conductas dirigidas. Aprendizaje, memoria, atención, razonamiento, sentimientos, toma de desiciones). Afecta distintos aspectos cognitivos (memoria, aprendizaje...), produciendo conductas "maladaptativas" (Bondi et al., 2008; Maramis et al., 2021).
 
 Debido a que el Hipocampo regula distintos apectos de la cognición (flexibilidad cognitiva y aprendizaje espacial), esta estructura está intimamente relacionada con las alteraciones cognitivas producidas por el CUM (Anacker y Hen, 2017). Abundancia de receptors a glucocorticoidies en hipocampo lo hace muy sensible al estrés crónico (Lucassen et al., 2016).
 
-<<<<<<< HEAD
 Una investigación (The Impact of Chronic Unpredictable Mild Stress-Induced Depression on Spatial, Recognition and Reference Memory Tasks in Mice: Behavioral and Histological Study) evaluó el impacto del CUMS en varios tipos de memoria (entre ellas, la memoria espacial en el MWM) y el impacto que tenía sobre el hipocampo y la corteza prefrontal. Encontraron que el CUM afectaba la adquisición de la memoria espacial en el MWM. Además, encontraron características histológicas anormales en las áreas del cerebro relacionadas con la memoria (hipocampo y corteza prefrontal). En hipocampo, encontraron degeneración neuronal en CA1 y CA3.
-=======
+
 Una investigación [@el-azis2022] evaluó el impacto del CUMS en varios tipos de memoria (entre ellas, la memoria espacial en el MWM) y el impacto que tenía sobre el hipocampo y la corteza prefrontal. Encontraron que el CUM afectaba la adquisición de la memoria espacial en el MWM. Además, encontraron características histológicas anormales en las áreas del cerebro relacionadas con la memoria (hipocampo y corteza prefrontal). En hipocampo, encontraron degeneración neuronal en CA1 y CA3.
 
-Sin embargo, poco se ha estudiado sobre la relación de el CUM con un proceso específico de la cognición, la flexibilidad cognitiva. 
-
-Existe evidencia que el giro dentado está involucrado en el aprendizaje revera.
-
-En el estudio de @vila-ballo2017, encontraron que el hipocampo es esencial para adoptar estrategias anticipatorias en el aprendizaje reversa, permitiendo una respuesta flexible a entornos de alto orden, mientras que las alteraciones en esta estructura pueden hacer que el comportamiento sea habitual e inflexible. Para esta 
-
-
-@morellini2010 utilizó una glicoproteína de la matriz extracelular tenascina-R en ratones (tenascina-R) que producí un rediseño estructural y funcional del giro dentado (un aumento en la proporción de neuronas inhibitorias respecto a las excitatorias y una innervación GABAérgica mejorada). Esto resultó en una plasticidad alterada que favorece la memoria de trabajo y el aprendizaje de reversa.
-
-
-Involvement of hippocampus in the ability of rats and mice to solve the water maze by constructing an allocentric spatial map has been well established (Eichenbaum et al. 1990) en @shah2019.
->>>>>>> ef71e3a089e62a7525e49516c83aecfb8c9e73bc
 
 Sin embargo, poco se ha estudiado sobre la relación de el CUM con un proceso específico de la cognición, la flexibilidad cognitiva. 
 
