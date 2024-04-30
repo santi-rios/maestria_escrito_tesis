@@ -416,6 +416,8 @@ El estudio investigó los efectos de los enantiómeros (R) y (S) de la fluoxetin
 
 ## Análisis de datos
 
+systematically study behavioral statistics, that is, statistical modeling and analyses that inherently take into account the behavior of entities involved in the study. 
+
 El correcto modelamiento de factores de riesgo en la depresión puede mejorar la predicción de la progresión clínica a tratamientos en la depresión, haciendo posible identificar mejores terapias individuales o sujetos con mayor riesgo de prevalencia de trastorno depresivo mayor. Las inferencias estadísticas tradicionales (modelos lineales) son deficientes para identificar las interacciones conductuales complejas entre fenómenos como el estrés, depresión y flexibilidad cognitiva (Utilizing Random Effects Machine Learning Algorithms for Identifying Vulnerability to Depression).
 
 ## Resumen
@@ -600,6 +602,50 @@ df_pruebas <- read.csv("./datos/df_pruebas.csv")
 
 ```
 
+    -   En prueba 2:
+
+        -   2b se olvidó de todo, está muy por debajo del 11%
+
+        -   1b casi pasa lo mismo
+
+-   Fluoxetina control:
+
+    -   Prueba 1:
+
+        -   Gris 2 está en 11%
+        
+        
+De aquí (latencias) podemos ver que el animal "***1b***" y el "***4-1"*** no promediaron una latencia menor a 17 segundos (aprendizaje) en el Entrenamiento 4. Por otro lado,"***2b"*** no aprendió en los entrenamientos reversa.
+
+De acuerdo al análisis de cuadrante, en la P1, los animales "2-1"y "1b" son los que menos aprendieron, pero están arriba del 25%. Para la P2, pasa algo similar con "2b" y "1b". En reversa, los que más aprendieron fueron "2-1", "2b" y "1b".
+
+```
+# limpiar
+
+wm_f1 <- water_maze_df(read.csv("./Datos/water_maze/Fluoxetina_1/F1_Bueno.csv")) %>% 
+  filter(!str_detect(Id, paste(c("2-1", "1b", "2b"), collapse = "|")))
+
+wm_f2 <- water_maze_df(read.csv("./Datos/water_maze/Fluoxetina_2/Fluoxetina_grupo_2_Bueno.csv")) |> 
+  filter(!str_detect(Id, "gris-2")) |> 
+  filter(!str_detect(Id, "negro-2"))
+
+# Unir dataframes
+
+wm_df <- bind_rows(
+  wm_f1,
+  wm_f2 
+)
+
+# Hacer 2 subframes
+# Uno para entrenamientos, otro para pruebas
+
+wm_ent <- wm_df |> 
+  filter(!str_detect(Stage, "prueba"))
+
+wm_p <- wm_df |> 
+  filter(!str_detect(Stage, "entrenamiento"))
+```
+
 ```{r recode_variables}
 #| code-fold: true
 #| code-summary: Ver limpieza de datos
@@ -633,10 +679,97 @@ df_pruebas$stage <- as.factor(df_pruebas$stage)
 
 ```
 
+```{r rtrack_preparar}
+#| eval: false
+
+# Primero armar el archivo en excel
+# Solo hay que copiar y pegar de anymaze
+# Lo único que se tiene que hacer manual es el nombre del test, probe, Day, etc.
+#############
+# Primero hay que limpiar los arhcivos CVS
+
+################# NOTA ###########
+  # Los archivos los exporté en anymaze solo con [TestNum]
+# El problema es que exporta los nombres con secuencia mal
+# es decir, si en el número real de anymaze, el número de la prueba va 1,3,5... en el nombre de archivo exportado va 1,2,3...
+# Para resolver esto, use la columna de _TrackID  con 1.2.3... , luego con la función del archivo se renombraron automaticamente 1.csv, 2.csv... y luego copie y pegué de anymaze los nombres reales 1.3.5... a un lado.
+
+path <- fs::path("./datos/rtrack/fluoxetina_grupo3v3/Datv3") 
+
+# get all csv files
+csv_files <- fs::dir_ls(path, glob = "*.csv")
+# verify the results
+print(csv_files)
+
+# The resulting `csv_files` will be a vector of file paths to every CSV in your specified directory. They are ready to be iterated over, opened, and read directly into a tibble / data frame.
+
+# To read these files into a single dataframe, we can use `map_df` from purrr package and `read_csv` from readr package to read and bind all csv files into a single dataframe.
+
+# all_data <- purrr::map_df(csv_files, readr::read_csv) # Uncomment, if you want to read them
+# Here, read_csv is from readr package. If you haven't loaded already load it.
+# Be aware of the fact that all csv files should have the same structure (same columns etc.).
+
+
+# Here is how you can achieve the same results in R using tidyverse style of coding:
+
+# Load necessary libraries
+
+
+# Define a function to process each file
+process_file <- function(f) {
+  df <- read_csv(f) %>%
+    # Rename
+    rename(
+      # "Time" = "Time (s)",
+      "X" = "Centre position X",
+      "Y" = "Centre position Y") |> 
+    # Remove the first row
+    slice(-1) %>%
+    # Divide X and Y by 10
+    mutate(across(c(X, Y), ~ .x / 10))
+  # Save the modified dataframe back to the file
+  write_csv(df, f)
+}
+
+# Apply the function to all CSV files
+walk(csv_files, process_file)
+
+# Note: This assumes that your working directory is set to the location of your CSV files, and that 'X' and 'Y' are the exact column names from your dataframes to be modified.
+
+
+
+#### Enlistar nombres
+# Ahora necesitamos enlistar los nombres de los archivos cvs en csv_files
+
+# Sure, R's `fs` package's `path_file()` function can help you extract the filenames from the paths. Here's how you can achieve this:
+
+# In the next code, I extract the file names into a dataframe. How can I change this so that I extract the file names without the ".csv" extention? 
+# Extract file names from the paths
+file_names <- fs::path_file(csv_files)
+
+# This code will give you just the names of the csv files (without the directories) that are in the `csv_files` list. 
+
+file_names <- data.frame(file_names) 
+
+# Sure, you can use the `str_replace_all` function from the `stringr` package in the `tidyverse` to replace the ".csv" strings. However, remember that in regular expressions the dot is a special character. You need to escape it using double backslashes to specify that you want to match the literal dot character.
+
+file_names <- file_names %>%
+  mutate(file_names = str_replace_all(file_names, "\\.csv", "")) |> 
+  write.csv("./datos/rtrack/fluoxetina_grupo_3v2/Datafile_names.csv")
+
+## Renombrar cvs
+
+file_names <- file_names %>%
+  mutate(file_names = str_replace_all(file_names, "[^0-9]", "")) |> 
+  write.csv("./datos/rtrack/fluoxetina_grupo3v3/Datafile_namesv3.csv")
+```
+
 ```{r rtrack_experimentos}
 #| code-fold: true
-#| code-summary: Ver preparación de datos
+#| code-summary: Lectura experimentos Rtrack
 
+tictoc::tic()
+# ---- Fluoxetina G-1 ----
 rtrack_experimento_fluoxetina_g1 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo_1/experimento/Experiment.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo_1/experimento/Data",
     threads = 0) # use all available CPU cores
 
@@ -644,6 +777,28 @@ rtrack_experimento_fluoxetina_g1 = Rtrack::read_experiment("./datos/rtrack/fluox
 # detectCores()
 # 12
 
+# ---- Fluoxetina G-2 ----
+
+rtrack_experimento_fluoxetina_g2 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo_2/Experiment.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo_2/Data",
+    threads = 0) # use all available CPU cores
+
+# ---- Fluoxetina G-3 ----
+
+rtrack_experimento_fluoxetina_g3 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo3v3/Experimentv2.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo3v3/Datv3",
+    threads = 0) # use all available CPU cores
+
+# ---- Ketamina G-1 ----
+
+rtrack_experimento_ketamina_g1 = Rtrack::read_experiment("./datos/rtrack/ketamina_grupo_1/rtrack/Experiment.xlsx", data.dir = "./datos/rtrack/ketamina_grupo_1/rtrack/Data",
+    threads = 0) # use all available CPU cores
+
+# ---- Ketamina G-2 ----
+
+rtrack_experimento_ketamina_g2 = Rtrack::read_experiment("./datos/rtrack/ketamina_grupo_2/Experiment.xlsx", data.dir = "./datos/rtrack/ketamina_grupo_2/Data",
+    threads = 0) # use all available CPU cores
+tictoc::toc()
+
+# 113.03 sec elapsed
 ```
 
 ```{r rtrack_estrategias}
@@ -654,29 +809,98 @@ estrategias_fluoxetina_g1 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_
 # output es un dataframe
 # modificar threshold del ml algorithm
 
-dim(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4)$calls)
+# dim(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4)$calls)
 # parece que elimina 12 (quedan 271 - 12)
+
+estrategias_fluoxetina_g2 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g2)
+
+estrategias_fluoxetina_g3 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g3)
+
+estrategias_ketamina_g1 = Rtrack::call_strategy(rtrack_experimento_ketamina_g1)
+
+estrategias_ketamina_g2 = Rtrack::call_strategy(rtrack_experimento_ketamina_g2)
+
 ```
 
 
-```{r rtrack_exportar}
+```{r rtrack_exportar_resultados}
 
-Rtrack::export_results(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/exportado.csv")
+
+# ---- f1 ----
+Rtrack::export_results(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/exportado_fg1.csv")
 # exportar estrategias
-Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, file = "./datos/rtrack/exportado_estrategias.csv")
+Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, file = "./datos/rtrack/exportado_estrategias_fg1.csv")
 # thresholded
 thresholded_fg1 = Rtrack::threshold_strategies(estrategias_fluoxetina_g1,
     0.4)
 Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, tracks = rownames(thresholded_fg1$calls),
-    file = "./datos/rtrack/exportado_estrategias_thresholded.csv")
+    file = "./datos/rtrack/exportado_estrategias_fg1_thresholded.csv")
+
+# ---- f2 ----
+Rtrack::export_results(rtrack_experimento_fluoxetina_g2, file = "./datos/rtrack/exportado_fg2.csv")
+# exportar estrategias
+Rtrack::export_results(rtrack_experimento_fluoxetina_g2, estrategias_fluoxetina_g2, file = "./datos/rtrack/exportado_estrategias_fg2.csv")
+# thresholded
+thresholded_fg2 = Rtrack::threshold_strategies(estrategias_fluoxetina_g2,
+    0.4)
+Rtrack::export_results(rtrack_experimento_fluoxetina_g2, estrategias_fluoxetina_g2, tracks = rownames(thresholded_fg2$calls),
+    file = "./datos/rtrack/exportado_estrategias_fg2_thresholded.csv")
+
+# ---- f3 ----
+Rtrack::export_results(rtrack_experimento_fluoxetina_g3, file = "./datos/rtrack/exportado_fg3.csv")
+# exportar estrategias
+Rtrack::export_results(rtrack_experimento_fluoxetina_g3, estrategias_fluoxetina_g3, file = "./datos/rtrack/exportado_estrategias_fg3.csv")
+# thresholded
+thresholded_fg3 = Rtrack::threshold_strategies(estrategias_fluoxetina_g3,
+    0.4)
+Rtrack::export_results(rtrack_experimento_fluoxetina_g3, estrategias_fluoxetina_g3, tracks = rownames(thresholded_fg3$calls),
+    file = "./datos/rtrack/exportado_estrategias_fg3_thresholded.csv")
+
+# ---- k1 ----
+Rtrack::export_results(rtrack_experimento_ketamina_g1, file = "./datos/rtrack/exportado_kg1.csv")
+# exportar estrategias
+Rtrack::export_results(rtrack_experimento_ketamina_g1, estrategias_ketamina_g1, file = "./datos/rtrack/exportado_estrategias_kg1.csv")
+# thresholded
+thresholded_kg1 = Rtrack::threshold_strategies(estrategias_ketamina_g1,
+    0.4)
+Rtrack::export_results(rtrack_experimento_ketamina_g1, estrategias_ketamina_g1, tracks = rownames(thresholded_kg1$calls),
+    file = "./datos/rtrack/exportado_estrategias_kg1_thresholded.csv")
+
+# ---- k2 ----
+Rtrack::export_results(rtrack_experimento_ketamina_g2, file = "./datos/rtrack/exportado_kg2.csv")
+# exportar estrategias
+Rtrack::export_results(rtrack_experimento_ketamina_g2, estrategias_ketamina_g2, file = "./datos/rtrack/exportado_estrategias_kg2.csv")
+# thresholded
+thresholded_kg2 = Rtrack::threshold_strategies(estrategias_ketamina_g2,
+    0.4)
+Rtrack::export_results(rtrack_experimento_ketamina_g2, estrategias_ketamina_g2, tracks = rownames(thresholded_kg2$calls),
+    file = "./datos/rtrack/exportado_estrategias_kg2_thresholded.csv")
 
 ```
 
 ```{r rtrack_rdata}
 # comprimido de rtrack_experiment
-save(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/fluoxetina_g1_experiment.RData")
-# load("./datos/rtrack/fluoxetina_g1_experiment.RData")
+# save(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/fluoxetina_g1_experiment.RData")
+load("./datos/rtrack/fluoxetina_g1_experiment.RData")
 
+
+# comprimido de rtrack_experiment
+# save(rtrack_experimento_fluoxetina_g2, file = "./datos/rtrack/fluoxetina_g2_experiment.RData")
+load("./datos/rtrack/fluoxetina_g2_experiment.RData")
+
+# comprimido de rtrack_experiment
+# save(rtrack_experimento_fluoxetina_g3, file = "./datos/rtrack/fluoxetina_g3_experiment.RData")
+load("./datos/rtrack/fluoxetina_g2_experiment.RData")
+
+
+# comprimido de rtrack_experiment
+# save(rtrack_experimento_ketamina_g1, file = "./datos/rtrack/ketamina_g1_experiment.RData")
+load("./datos/rtrack/ketamina_g1_experiment.RData")
+
+
+# comprimido de rtrack_experiment
+# save(rtrack_experimento_ketamina_g2, file = "./datos/rtrack/ketamina_g2_experiment.RData")
+load("./datos/rtrack/ketamina_g2_experiment.RData")
 
 ```
 
@@ -901,6 +1125,7 @@ Rtrack::plot_strategies(estrategias_fluoxetina_g1, experiment = rtrack_experimen
 
 Rtrack::plot_strategies(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4), experiment = rtrack_experimento_fluoxetina_g1,
     factor = "Tratamiento", exclude.probe = TRUE)
+
 
 ```
 
@@ -1289,11 +1514,807 @@ Probe 3 Quadrant Time
 PENDIENTE: Creo que se puede usar el mismo analisis para tiempo en zona. 
 ```
 
+Estadísticos
+
+```
+result <- prueba_1 %>%
+  group_by(Tratamientos) %>%
+  summarise(
+    n = n(),  # Renamed 'count' to 'n'
+    promedio = mean(Distancia_media_blanco, na.rm = TRUE),  # Renamed 'mean' to 'promedio'
+    sd = sd(Distancia_media_blanco, na.rm = TRUE)
+  ) %>%
+  flextable::flextable()  # Convert the result to a Flextable
+
+# Display the Flextable
+result
+```
+
+ANOVA
+
+```
+# Compute the analysis of variance
+res.aov <- aov(Distancia_media_blanco ~ Tratamientos, data = prueba_1)
+# # Summary of the analysis
+# summary(res.aov)
+# 
+# 
+# 
+# res.aov <- anova_test(
+#   data = pruebas_df,
+#   dv = Distancia_media_blanco,
+#   between = Tratamientos
+# )
+# #
+# get_anova_table(res.aov)
+
+
+
+aov.p1.distancia_media <- prueba_1 |>
+  rename(Tiempo = Stage) 
+
+myft <- aov.p1.distancia_media %>%
+  ezANOVA(
+    data = .,
+    dv = .(Distancia_media_blanco),
+    wid = .(Id),
+    between = .(Tratamientos),
+    type = 3
+  ) %>%
+  purrr::pluck("ANOVA") %>%
+  mutate(
+    # p = format(p, scientific = FALSE),
+    F = round(F, 2), # round "F" to 3 decimal places
+    p = round(p, 4),
+    ges = round(ges, 3), # round "ges" to 3 decimal places
+    # # p = case_when(
+    #   p > 0.05 ~ p,
+    # p <= 0.05 & p > 0.01 ~ "P ≤ 0.05",
+    # p <= 0.01 & p > 0.001 ~ "P ≤ 0.01",
+    # p <= 0.001 & p > 0.0001 ~ "P ≤ 0.001",
+    # p <= 0.0001 ~ "P ≤ 0.0001",
+    # TRUE ~ as.character(p)
+    # )
+  ) %>%
+  # select(-`p<.05`) %>%
+  rename(
+    Efecto = Effect,
+    `Tamaño del Efecto` = ges
+  ) %>%
+  relocate(F, .after = Efecto) %>%
+  flextable() %>%
+  # add_footer_lines("ns = P > 0.05
+  #                   * = P ≤ 0.05 , ** = P ≤ 0.01, *** = P ≤ 0.001, **** = P ≤ 0.0001
+  #                   Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo") %>%
+  add_footer_lines("Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo")%>%                   
+  theme_zebra() %>%
+  align(i = 1, part = "header", align = "center") %>%
+  # add_header_lines(values = "ANOVA de diseño mixto") 
+  add_header_lines(values = c("one-way ANOVA", "Distancia Media P-1"))
+# color(~ p %in% c("*", "**", "***", "****"), ~Efecto, color = "red") %>%
+# color(~ p %in% c("*", "**", "***", "****"), ~p, color = "red") %>%
+# color(~ `Tamaño del Efecto` >= 0.14, ~`Tamaño del Efecto`, color = "red") %>%
+# color(~ `Tamaño del Efecto` >= 0.6 & `Tamaño del Efecto` < 0.14, ~`Tamaño del Efecto`, color = "green") 
+
+myft
+```
+
 ### Entropía
+
+
+
+NE
+Para esta función se tienen que exportar las coordenadas (***pixeles***) a una carpeta. Los archivos se van a nombrar con "\[TestNum\]\_\[Stage\]". Esto para filtrar y quitar los entrenamientos (quería sacarlo con los entrenamientos, pero parece que hay errores en algunos datos de entrenamientos).
+```
+wm_entropy_NE <- function(dir) {
+  
+  csv_files <- list.files(path = dir, full.names = TRUE, pattern = "prueba")
+  
+  entropy_data <- data.frame(entropy = numeric())
+  
+  process_file <- function(file) {
+    data <- read.csv(file)
+    
+    data <- data |> 
+      slice(-1) |>
+      rename(X = Centre.position.X,
+             Y = Centre.position.Y)
+    
+    # Initialize gal and LogE
+    gal <- 0
+    LogE <- 0
+    
+    # Assign reference points
+    plat_x <- 220
+    plat_y <- 77
+    
+    # Convert x and y to vectors (in R, they are likely already vectors)
+    Xraw <- as.numeric(data$X)
+    Yraw <- as.numeric(data$Y)
+    
+    # Calculate the difference between raw data and reference points
+    d_x <- Xraw - plat_x
+    d_y <- Yraw - plat_y
+    
+    # Multiply differences by 1 (this step seems redundant, so we'll keep it for consistency)
+    Dx <- d_x * 1
+    Dy <- d_y * 1
+    
+    # Calculate squared distance
+    dist2 <- Dx^2 + Dy^2
+    
+    # Calculate the Euclidean distance
+    dist <- sqrt(dist2)
+    
+    # Calculate the average distance
+    dist_ave <- mean(dist)
+    gal <- dist_ave
+    
+    # Initialize weight w
+    w <- 1
+    
+    # Calculate sum of weights
+    sw <- sum(w)
+    
+    # Calculate weighted means for Dx and Dy
+    xm <- mean(w * Dx) / sw
+    ym <- mean(w * Dy) / sw
+    
+    # Calculate weighted means for squared Dx and Dy
+    xxm <- mean(w * Dx * Dx) / sw
+    yym <- mean(w * Dy * Dy) / sw
+    
+    # Calculate weighted mean for product of Dx and Dy
+    xym <- mean(w * Dx * Dy) / sw
+    
+    # Initialize variance and covariance matrix
+    var_xy2 <- 0
+    
+    # Calculate covariance matrix for Dx and Dy
+    Sig <- matrix(c(xxm - xm^2, xym - xm * ym, 
+                    xym - xm * ym, yym - ym^2), nrow=2)
+    
+    # Calculate eigenvalues of the covariance matrix
+    eig_val <- eigen(Sig)$values
+    
+    # Calculate the product of eigenvalues
+    var_xy2 <- eig_val[1] * eig_val[2]
+    
+    # Calculate the mean squared distance weighted by w
+    mdist2 <- mean(w * dist2) / sw
+    
+    # Calculate the entropy based on mean squared distance and variance
+    aa <- mdist2
+    LogE <- 2 * 0.5 * log(aa) + 2 * 0.5 * 0.5 * log(var_xy2)
+    
+    # Return the mean of LogE as the output
+    entropy <- mean(LogE)
+    
+    # Append the entropy value to the entropy_data dataframe
+    # By using 
+    # the <<- operator, you ensure that the global entropy_data dataframe is updated 
+    # with the new entropy value for each file processed.
+    entropy_data <<- rbind(entropy_data, data.frame(entropy = entropy))
+  }
+  
+  # Apply the function to each CSV file
+  # walk(csv_files, process_file)
+  
+  walk(csv_files, process_file)  
+  
+  return(entropy_data)
+  
+}
+
+## USAGE
+# wm_entropy_NE <- wm_entropy_NE("./borrar/Data/")
+
+# wm_entropy_NE_f2 <- wm_entropy_NE("Datos/water_maze/Fluoxetina_2/rtrack/Data/coordenadas_pixeles")
+
+# wm_entropy_NE_k1 <- wm_entropy_NE("Datos/water_maze/ketamina_1/rtrack/Data/coordenadas_pixeles")
+
+# wm_entropy_NE_k2 <- wm_entropy_NE("Datos/water_maze/ketamina_2/coordenadas_pixeles")
+
+wm_entropy_NE_f1 <- wm_entropy_NE("Datos/water_maze/Fluoxetina_1/coordenadas")
+
+```
+Entropía SO df
+
+```
+
+wm_entropy_SO <- function(dir) {
+  
+  csv_files <- list.files(path = dir, full.names = TRUE, pattern = "prueba")
+  
+  entropy_data <- data.frame(entropy = numeric())
+  
+  process_file <- function(file) {
+    data <- read.csv(file)
+    
+    data <- data |> 
+      slice(-1) |>
+      rename(X = Centre.position.X,
+             Y = Centre.position.Y)
+    
+    # Initialize gal and LogE
+    gal <- 0
+    LogE <- 0
+    
+    # Assign reference points
+    plat_x <- 130
+    plat_y <- 169
+    
+    # Convert x and y to vectors (in R, they are likely already vectors)
+    Xraw <- as.numeric(data$X)
+    Yraw <- as.numeric(data$Y)
+    
+    # Calculate the difference between raw data and reference points
+    d_x <- Xraw - plat_x
+    d_y <- Yraw - plat_y
+    
+    # Multiply differences by 1 (this step seems redundant, so we'll keep it for consistency)
+    Dx <- d_x * 1
+    Dy <- d_y * 1
+    
+    # Calculate squared distance
+    dist2 <- Dx^2 + Dy^2
+    
+    # Calculate the Euclidean distance
+    dist <- sqrt(dist2)
+    
+    # Calculate the average distance
+    dist_ave <- mean(dist)
+    gal <- dist_ave
+    
+    # Initialize weight w
+    w <- 1
+    
+    # Calculate sum of weights
+    sw <- sum(w)
+    
+    # Calculate weighted means for Dx and Dy
+    xm <- mean(w * Dx) / sw
+    ym <- mean(w * Dy) / sw
+    
+    # Calculate weighted means for squared Dx and Dy
+    xxm <- mean(w * Dx * Dx) / sw
+    yym <- mean(w * Dy * Dy) / sw
+    
+    # Calculate weighted mean for product of Dx and Dy
+    xym <- mean(w * Dx * Dy) / sw
+    
+    # Initialize variance and covariance matrix
+    var_xy2 <- 0
+    
+    # Calculate covariance matrix for Dx and Dy
+    Sig <- matrix(c(xxm - xm^2, xym - xm * ym, 
+                    xym - xm * ym, yym - ym^2), nrow=2)
+    
+    # Calculate eigenvalues of the covariance matrix
+    eig_val <- eigen(Sig)$values
+    
+    # Calculate the product of eigenvalues
+    var_xy2 <- eig_val[1] * eig_val[2]
+    
+    # Calculate the mean squared distance weighted by w
+    mdist2 <- mean(w * dist2) / sw
+    
+    # Calculate the entropy based on mean squared distance and variance
+    aa <- mdist2
+    LogE <- 2 * 0.5 * log(aa) + 2 * 0.5 * 0.5 * log(var_xy2)
+    
+    # Return the mean of LogE as the output
+    entropy <- mean(LogE)
+    
+    # Append the entropy value to the entropy_data dataframe
+    # By using 
+    # the <<- operator, you ensure that the global entropy_data dataframe is updated 
+    # with the new entropy value for each file processed.
+    entropy_data <<- rbind(entropy_data, data.frame(entropy = entropy))
+  }
+  
+  # Apply the function to each CSV file
+  # walk(csv_files, process_file)
+  
+  walk(csv_files, process_file)  
+  
+  return(entropy_data)
+  
+}
+
+## usage
+
+# wm_entropy_SO_f2 <- wm_entropy_SO("Datos/water_maze/Fluoxetina_2/rtrack/Data/coordenadas_pixeles")
+
+# wm_entropy_SO_k1 <- wm_entropy_SO("Datos/water_maze/ketamina_1/rtrack/Data/coordenadas_pixeles")
+
+# wm_entropy_SO_k2 <- wm_entropy_SO("Datos/water_maze/ketamina_2/coordenadas_pixeles")
+
+wm_entropy_SO_f1 <- wm_entropy_SO("Datos/water_maze/Fluoxetina_1/coordenadas")
+```
+
+Gráficos
+
+```
+entropia <- read.csv("./Datos/water_maze/entropia_clean.csv") |> 
+  dplyr::filter(!str_detect(Id, "gris-2")) |> 
+  dplyr::filter(!str_detect(Id, "2-1")) |> 
+  dplyr::filter(!str_detect(Id, "2b")) |> 
+  dplyr::filter(!str_detect(Id, "1b")) |> 
+  dplyr::filter(!str_detect(Id, "negro-2")) 
+```
+
+con mi modelo
+
+Leer los archivos en formato ".csv". Estos tienen que tener 2 condiciones: 1) coordenadas del animal y 2) coordenadas de la plataforma blanco
+
+Calculamos la distancia del animal a la plataforma en cada tiempo. Para esto usamos la distancia Euclidiana. Tomando en cuenta las coordenadas del animal ($x_a, y_a$) y de la plataforma planco ($x_b, y_b$)
+
+$$d = \sqrt{(x_a - x_b) + (y_a - y_b)^2} $$
+
+Calculamos la varianza de los vectores de las distancias del animal respecto a la plataforma
+
+Calculamos $H_{error}$ basados en la fórmula $H_{error} = log(varianza_{distancia})$
+
+Ahora, vamos a calcular la varianza de la trayectoria $var(X_a) + var(Y_a)$
+
+Para calcular la entropía de la trayectoria, hacemos $H_{trayectoria} = log(var_{trayectoria})$
+
+Por último, calculamos la entropía total $H_{total} = H_{error} + H_{trayectoria}$
 
 ### Porcentaje en Cuadrantes
 
 En el análisis de porcentaje en cuadrante, la cual es una de las métricas menos sensibles, no tenemos resultados interesantes. Parece haber un olvido en la prueba 2 (retención) en todos los grupos sometidos a CUMS, aunque no hay nada significativo.
+
+
+ANOVA 
+
+```
+wm_df_pruebas_cuadrante_cumsctrl <- wm_df_pruebas_analysis |> 
+  dplyr::filter(str_detect(Tratamiento, "CUMS_ctrl")) 
+
+
+dodge_width <- 0.99
+
+wm_df_pruebas_cuadrante_cumsctrl_longer <- wm_df_pruebas_cuadrante_cumsctrl |> 
+  pivot_longer( cols = c('Cuadrante_blanco', 'Cuadrantes_opuestos'),
+                names_to = "Cuadrante", 
+                values_to = "Tiempo_cuadrante")
+
+
+##############
+
+ggplot(wm_df_pruebas_cuadrante_cumsctrl_longer,
+       aes(
+         x = Day,
+         y = Tiempo_cuadrante,
+         fill = Cuadrante
+       )) +
+  # theme_minimal() # base_size = 16, base_family = "sans"
+  # scale_fill_manual(values = colors) +
+  # scale_fill_manual(values = c("Cuadrante_blanco" = "#0F4C75",
+  #                              "Cuadrantes_opuestos"="#FF2E63")) +
+  # scale_fill_manual(values = c("red", "blue", "green")) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    alpha = 0.8,
+    width = 0.1,
+    colour = "black",
+    position = position_dodge(width = dodge_width)
+  ) +
+  stat_summary(
+    geom = "col",
+    fun.y = "mean",
+    width = 0.5,
+    position = position_dodge(width = dodge_width)
+  ) +
+  scale_fill_viridis_d(name = "Treatment & Goal",
+                       guide = guide_legend(title = "Combined Treatment & Goal")) +
+  labs(fill = "Treatment & Goal") +
+  # geom_jitter(aes(
+  #   colour = Id
+  # ),
+  # alpha = 0.3) +
+  # facet_grid(. ~ Stage) +
+  # scale_colour_solarized() +
+  # labs(
+  #   title = "Latencias",
+  #   x = "Dia de entrenamiento",
+  #   y = "Segundos",
+  #   caption = "Línea punteada señala latencia de aprendizaje ( = 17 seg)"
+  # ) +
+  
+  # theme_bw()
+  
+  # theme_classic()
+# theme_base()
+# theme_calc()
+# theme_clean()
+
+theme_few()
+
+# theme(
+#   legend.position = "top",
+#   legend.justification = c("right", "center")) +
+# theme(
+#   plot.margin = unit(c(.8,.8,.8,.8), "cm"),
+#   axis.line = element_line(color = "black"),
+#   axis.title = element_text(size=14, color="black",
+#                             face="bold"),
+#   axis.text = element_text(size = 11, color = "black"),
+#   axis.text.y = element_text(size=9),
+#   axis.ticks.x = element_blank(),
+#   axis.text.x = element_text(margin = margin(t=5)),
+#   axis.title.y = element_text(margin = margin(r=10)),
+#   legend.text = element_text(size=10)
+# ) +
+# geom_hline(yintercept = 17, linetype="dashed", color = "black", size = 0.7, alpha = 0.5) +
+# geom_signif(comparisons = list(c(1,4),
+#                                c(1,2)),
+#             map_signif_level = TRUE)
+
+
+
+#################
+
+ggplot(wm_df_pruebas_cuadrante_cumsctrl_longer,
+       aes(
+         x = Cuadrante,
+         y = Tiempo_cuadrante,
+         fill = Cuadrante
+       )) +
+  # theme_minimal() # base_size = 16, base_family = "sans"
+  # scale_fill_manual(values = colors) +
+  # scale_fill_manual(values = c("Cuadrante_blanco" = "#0F4C75",
+  #                              "Cuadrantes_opuestos"="#FF2E63")) +
+  # scale_fill_manual(values = c("red", "blue", "green")) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    alpha = 0.8,
+    width = 0.1,
+    colour = "black",
+    position = position_dodge(width = dodge_width)
+  ) +
+  stat_summary(
+    geom = "col",
+    fun.y = "mean",
+    width = 0.5,
+    position = position_dodge(width = dodge_width)
+  ) +
+  scale_fill_viridis_d(name = "Treatment & Goal",
+                       guide = guide_legend(title = "Combined Treatment & Goal")) +
+  labs(fill = "Treatment & Goal") +
+  facet_grid(~ Stage) +
+  # geom_jitter(aes(
+  #   colour = Id
+  # ),
+  # alpha = 0.3) +
+  # facet_grid(. ~ Stage) +
+  # scale_colour_solarized() +
+  # labs(
+  #   title = "Latencias",
+  #   x = "Dia de entrenamiento",
+  #   y = "Segundos",
+  #   caption = "Línea punteada señala latencia de aprendizaje ( = 17 seg)"
+  # ) +
+  
+  # theme_bw()
+  
+  # theme_classic()
+# theme_base()
+# theme_calc()
+# theme_clean()
+
+theme_few()
+
+# theme(
+#   legend.position = "top",
+#   legend.justification = c("right", "center")) +
+# theme(
+#   plot.margin = unit(c(.8,.8,.8,.8), "cm"),
+#   axis.line = element_line(color = "black"),
+#   axis.title = element_text(size=14, color="black",
+#                             face="bold"),
+#   axis.text = element_text(size = 11, color = "black"),
+#   axis.text.y = element_text(size=9),
+#   axis.ticks.x = element_blank(),
+#   axis.text.x = element_text(margin = margin(t=5)),
+#   axis.title.y = element_text(margin = margin(r=10)),
+#   legend.text = element_text(size=10)
+# ) +
+# geom_hline(yintercept = 17, linetype="dashed", color = "black", size = 0.7, alpha = 0.5) +
+# geom_signif(comparisons = list(c(1,4),
+#                                c(1,2)),
+#             map_signif_level = TRUE)
+
+
+########################## GGPUBR
+
+### Con Cuadrante en X
+
+bar <- ggbarplot(
+  wm_df_pruebas_cuadrante_cumsctrl_longer, 
+  x = "Stage", 
+  y = "Tiempo_cuadrante",
+  # label = TRUE,
+  # color = "#e72a8a",
+  fill = "Cuadrante", 
+  position = position_dodge(),
+  add = c("mean_se"),
+  # add = c("mean_se", "dotplot"),
+  # facet.by = c("Cuadrante"),
+  # panel.labs = list(Cuadrante = c("Blanco", "Opuestos")),
+  title = "Porcentaje en Cuadrantes",
+  xlab = "",
+  ylab = "%",
+  palette = c("#0F4C75", "#FF2E63"),
+  ggtheme = theme_pubr(base_size = 12),
+) + # base_family = ""
+  scale_y_continuous(expand = expansion(mult = c(0.005, 0.1))) +
+  # theme_base() +
+  geom_hline(yintercept = 25, linetype = "dashed", color = "black", size = 0.7, alpha = 0.6) +
+  annotate( "text", label = "25%", x = 0.5, y = 26, size = 5, colour = "black") +
+  scale_x_discrete(labels = c("P-1", "P-2", "P-Rev")) +
+  scale_y_continuous(breaks = seq(20, 100, 20), limits = c(0,100), expand = expansion(mult = c(0.005, 0.1))) +
+  # geom_jitter(aes(color = Id), size = 4, shape = 19, width = 0.1) +
+  geom_label(aes(x=Stage, y=Tiempo_cuadrante, label = Id, group=Cuadrante), fill = "#64CCC5", color = "black", size = 4, check_overlap = TRUE, position=position_dodge(width=1))
+  
+#### ANOVA ----
+
+wm_df_pruebas_cuadrante_cumsctrl_longer_aov <- wm_df_pruebas_cuadrante_cumsctrl_longer
+
+res.aov <- anova_test(
+  data = wm_df_pruebas_cuadrante_cumsctrl_longer_aov,
+  dv = Tiempo_cuadrante,
+  wid = Id,
+  between = Stage,
+  within = Cuadrante
+)
+
+get_anova_table(res.aov)
+
+library(gt)
+
+tab1 <- res.aov |> gt() |>
+  tab_header(title = "ANOVA",
+             subtitle = "Cuadrantes CUMS_Salina") |>
+  cols_label(Effect = "Efecto") |> # ges = "Tamaño del Efecto" 
+  fmt_number(columns = "p", decimals = 3) |> 
+  fmt_number(columns = "F", decimals = 2) |>
+  cols_hide(columns = "ges") |> 
+  text_replace(
+    locations = cells_body(columns = Effect),
+    pattern = "Stage",
+    replacement = "Prueba"
+  )
+
+
+
+#### Post-Hoc -----
+
+# Simple main effect of group variable
+
+# Effect of group at each time point
+one.way <- wm_df_pruebas_cuadrante_cumsctrl_longer_aov %>%
+  group_by(Cuadrante) %>%
+  anova_test(dv = Tiempo_cuadrante, wid = Id, between = Stage) %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+one.way
+
+# Pairwise comparisons between group levels
+
+pwc <- wm_df_pruebas_cuadrante_cumsctrl_longer_aov %>%
+  group_by(Cuadrante) %>%
+  pairwise_t_test(Tiempo_cuadrante ~ Stage, p.adjust.method = "bonferroni")
+pwc
+
+
+# Simple main effects of time variable
+# analyze for the within-subject tipo_cuadrante variable at each level of tratamiento
+
+one.way2 <- wm_df_pruebas_cuadrante_cumsctrl_longer_aov %>%
+  group_by(Stage) %>%
+  anova_test(dv = Tiempo_cuadrante, wid = Id, within = Cuadrante) %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+one.way2
+
+# Pairwise comparisons between time points at each group levels
+# Paired t-test is used because we have repeated measures by time
+pwc2 <- wm_df_pruebas_cuadrante_cumsctrl_longer_aov %>%
+  group_by(Stage) %>%
+  pairwise_t_test(
+    Tiempo_cuadrante ~ Cuadrante, paired = TRUE, 
+    p.adjust.method = "bonferroni"
+  ) 
+pwc2
+
+tab2 <- pwc2 |> gt() |> 
+  tab_header(title = "ANOVA",
+             subtitle = "Cuadrantes CUMS_Salina")
+
+tab2 <- get_anova_table(pwc2)
+
+
+
+#### Reportar ----
+
+# wm_p_cuad_aov$Tratamiento <- factor(wm_p_cuad_aov$Tratamiento, 
+#                                  levels = c("CUMS_Fluox", 
+#                                             "CUMS_ctrl",
+#                                             "Fluoxetina_Control"))
+
+# Visualization: boxplots with p-values
+pwc2 <- pwc2 %>% add_xy_position(x = "Stage")
+
+# pwc.filtered <- pwc %>% filter(time != "t1")
+p <- bar + 
+  # stat_pvalue_manual(pwc.filtered, tip.length = 0, hide.ns = TRUE) +
+  stat_pvalue_manual(pwc2, 
+                     tip.length = 0.015,
+                     # position = position_dodge(),
+                     color = "black",
+                     size = 5,
+                     hide.ns = FALSE) + 
+  labs(
+    subtitle = get_test_label(res.aov, detailed = TRUE, description = "Two Way ANOVA"),
+    # subtitle = create_test_label(statistic.text = "F", 
+    #                              statistic = 71,
+    #                              parameter = "4, 294",
+    #                              p = "<0.0001",
+    #                              description = "ANOVA"),
+    caption = get_pwc_label(pwc)
+  ) 
+
+p
+
+
+
+####### PATCHWORKS
+
+
+p + gridExtra::tableGrob(tab2[1:11]) + gridExtra::tableGrob(res.aov) + 
+  plot_layout(nrow = 3, byrow = FALSE) + 
+  plot_annotation(tag_levels = 'I')
+
+
+```
+
+ANOVA2
+
+```
+### Con Cuadrante en X
+
+bar <- ggbarplot(
+  wm_p_cuad_aov, 
+  x = "Cuadrante", 
+  y = "Tiempo_cuadrante",
+  color = "Tratamiento",
+  fill = "Tratamiento", 
+  position = position_dodge(),
+  add = "mean_se",
+  # facet.by = "Stage",
+  # title = "Porcentaje en cuadrantes",
+  xlab = "",
+  ylab = "%", 
+  # ggtheme = theme_pubr(),
+) +
+  scale_y_continuous(expand = expansion(mult = c(0.005, 0.1)))  # quitar espacio en eje y
+
+bar
+
+#### Con tratamiento en x
+
+bar <- ggbarplot(
+  wm_p_cuad_aov, 
+  x = "Tratamiento", 
+  y = "Tiempo_cuadrante",
+  color = "Tratamiento",
+  fill = "Tratamiento", 
+  # position = position_dodge(),
+  position = position_dodge(),
+  add = "mean_se",
+  facet.by = "Cuadrante",
+  # title = "Porcentaje en cuadrantes",
+  xlab = "",
+  ylab = "%", 
+  # ggtheme = theme_pubr(),
+) +
+  scale_y_continuous(expand = expansion(mult = c(0.005, 0.1)))  # quitar espacio en eje y
+
+bar
+
+#### ANOVA ----
+
+wm_p_cuad_aov <- wm_p_cuad |> 
+  filter(str_detect(Stage, "prueba_rev"))  
+  # filter(!str_detect(Tratamiento, "prueba_1")) 
+
+res.aov <- anova_test(
+  data = wm_p_cuad_aov,
+  dv = Tiempo_cuadrante,
+  wid = Id,
+  between = Tratamiento,
+  within = Cuadrante
+)
+
+get_anova_table(res.aov)
+
+
+#### Post-Hoc -----
+
+# Simple main effect of group variable
+
+# Effect of group at each time point
+one.way <- wm_p_cuad_aov %>%
+  group_by(Cuadrante) %>%
+  anova_test(dv = Tiempo_cuadrante, wid = Id, between = Tratamiento) %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+one.way
+
+# Pairwise comparisons between group levels
+pwc <- wm_p_cuad_aov %>%
+  group_by(Cuadrante) %>%
+  pairwise_t_test(Tiempo_cuadrante ~ Tratamiento, p.adjust.method = "bonferroni")
+pwc
+
+
+pwc <- wm_p_cuad_aov %>%
+  group_by(Cuadrante) %>%
+  pairwise_t_test(Tiempo_cuadrante ~ Tratamiento, p.adjust.method = "bonferroni")
+pwc
+
+# Simple main effects of time variable
+# analyze for the within-subject tipo_cuadrante variable at each level of tratamiento
+
+one.way2 <- wm_p_cuad_aov %>%
+  group_by(Tratamiento) %>%
+  anova_test(dv = Tiempo_cuadrante, wid = Id, within = Cuadrante) %>%
+  get_anova_table() %>%
+  adjust_pvalue(method = "bonferroni")
+one.way2
+
+# Pairwise comparisons between time points at each group levels
+# Paired t-test is used because we have repeated measures by time
+pwc2 <- wm_p_cuad_aov %>%
+  group_by(Tratamiento) %>%
+  pairwise_t_test(
+    Tiempo_cuadrante ~ Cuadrante, paired = TRUE, 
+    p.adjust.method = "bonferroni"
+  ) %>%
+  select(-df, -statistic, -p) # Remove details
+pwc2
+
+#### Reportar ----
+
+wm_p_cuad_aov$Tratamiento <- factor(wm_p_cuad_aov$Tratamiento, 
+                                 levels = c("CUMS_Fluox", 
+                                            "CUMS_ctrl",
+                                            "Fluoxetina_Control"))
+
+# Visualization: boxplots with p-values
+pwc <- pwc %>% add_xy_position(x = "Cuadrante")
+
+pwc <- pwc %>% add_xy_position(x = "Tratamiento")
+# pwc.filtered <- pwc %>% filter(time != "t1")
+bar + 
+  # stat_pvalue_manual(pwc.filtered, tip.length = 0, hide.ns = TRUE) +
+  stat_pvalue_manual(pwc, 
+                     tip.length = 0.01,
+                     # position = position_dodge(),
+                     # color = "Cuadrante",
+                     # color = "Tratamiento",
+                     hide.ns = TRUE) + 
+  labs(
+    subtitle = get_test_label(res.aov, detailed = TRUE),
+    caption = get_pwc_label(pwc)
+  ) 
+
+```
 
 ### Porcentaje en Zonas
 
@@ -1523,7 +2544,32 @@ Ver
 
     -   Analysis of Compositional Data with Positive Correlations among Components using a Nested Dirichlet Distribution with Application to a Morris Water Maze Experiment - https://arxiv.org/html/2401.04841v1
 
+
 ### Estadística
+
+De acuerdo al estadístico Xiao-Li Meng [@meng2023]: 
+
+    - research methodologies are trustworthy only if they deliver what they promise, even if this means that they have to be overly protective, a necessary trade-off for practicing quality-guaranteed statistics. This guiding principle may compel us to doubling variance in some situations, a strategy that also coincides with the call to raise the bar from p<0.05 to p<0.005. 
+      -  We therefore may still consume a product after its expiration date but at our own risk. A few bad cases may ruin the public’s trust in a producer, and hence it is in the latter’s best interest to be better safe than sorry. 
+      -  A recent large-scale study, on the reliability of many common methods for observational studies in health care, found that only about 50% of the “95%” intervals cover the truth (How Confident Are We About Observational Findings in Healthcare)
+      -  “replicability crisis”. (Why Most Published Research Findings Are False, FalsePositive Psychology: Undisclosed Flexibility in Data Collection and Analysis Allows Presenting Anything as Significant).
+      -  Copas and Eguchi [16] proposed to double the variance as a way to guard against possible local misspecifications of missing data mechanisms (Local Model Uncertainty and Incomplete-Data Bias).
+      -  
+    
+    - Third, it should be a routine mental exercise to put ourselves in the shoes of those who would be affected by our research finding, in order to combat the tendency of rushing to conclusions or overstating confidence in our findings. A pufferfish/selfish test can serve as an effective reminder, and can help to institute the mantra “Thou shalt not sell what thou refuseth to buy”
+    
+    - emphasize to our students that, when a null hypothesis survives a statistical test, they should never declare the acceptance of the hypothesis but only that the test fails to reject it. Statistical testing is about determining if there are sufficiently large discrepancies between a (null) hypothesis and the observed data, according to a pre-specified probabilistic criterion. Because no test is almighty, when a test fails to find the discrepancies in selected aspects, it says little about discrepancies in other aspects. More importantly, for any data set, we can find uncountably many models (and hypotheses) that fit the data perfectly: any zigzagging curves or surfaces that connect every observed data point cannot be rejected by any pure “goodness-of-fit” test by definition. Therefore, we can eliminate a hypothesis when the test finds sufficient discrepancies with the data, but we can say little about its validity otherwise (ver 1See https://plato.stanford.edu/entries/popper). 
+    
+    - adopting the less inflammatory term “plausible” for “confidence.”
+    
+- If our stated criterion is to control Type-II error first, e.g., the test must be at least 80% powerful under a specified alternative hypothesis, then indeed we may have to find a (non-trivial) lower bound of the variance or standard error
+
+-   Did I understand and consider carefully the data collection and pre-processing processes in my study? How much do I know about the quality of the data I used?
+
+-  much do I know about the quality of the data I used? • Did I have sufficient understanding of the substantive problem to recognize its inherent challenges, such as confounding factors and lack of identifying information? • Are the assumptions and models I adopted free of internal contradictions? If not, what justifications do I have to allow such contradictions? • Did I follow principled and holistic methods such as probabilistic propagation and conditioning or did I rely on ad hoc “intuitive” methods? • What approximations did I make in modeling, mathematical derivations, or computation? Which ones are most vulnerable? • Did I understand the impact of these approximations, especially the worst damage they can cause? Have I looked at studies on their impact, or have I investigated them theoretically or empirically?
+
+-  Did I perform sufficient validation or robustness check for models and assumptions I posited? Am I confident that my results would hold reasonably well if my data are perturbed somewhat? • Did I carry out reliability checks on the numerical evaluations or simulation, such as verifying computational results independently by two different methods, routines, or even research assistants? • Did I commit any form of cherry picking, from data gathering to results validation? If so, what reasons do I have to believe that my cherry picking would not do much damage? • Do I understand the findings at a level that would enable me to explain and teach them confidently to nonexperts?
+    
 
 -   [@reed2010]
 
@@ -1560,6 +2606,8 @@ All four apply to contexts in which the researcher recognizes clusters or groups
 multilevel regression deserves to be the default form of regression. Papers that do not use multilevel models should have to justify not using a multilevel approach. Certainly some data and contexts do not need the multilevel treatment. But most contemporary studies in the social and natural sciences, whether experimental or not, would benefit from it.(Statistical Rethinking, McElreath, Richard). 
 
 variation in treatment effects, in which individuals or groups vary in how they respond to the same circumstance. Multilevel models attempt to quantify the extent of this variation, as well as identify which units in the data responded in which ways. itting and interpreting multilevel models can be considerably harder than fitting and interpreting a traditional regression model (Statistical Rethinking, McElreath, Richard). 
+
+We teach linear regression as line fitting, treating uncertainty as annoying “residual errors” to be gotten rid off, wasting great opportunities to intellectually inspire and enhance the young minds [@meng2023]. 
 
 Ver
 
@@ -1604,6 +2652,9 @@ wishful thinking, p(D |H0) is not the same as p(H0 |D), and a significance test 
 provide a probability for a hypothesis. One cannot conclude from a p-value that a hypothesis has
 a probability of 1 (gigerenzer, Stefan Krauss, and Oliver Vitouch). 
 
+frequentists argue that the introduction of prior distributions violates the objective view point of conventional statistics. Interestingly, the feature of applying priors is also the reason why Bayesian approach is superior to frequentist [@lin2013].
+
+Pros of Bayesian Statistics: 1) combine prior info with data 2) provide exact estimate w/o reliance on large sample size 3) can directly estimate any functions of parameters or any quantities of interest 4) obey the likelihood principle 5) provide interpretable answers (credible intervals have more intuitive meanings) 6) can be applied to a wide range of models, e.g. hierarchical models, missing data... [@lin2013]
 
 ### Modelamiento múltipl
 
@@ -1613,7 +2664,11 @@ power to calculate the sample size necessary, as well as teaching the doctrine o
 sampling (Neyman, 1950, 1957). Moreover, the frequentist superego forbids the interpretation
 of levels of signifi cance as the degree of confidence that a particular hypothesis is true or false. Hypothesis testing, in its view, is about decision making (i.e., acting as if a hypothesis were true or false) but not about epistemic statements (i.e., believing in a hypothesis) (gigerenzer, Stefan Krauss, and Oliver Vitouch)..
 
+
+
 ### Errores en regresión estándar
+
+indeed linear regression is a great example to highlight the inadequacy of our current educational preparation for understanding stochastic relationships. Even for those who feel comfortable dealing with uncertainties in their estimates, many of them fail to emphasize or appreciate that the most important reason for assessing uncertainty appropriately does not concern the error bars. Much more critically, it is about properly propagating uncertainties for our inference and prediction, because the uncertainty may change our estimators in fundamental ways [@meng2023]
 
 Causal Salad: You put everything into a regression equation, toss with some creative story-telling, and hope the reviewers eat it. In general, this is not a valid approach, for well-known reasons. But it can get you published. Causal salad can discover causes too. But you have to get lucky. The Salad isn’t only regression. Really any procedure that hopes to take a list of variables (features) and return causal inference is Causal Salad. No amount of data reliably turns salad into sense.
 
