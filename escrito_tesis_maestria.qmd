@@ -1543,7 +1543,7 @@ myft
 
 NE
 Para esta función se tienen que exportar las coordenadas (***pixeles***) a una carpeta. Los archivos se van a nombrar con "\[TestNum\]\_\[Stage\]". Esto para filtrar y quitar los entrenamientos (quería sacarlo con los entrenamientos, pero parece que hay errores en algunos datos de entrenamientos).
-```
+```{r}
 wm_entropy_NE <- function(dir) {
   
   csv_files <- list.files(path = dir, full.names = TRUE, pattern = "prueba")
@@ -1554,9 +1554,16 @@ wm_entropy_NE <- function(dir) {
     data <- read.csv(file)
     
     data <- data |> 
-      slice(-1) |>
-      rename(X = Centre.position.X,
-             Y = Centre.position.Y)
+      janitor::clean_names() |> 
+      # slice(-1) |> 
+      rename(
+      time = time_s,
+      X = centre_position_x,
+      Y = centre_position_y 
+      )
+        # X = Centre.position.X,
+        # Y = Centre.position.Y)
+     
     
     # Initialize gal and LogE
     gal <- 0
@@ -1653,12 +1660,14 @@ wm_entropy_NE <- function(dir) {
 
 # wm_entropy_NE_k2 <- wm_entropy_NE("Datos/water_maze/ketamina_2/coordenadas_pixeles")
 
-wm_entropy_NE_f1 <- wm_entropy_NE("Datos/water_maze/Fluoxetina_1/coordenadas")
+# wm_entropy_NE_f1 <- wm_entropy_NE("Datos/water_maze/Fluoxetina_1/coordenadas")
+
+wm_entropy_NE_f3 <- wm_entropy_NE("./datos/entropia/fluoxetina_grupo_3/coordenadas_pixeles")
 
 ```
 Entropía SO df
 
-```
+```{r}
 
 wm_entropy_SO <- function(dir) {
   
@@ -1670,9 +1679,15 @@ wm_entropy_SO <- function(dir) {
     data <- read.csv(file)
     
     data <- data |> 
-      slice(-1) |>
-      rename(X = Centre.position.X,
-             Y = Centre.position.Y)
+      janitor::clean_names() |> 
+      # slice(-1) |> 
+      rename(
+      time = time_s,
+      X = centre_position_x,
+      Y = centre_position_y 
+      )
+        # X = Centre.position.X,
+        # Y = Centre.position.Y)
     
     # Initialize gal and LogE
     gal <- 0
@@ -1768,7 +1783,9 @@ wm_entropy_SO <- function(dir) {
 
 # wm_entropy_SO_k2 <- wm_entropy_SO("Datos/water_maze/ketamina_2/coordenadas_pixeles")
 
-wm_entropy_SO_f1 <- wm_entropy_SO("Datos/water_maze/Fluoxetina_1/coordenadas")
+# wm_entropy_SO_f1 <- wm_entropy_SO("Datos/water_maze/Fluoxetina_1/coordenadas")
+
+wm_entropy_SO_f3 <- wm_entropy_SO("./datos/entropia/fluoxetina_grupo_3/coordenadas_pixeles")
 ```
 
 Gráficos
@@ -1780,6 +1797,58 @@ entropia <- read.csv("./Datos/water_maze/entropia_clean.csv") |>
   dplyr::filter(!str_detect(Id, "2b")) |> 
   dplyr::filter(!str_detect(Id, "1b")) |> 
   dplyr::filter(!str_detect(Id, "negro-2")) 
+```
+
+```{r}
+
+entropia_df <- read.csv("./datos/entropia/entropia_clean.csv") |> 
+  janitor::clean_names()
+
+```
+
+NE
+
+```{r}
+entropia_df |>
+  ggplot(aes(x = stage,
+             y = entropia_ne)) +
+  geom_jitter() +
+  geom_smooth(method = "lm",
+              se = TRUE,
+              color = "red") +
+  # labs(
+  #   title = "Eficiencia al Annulus Blanco",
+  #   subtitle = "formula = y ~ x",
+  #   caption = "Recta graficada con intervalos de confianza",
+  #   x = "tiempo",
+  #   y = "Eficiencia"
+  # ) +
+  facet_grid( ~ tratamiento) +
+  # theme_classic()
+  ggthemes::theme_base()
+
+```
+
+SW
+
+```{r}
+entropia_df |>
+  ggplot(aes(x = stage,
+             y = entropia_so)) +
+  geom_jitter() +
+  geom_smooth(method = "lm",
+              se = TRUE,
+              color = "red") +
+  # labs(
+  #   title = "Eficiencia al Annulus Blanco",
+  #   subtitle = "formula = y ~ x",
+  #   caption = "Recta graficada con intervalos de confianza",
+  #   x = "tiempo",
+  #   y = "Eficiencia"
+  # ) +
+  facet_grid( ~ tratamiento) +
+  # theme_classic()
+  ggthemes::theme_base()
 ```
 
 con mi modelo
@@ -2550,6 +2619,16 @@ Rtrack::plot_density(
 
 ### Campo abierto
 
+```{r}
+
+campo_abierto_kg1 <- read.csv("./datos_otras_pruebas/campo_abierto/campo_abierto_ketamina_g1.csv") |> 
+  janitor::clean_names()
+
+campo_abierto_fg1 <- read.csv("./datos_otras_pruebas/campo_abierto/resultados_fluoxetina_abierto.csv") |> 
+  janitor::clean_names()
+
+```
+
 Tiempo En periferia
 
 Tiempo en Centro
@@ -2560,13 +2639,38 @@ Brazos Cerrados
 
 Brazos Abiertos
 
+```{r}
+
+lab_cruz_kg1 <- read.csv("./datos_otras_pruebas/lab_cruz/laberinto_cruz_ketamina_g1.csv") |> 
+  janitor::clean_names()
+
+lab_cruz_fg1 <- read.csv("./datos_otras_pruebas/lab_cruz/laberinto_cruz_fluox_g1.csv") |> 
+  janitor::clean_names()
+
+```
+
 ### Nado Forzado
 
 Inmovilidad Total
 
 Inmovilidad por Minuto
 
-### Preferencia a Sacarosa
+```{r}
+
+nado_forzado_kg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_ketamina_g1.csv") |> 
+  janitor::clean_names()
+
+nado_forzado_segmentos_kg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_ketamina_g1_segmentos.csv") |> 
+  janitor::clean_names()
+
+nado_forzado_fg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_fluoxetina_g1.csv") |> 
+  janitor::clean_names()
+
+nado_forzado_segmentos_fg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_fluoxetina_g1_segmentos.csv") |> 
+  janitor::clean_names()
+
+```
+
 
 # Discusión
 
