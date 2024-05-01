@@ -679,7 +679,11 @@ df_pruebas$stage <- as.factor(df_pruebas$stage)
 
 ```
 
+NOTA RTRACK
+- Parece que hay algunos tratamientos que se quedaron como Sal-CUMS. Hay que ver si pertenecen a F o a K
+
 ```{r rtrack_preparar}
+#| include: false
 #| eval: false
 
 # Primero armar el archivo en excel
@@ -767,140 +771,66 @@ file_names <- file_names %>%
 ```{r rtrack_experimentos}
 #| code-fold: true
 #| code-summary: Lectura experimentos Rtrack
+#| eval: false
 
 tictoc::tic()
-# ---- Fluoxetina G-1 ----
-rtrack_experimento_fluoxetina_g1 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo_1/experimento/Experiment.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo_1/experimento/Data",
+
+# rtrack_experimento = Rtrack::read_experiment("./datos/rtrack/todos_juntos/Experiment.xlsx", data.dir = "./datos/rtrack/todos_juntos/Data")
+
+rtrack_experimento = Rtrack::read_experiment("./datos/rtrack/todos_juntos/Experiment.xlsx", data.dir = "./datos/rtrack/todos_juntos/Data",
     threads = 0) # use all available CPU cores
 
-# library(parallel)
-# detectCores()
-# 12
 
-# ---- Fluoxetina G-2 ----
-
-rtrack_experimento_fluoxetina_g2 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo_2/Experiment.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo_2/Data",
-    threads = 0) # use all available CPU cores
-
-# ---- Fluoxetina G-3 ----
-
-rtrack_experimento_fluoxetina_g3 = Rtrack::read_experiment("./datos/rtrack/fluoxetina_grupo3v3/Experimentv2.xlsx", data.dir = "./datos/rtrack/fluoxetina_grupo3v3/Datv3",
-    threads = 0) # use all available CPU cores
-
-# ---- Ketamina G-1 ----
-
-rtrack_experimento_ketamina_g1 = Rtrack::read_experiment("./datos/rtrack/ketamina_grupo_1/rtrack/Experiment.xlsx", data.dir = "./datos/rtrack/ketamina_grupo_1/rtrack/Data",
-    threads = 0) # use all available CPU cores
-
-# ---- Ketamina G-2 ----
-
-rtrack_experimento_ketamina_g2 = Rtrack::read_experiment("./datos/rtrack/ketamina_grupo_2/Experiment.xlsx", data.dir = "./datos/rtrack/ketamina_grupo_2/Data",
-    threads = 0) # use all available CPU cores
 tictoc::toc()
 
-# 113.03 sec elapsed
+# 51.8 sec elapsed
+
 ```
 
 ```{r rtrack_estrategias}
 #| code-fold: true
 #| code-summary: Código extracción de métricas con Rtrack
+#| eval: false
 
-estrategias_fluoxetina_g1 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g1)
+estrategias_rtrack = Rtrack::call_strategy(rtrack_experimento)
 # output es un dataframe
 # modificar threshold del ml algorithm
 
-# dim(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4)$calls)
-# parece que elimina 12 (quedan 271 - 12)
+# dim(Rtrack::threshold_strategies(estrategias_rtrack, 0.4)$calls)
 
-estrategias_fluoxetina_g2 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g2)
-
-estrategias_fluoxetina_g3 = Rtrack::call_strategy(rtrack_experimento_fluoxetina_g3)
-
-estrategias_ketamina_g1 = Rtrack::call_strategy(rtrack_experimento_ketamina_g1)
-
-estrategias_ketamina_g2 = Rtrack::call_strategy(rtrack_experimento_ketamina_g2)
 
 ```
 
 
 ```{r rtrack_exportar_resultados}
+#| code-fold: true
+#| code-summary: Código exportar Rtrack
+#| eval: false
 
+Rtrack::export_results(rtrack_experimento, file = "./datos/rtrack/exportado_final.csv")
 
-# ---- f1 ----
-Rtrack::export_results(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/exportado_fg1.csv")
 # exportar estrategias
-Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, file = "./datos/rtrack/exportado_estrategias_fg1.csv")
-# thresholded
-thresholded_fg1 = Rtrack::threshold_strategies(estrategias_fluoxetina_g1,
-    0.4)
-Rtrack::export_results(rtrack_experimento_fluoxetina_g1, estrategias_fluoxetina_g1, tracks = rownames(thresholded_fg1$calls),
-    file = "./datos/rtrack/exportado_estrategias_fg1_thresholded.csv")
+Rtrack::export_results(rtrack_experimento, estrategias_rtrack, file = "./datos/rtrack/exportado_estrategias_final.csv")
 
-# ---- f2 ----
-Rtrack::export_results(rtrack_experimento_fluoxetina_g2, file = "./datos/rtrack/exportado_fg2.csv")
-# exportar estrategias
-Rtrack::export_results(rtrack_experimento_fluoxetina_g2, estrategias_fluoxetina_g2, file = "./datos/rtrack/exportado_estrategias_fg2.csv")
 # thresholded
-thresholded_fg2 = Rtrack::threshold_strategies(estrategias_fluoxetina_g2,
+thresholded_final = Rtrack::threshold_strategies(estrategias_rtrack,
     0.4)
-Rtrack::export_results(rtrack_experimento_fluoxetina_g2, estrategias_fluoxetina_g2, tracks = rownames(thresholded_fg2$calls),
-    file = "./datos/rtrack/exportado_estrategias_fg2_thresholded.csv")
 
-# ---- f3 ----
-Rtrack::export_results(rtrack_experimento_fluoxetina_g3, file = "./datos/rtrack/exportado_fg3.csv")
-# exportar estrategias
-Rtrack::export_results(rtrack_experimento_fluoxetina_g3, estrategias_fluoxetina_g3, file = "./datos/rtrack/exportado_estrategias_fg3.csv")
-# thresholded
-thresholded_fg3 = Rtrack::threshold_strategies(estrategias_fluoxetina_g3,
-    0.4)
-Rtrack::export_results(rtrack_experimento_fluoxetina_g3, estrategias_fluoxetina_g3, tracks = rownames(thresholded_fg3$calls),
-    file = "./datos/rtrack/exportado_estrategias_fg3_thresholded.csv")
-
-# ---- k1 ----
-Rtrack::export_results(rtrack_experimento_ketamina_g1, file = "./datos/rtrack/exportado_kg1.csv")
-# exportar estrategias
-Rtrack::export_results(rtrack_experimento_ketamina_g1, estrategias_ketamina_g1, file = "./datos/rtrack/exportado_estrategias_kg1.csv")
-# thresholded
-thresholded_kg1 = Rtrack::threshold_strategies(estrategias_ketamina_g1,
-    0.4)
-Rtrack::export_results(rtrack_experimento_ketamina_g1, estrategias_ketamina_g1, tracks = rownames(thresholded_kg1$calls),
-    file = "./datos/rtrack/exportado_estrategias_kg1_thresholded.csv")
-
-# ---- k2 ----
-Rtrack::export_results(rtrack_experimento_ketamina_g2, file = "./datos/rtrack/exportado_kg2.csv")
-# exportar estrategias
-Rtrack::export_results(rtrack_experimento_ketamina_g2, estrategias_ketamina_g2, file = "./datos/rtrack/exportado_estrategias_kg2.csv")
-# thresholded
-thresholded_kg2 = Rtrack::threshold_strategies(estrategias_ketamina_g2,
-    0.4)
-Rtrack::export_results(rtrack_experimento_ketamina_g2, estrategias_ketamina_g2, tracks = rownames(thresholded_kg2$calls),
-    file = "./datos/rtrack/exportado_estrategias_kg2_thresholded.csv")
+Rtrack::export_results(rtrack_experimento, estrategias_rtrack, tracks = rownames(thresholded_final$calls),
+    file = "./datos/rtrack/exportado_estrategias_final_thresholded.csv")
 
 ```
 
 ```{r rtrack_rdata}
-# comprimido de rtrack_experiment
-# save(rtrack_experimento_fluoxetina_g1, file = "./datos/rtrack/fluoxetina_g1_experiment.RData")
-load("./datos/rtrack/fluoxetina_g1_experiment.RData")
-
-
-# comprimido de rtrack_experiment
-# save(rtrack_experimento_fluoxetina_g2, file = "./datos/rtrack/fluoxetina_g2_experiment.RData")
-load("./datos/rtrack/fluoxetina_g2_experiment.RData")
+#| code-fold: true
+#| code-summary: Código exportar Rdata de Rtrack
+#| eval: false
 
 # comprimido de rtrack_experiment
-# save(rtrack_experimento_fluoxetina_g3, file = "./datos/rtrack/fluoxetina_g3_experiment.RData")
-load("./datos/rtrack/fluoxetina_g2_experiment.RData")
+# save(rtrack_experimento, file = "./datos/rtrack/final_experiment.RData")
+load("./datos/rtrack/final_experiment.RData")
 
-
-# comprimido de rtrack_experiment
-# save(rtrack_experimento_ketamina_g1, file = "./datos/rtrack/ketamina_g1_experiment.RData")
-load("./datos/rtrack/ketamina_g1_experiment.RData")
-
-
-# comprimido de rtrack_experiment
-# save(rtrack_experimento_ketamina_g2, file = "./datos/rtrack/ketamina_g2_experiment.RData")
-load("./datos/rtrack/ketamina_g2_experiment.RData")
+estrategias_rtrack <-  Rtrack::call_strategy(rtrack_experimento)
 
 ```
 
@@ -1117,18 +1047,26 @@ PENDIENTE: sacar estrategias. Podemos dividir las estrategias en egocéntricas(\
 Estrategias de búsqueda: El grupo de Garthe y Kempermann (Garthe et al., 2009) definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma durante los entrenamientos. De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. El análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo (Hernández-Mercado & Zepeda, 2022).
 
 ```{r}
+#| code-fold: true
+#| code-summary: Ver código estrategias Rtrack
+#| eval: false
 
-Rtrack::plot_strategies(estrategias_fluoxetina_g1, experiment = rtrack_experimento_fluoxetina_g1, factor = "Tratamiento",
+Rtrack::plot_strategies(estrategias_rtrack, experiment = rtrack_experimento, factor = "Tratamiento",
     exclude.probe = TRUE)
 
 # con threshold
 
-Rtrack::plot_strategies(Rtrack::threshold_strategies(estrategias_fluoxetina_g1, 0.4), experiment = rtrack_experimento_fluoxetina_g1,
+Rtrack::plot_strategies(Rtrack::threshold_strategies(estrategias_rtrack, 0.4), experiment = rtrack_experimento,
     factor = "Tratamiento", exclude.probe = TRUE)
 
 
 ```
 
+![](./figuras/rtrack/estrategias_flx.png)
+![](./figuras/rtrack/estrategias_flx_cums.png)
+![](./figuras/rtrack/estrategias_sal_cums_f.png)
+![](./figuras/rtrack/estrategias_ket_cums.png)
+![](./figuras/rtrack/estrategias_sal_cums_k.png)
 
 ### Eficiencia
 
@@ -1862,6 +1800,52 @@ Para calcular la entropía de la trayectoria, hacemos $H_{trayectoria} = log(var
 
 Por último, calculamos la entropía total $H_{total} = H_{error} + H_{trayectoria}$
 
+Con **RTRACK**
+
+```{r rtrack_entropia}
+#| code-fold: true
+#| code-summary: Ver código preparación datos entropía
+
+entropia_rtrack <- read.csv("./datos/rtrack/exportado_final.csv") |> 
+  dplyr::select(Tratamiento, Stage, roaming.entropy, X_TargetID, Probe) |>
+  janitor::clean_names()
+
+
+```
+
+Entrenamientos
+
+Pruebas
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: fig-entropia_pruebas_scatter
+#| fig-cap: entropia_pruebas Scatter Plot
+
+entropia_rtrack |>
+  dplyr::filter(str_detect(stage, "prueba")) |>
+  ggplot(aes(x = stage,
+             y = roaming_entropy)) +
+  geom_jitter() +
+  geom_smooth(method = "lm",
+              se = TRUE,
+              color = "red") +
+  # labs(
+  #   title = "Eficiencia al Annulus Blanco",
+  #   subtitle = "formula = y ~ x",
+  #   caption = "Recta graficada con intervalos de confianza",
+  #   x = "tiempo",
+  #   y = "Eficiencia"
+  # ) +
+  facet_grid( ~ tratamiento) +
+  # theme_classic()
+  ggthemes::theme_base()
+
+
+```
+
+
 ### Porcentaje en Cuadrantes
 
 En el análisis de porcentaje en cuadrante, la cual es una de las métricas menos sensibles, no tenemos resultados interesantes. Parece haber un olvido en la prueba 2 (retención) en todos los grupos sometidos a CUMS, aunque no hay nada significativo.
@@ -2325,24 +2309,242 @@ Esta es una métrica más sensible que cuadrante. De manera interesante, podemos
 ### Mapas de calor
 
 ```{r}
+#| code-fold: true
+#| code-summary: Ver código heatmaps con Rtrack
+#| eval: false
+
+# ---- P1 ----
+flx_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Flx-CUMS
+flx_CUMS_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-F
+sal_cums_f_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Ket-CUMS
+ket_cums_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-K
+sal_cums_k_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# ---- P2 ----
+flx_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Flx-CUMS
+flx_CUMS_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-F
+sal_cums_f_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Ket-CUMS
+ket_cums_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-K
+sal_cums_k_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+
+# ---- P-Rev ----
+
+flx_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Flx-CUMS
+flx_CUMS_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-F
+sal_cums_f_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Ket-CUMS
+ket_cums_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-K
+sal_cums_k_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
 
 
+# ---- p1 plot ----
 
-fluoxg1Flx_reversal_metrics = 
-  rtrack_experimento_fluoxetina_g1$metrics[rtrack_experimento_fluoxetina_g1$factors$Tratamiento == "Fluoxetina-CUMS" &
-    (rtrack_experimento_fluoxetina_g1$factors$`_Day` == 9) ]
+# Flx
+Rtrack::plot_density(
+  flx_p1_metrics,
+  title = "FLX P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
 
-Rtrack::plot_density(fluoxg1Flx_reversal_metrics, title = "FLX reversal", col = viridis(738), resolution = 900, feature.col = "#54c667", feature.lwd = 2, legend = FALSE)
+
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_p1_metrics,
+  title = "FLX-CUMS P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_p1_metrics,
+  title = "Sal-CUMS-FLX P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_p1_metrics,
+  title = "Ket-CUMS P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_p1_metrics,
+  title = "Sal-CUMS-Ket P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+# ---- p2 plot ----
+
+# Flx
+Rtrack::plot_density(
+  flx_p2_metrics,
+  title = "FLX P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
 
 
-fluoxg1SalF_reversal_metrics = 
-  rtrack_experimento_fluoxetina_g1$metrics[rtrack_experimento_fluoxetina_g1$factors$Tratamiento == "Salina-CUMS" &
-    (rtrack_experimento_fluoxetina_g1$factors$`_Day` == 9) ]
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_p2_metrics,
+  title = "FLX-CUMS P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_p2_metrics,
+  title = "Sal-CUMS-FLX P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_p2_metrics,
+  title = "Ket-CUMS P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_p2_metrics,
+  title = "Sal-CUMS-Ket P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
 
-Rtrack::plot_density(fluoxg1SalF_reversal_metrics, title = "Sal reversal", col = viridis(738), resolution = 900, feature.col = "#54c667", feature.lwd = 2, legend = FALSE)
+# ---- rev plot ----
+# Flx
+Rtrack::plot_density(
+  flx_rev_metrics,
+  title = "FLX reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_rev_metrics,
+  title = "Flx-CUMS reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_rev_metrics,
+  title = "Sal-CUMS-F reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_rev_metrics,
+  title = "Ket-CUMS reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_rev_metrics,
+  title = "Sal-CUMS-K reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
 
 
 ```
+
+
 
 ## Otras
 
