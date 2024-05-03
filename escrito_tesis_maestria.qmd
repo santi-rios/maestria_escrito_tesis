@@ -489,8 +489,273 @@ oder 90%, el resultado sería de N = 10.94, por lo tanto, N = 11.
 
 Por este motivo, solicitamos realizar el experimento con N = 8 por grupo, y en caso de no obtener resultados significativos, pero sí una tendencia clara, poder incrementar la N a 11 como límite máximo.
 
-### Mantenimiento de Animales
+Confounding
 
+When an exposure and an outcome are both strongly associated with a third variable.
+
+Care should be taken to avoid confounding, which arises when an exposure and an outcome are both strongly associated with a third variable. Controls should be subjects who might have been cases in the study but are selected independent of the exposure. Cases and controls should also not be "over-matched."
+
+    Is the control group appropriate for the population? Does the study use matching or pairing appropriately to avoid the effects of a confounding variable? Does it use appropriate inclusion and exclusion criteria?
+    
+https://pubmed.ncbi.nlm.nih.gov/28846237/
+A case-control study is a type of observational study commonly used to look at factors associated with diseases or outcomes. The case-control study starts with a group of cases, which are the individuals who have the outcome of interest. The researcher then tries to construct a second group of individuals called the controls, who are similar to the case individuals but do not have the outcome of interest. The researcher then looks at historical factors to identify if some exposure(s) is/are found more commonly in the cases than the controls. If the exposure is found more commonly in the cases than in the controls, the researcher can hypothesize that the exposure may be linked to the outcome of interest. Case-control studies, due to their typically retrospective nature, can be used to establish a correlation between exposures and outcomes, but cannot establish causation. These studies simply attempt to find correlations between past events and the current state. Similarly, the researcher must recognize the potential for failing to identify confounding variables or exposures, introducing the possibility of confounding bias, which occurs when a variable that is not being accounted for that has a relationship with both the exposure and outcome. This can cause us to accidentally be studying something we are not accounting for but that may be systematically different between the groups.
+
+
+
+https://www.sciencedirect.com/science/article/pii/S166526811930448X: 
+
+. As an example, subjects treated for hypertension might be confidently used as “healthy” controls in studies measuring bowel habits or skeletal muscle fitness in comparison to subjects with inflammatory bowel diseases or following orthopedic surgery, respectively. But they are not “healthy” and could also have diseases possibly affecting the outcome of the clinical study. Let's consider a patient with rheumatoid arthritis –a disease known to increase cardiovascular risk– included as control in a study assessing cardiovascular outcomes. The results might be biased.
+If we limit the “healthy” state to subjects who are free from any possible disease, we fall into other difficulties. Individuals who do not have any demonstrable disease or disorder belong to a category of so-called “supernormal” subjects. Using these individuals in comparison to diseased patients frequently leads to overestimate differences, or to measure differences that are not clinically relevant.
+
+libro de Rubin Causal Inference for Sta
+- POTENTIAL OUTCOMES: informal statistical analyses, drawing conclusions from associations
+between measurements of different quantities that vary from individual to individual, commonly called variables or random variables – language apparently first used by
+Yule (1897). Nevertheless, statistical theory has been relatively silent on questions of causality. Many, especially older, textbooks avoid any mention of the term other than in settings of randomized experiments. The fundamental notion underlying our approach is that causality is tied to an action
+(or manipulation, treatment, or intervention), applied to a unit. A unit here can be a
+physical object, a firm, an individual person, or collection of objects or persons.  Often one of these
+actions corresponds to a more active treatment (e.g., taking an aspirin) in contrast to a
+more passive action (e.g., not taking the aspirin). In such cases we sometimes refer to
+the first action as the active treatment as opposed to the control treatment, but these are
+merely labels and formally the two treatments are viewed symmetrically. In some cases,
+when it is clear from the context, we refer to the more active treatment simply as the
+“treatment” and the other treatment as the “control.”
+Given a unit and a set of actions, we associate each action-unit pair with a potential
+outcome. We refer to these outcomes as potential outcomes because only one will ulti-
+mately be realized and therefore possibly observed: the potential outcome corresponding
+to the action actually taken. Ex post, the other potential outcomes cannot be observed
+because the corresponding actions that would lead to them being realized were not
+taken. The causal effect of one action or treatment relative to another involves the com-
+parison of these potential outcomes, one realized (and perhaps, though not necessarily,
+observed), and the others not realized and therefore not observable. Any treatment must
+occur temporally before the observation of any associated potential outcome is possible. Although the preceding argument may appear obvious, its force is revealed by its
+ability to clarify otherwise murky concepts, as can be demonstrated by considering the
+three examples of informal “because” statements presented in the first paragraph of this
+section. In the first example, it is clear what the action is: I took an aspirin, but at the time
+that I took the aspirin, I could have followed the alternate course of not taking an aspirin.
+In that case, a different outcome might have resulted, and the “because” statement is
+causal in the perspective taken in this book as it reflects the comparison of those two
+potential outcomes. In the second example, it is less clear what the treatment and its
+alternative are: she went to college, and at the point in time when she decided to go to
+college, she could have decided not to go to college. In that case, she might have had a
+different job a year ago, and the implied causal statement compares the quality of the job
+she actually had then to the quality of the job she would have had a year ago, had she not gone to college. However, in this example, the alternative treatment is somewhat murky:
+had she not enrolled in college, would she have enrolled in the military, or would she
+have joined an artist’s colony? As a result, the potential outcome under the alternative
+action, the job obtained a year ago without enrolling in college, is not as well defined as
+in the first example. In practice, the distinction between well and poorly defined causal statements
+is one of degree. The important point is, however, that causal statements become more
+clearly defined by more precisely articulating the intervention that would have made the
+alternative potential outcome the realized one.
+
+1.3 DEFINITION OF CAUSAL EFFECTS. 
+1. Headache gone only with aspirin:
+Y(Aspirin) = No Headache, Y(No Aspirin) = Headache
+2. No effect of aspirin, with a headache in both cases:
+Y(Aspirin) = Headache, Y(No Aspirin) = Headache
+3. No effect of aspirin, with the headache gone in both cases:
+Y(Aspirin) = No Headache, Y(No Aspirin) = No Headache
+4. Headache gone only without aspirin:
+Y(Aspirin) = Headache, Y(No Aspirin) = No Headache
+There is a zero causal effect of taking aspirin in the sec-
+ond and third possibilities. In the other two cases the aspirin has a causal effect, making
+the headache go away in one case and not allowing it to go away in the other.
+First, the def-
+inition of the causal effect depends on the potential outcomes, but it does not depend
+on which outcome is actually observed. Specifically, whether I take an aspirin (and am
+therefore unable to observe the state of my headache with no aspirin) or do not take an
+aspirin (and am thus unable to observe the outcome with an aspirin) does not affect the
+definition of the causal effect. Second, the causal effect is the comparison of potential
+outcomes, for the same unit, at the same moment in time post-treatment. In particular,
+the causal effect is not defined in terms of comparisons of outcomes at different times,
+as in a before-and-after comparison of my headache before and after deciding to take or
+not to take the aspirin. “The fundamental problem of causal inference” (Holland, 1986,
+p. 947) is therefore the problem that at most one of the potential outcomes can be real-
+ized and thus observed.
+For the estimation of causal effects, as opposed to the definition of causal effects, we
+will need to make different comparisons from the comparisons made for their definitions.
+For estimation and inference, we need to compare observed outcomes, that is, observed
+realizations of potential outcomes, and because there is only one realized potential out-
+come per unit, we will need to consider multiple units. For example, a before-and-after
+comparison of the same physical object involves distinct units in our framework, and
+also the comparison of two different physical objects at the same time involves distinct
+units. Such comparisons are critical for estimating causal effects, but they do not define
+causal effects in our approach. For estimation it will also be critical to know about, or
+make assumptions about, the reason why certain potential outcomes were realized and
+not others. That is, we will need to think about the assignment mechanism, which we
+introduce in Section 1.7. However, we do not need to think about the assignment mech-
+anism for defining causal effects: we merely need to do the thought experiment of the
+manipulations leading to the definition of the potential outcomes.
+
+1.5 LEARNING ABOUT CAUSAL EFFECTS: MULTIPLE UNITS. Although the definition of causal effects does not require more than one unit, learning
+about causal effects typically requires multiple units. Because with a single unit we can
+at most observe a single potential outcome, we must rely on multiple units to make
+causal inferences. More specifically, we must observe multiple units, some exposed to
+the active treatment, some exposed to the alternative (control) treatment. bserving the same physical object repeatedly, one might observe
+different physical objects at approximately the same time. This situation is another
+common source for informal assessments of causal effects.
+
+Lord’s paradox:
+A large university is interested in investigating the effects on the students of the diet
+provided in the university dining halls and any sex differences in these effects. Various
+types of data are gathered. In particular, the weight of each student at the time of his
+arrival in September and his weight the following June are recorded. (Lord, 1967, p. 304)
+The results of the hypothetical study described in Lord’s paper include the finding that
+for the males the average weight is identical at the end of the school year to what it was
+at the beginning; in fact, the whole distribution of weights is unchanged, although some
+males lost weight and some males gained weight – the gains and losses exactly balance.
+The same thing is true for the females. The only difference is that the females started and
+ended the year lighter on average than the males. On average, there is no weight gain or
+weight loss for either males or females.
+
+The paradox is generated by considering the contradictory conclusions of two statisti-
+cians asked to comment on the data. Statistician 1 observes that there are no differences
+between the September and June weight distributions for either males or females. Thus,
+Statistician 1 concludes that
+as far as these data are concerned, there is no evidence of any interesting effect of diet (or
+of anything else) on student weight. In particular, there is no evidence of any differential
+effect on the two sexes, since neither group shows any systematic change. (Lord, 1967,
+p. 305)
+Statistician 2 looks at the data in a more “sophisticated” way. Effectively, he exam-
+ines males and females with the same initial weight in September, say a subgroup of
+“overweight” females (meaning simply above-average-weight females) and a subgroup
+of “underweight” males (analogously defined). He notices that these males tended to gain
+weight on average and these females tended to lose weight on average. He also notices
+that this result is true no matter what the value of initial weight he focuses on. (Actu-
+ally, Lord’s Statistician 2 used a technique known as covariance adjustment or regression
+adjustment described in Chapter 7.) His conclusion, therefore, is that after “controlling
+for” initial weight, the diet has a differential positive effect on males relative to females
+because for males and females with the same initial weight, on average the males gain
+more than the females.
+Who’s right? Statistician 1 or Statistician 2? Notice the focus of both statisticians on
+before-after or gain scores and recall that such gain scores are not causal effects because
+they do not compare potential outcomes at the same time post-treatment; rather, they
+compare changes over time. If both statisticians confined their comments to describing
+the data, both would be correct, but for causal inference, both are wrong because these
+data cannot support any conclusions about the causal effect of the diet without making
+some very strong, and arguably implausible, assumptions.
+
+Regression Methods for Completely
+Randomized Experiments
+One of the more common ways of estimating causal effects with experimental, as well
+as observational, data in many disciplines is based on regression methods. Typically an
+additive linear regression function is specified for the observed outcome as a function of
+a set of predictor variables. This set of predictor variables includes the indicator variable
+for the receipt of treatment and usually additional pre-treatment variables. The param-
+eters of the regression equation are estimated by least squares, with the primary focus
+on the coefficient for the treatment indicator. Inferences, including point estimates, stan-
+dard errors, tests, and confidence intervals, are based on standard least squares methods.
+Although popular, the use of these methods in this context is not without controversy,
+with some researchers arguing that experimental data should be analyzed based on ran-
+domization inference. As Freedman writes bluntly, “Experiments should be analyzed as
+experiments, not as observational studies” (Freedman, 2006, p. 691). It has also been
+pointed out that the justification for least squares methods does not follow from random-
+ization. Again Freedman: “randomization does not justify the assumptions behind the ols
+[ordinary least squares] model” (Freedman, 2008a, p. 181). In this chapter we discuss
+in some detail the rationale for, and the interpretation and implementation of, regression
+methods in the setting with completely randomized experiments. This chapter can be
+viewed as providing a bridge between the previous chapter, which was largely focused
+on exact finite-sample results based on randomization, and the next chapter, which is
+based on fully parametric models for imputation of the unobserved potential outcomes. 
+
+As the Freedman quote illustrates, the conventional justification for linear regres-
+sion models, that the regression function represents the conditional expectation of the
+observed outcome given the predictor variables, does not follow from the randomiza-
+tion if there are predictors beyond the treatment indicator. Nevertheless, in the setting
+of a completely randomized experiment, the least squares point estimates and associated
+inferences can be given a causal interpretation. There is an important difference with
+the causal interpretation in the previous chapter, however. With the exception of the set-
+ting without additional covariates beyond the treatment indicator, where the main results
+are essentially identical to those discussed in the previous chapter from the Neyman
+approach, all results are now asymptotic (large sample) results. Specifically, exact unbi-
+asedness no longer holds in finite samples with covariates beyond the treatment indicator
+because of the need to estimate additional nuisance parameters, that is, the associated
+regression coefficients. The possible benefit of the regression methods over the exact
+methods from the previous chapter is that they provide a straightforward and, for many
+researchers, familiar way to incorporate covariates. If these covariates are predictive
+of the potential outcomes, their inclusion in the regression model can result in causal
+inferences that are more precise than differences in observed means. This gain in preci-
+sion can be substantial if the covariates are highly predictive of the potential outcomes,
+although in practice the gains are often modest. The disadvantage of regression models
+relative to the fully model-based methods that will be discussed in the next chapter is
+that the use of standard linear regression models often restricts the set of models consid-
+erably, and thereby restricts the set of questions that can be addressed. Thus, when using
+these regression models, there is often a somewhat unnatural tension between, on the one
+hand, models that provide a good statistical fit and have good statistical properties and,
+on the other hand, models that answer the substantive question of interest. This tension
+is not present in the full, model-based methods discussed in the next chapter.
+
+Model-Based Inference for Completely
+Randomized Experiments
+ a different approach to inference, where the
+potential outcomes themselves are also viewed as random variables, even in the finite
+sample. Because all of the potential outcomes are considered random variables, any
+functions of them will also be random variables. This includes any causal estimand of
+interest – for example, the average treatment effect or the median causal effect.
+
+Stratified Randomized Experiments
+A key
+issue is that in the model-based analysis, a hierarchical model can be useful to take
+account of similarities in potential outcome distributions across strata. As we illustrated
+using data from the Project Star experiment on class size, stratification can increase
+precision of estimation when the strata are good predictors of the potential outcomes.
+
+Pairwise Randomized Experiments
+In the previous chapter we analyzed stratified randomized experiments, where a sample
+of size N was partitioned into J strata, and within each stratum a completely randomized
+experiment was conducted. In this chapter we consider a special case of the stratified
+randomized experiment. Each stratum contains exactly two units, with one randomly
+selected to be assigned to the treatment group, and the other one assigned to the control
+group. Such a design is known as a pairwise randomized experiment or paired compar-
+ison. Although this can be viewed simply as a special case of a stratified randomized
+experiment, there are two features of this design that warrant special attention. First,
+the fact that there is only a single unit in each treatment group in each stratum (or pair
+in this case) implies that the Neyman sampling variance estimator that we discussed in
+the chapters on completely randomized experiments (Chapter 6) and stratified random-
+ized experiments (Chapter 9) cannot be used; that estimator requires the presence of at
+least two units assigned to each treatment in each stratum. Second, each stratum has
+the same proportion of treated units, which allows us to analyze the within-stratum esti-
+mates symmetrically; the natural estimator for the average treatment effect weights each
+stratum equally.
+As in the case of stratified randomized experiments, the motivation for eliminating
+some of the possible assignments in pairwise randomized experiments is that a priori
+those values of the assignment vectors that are eliminated are expected to lead to less
+informative inferences.
+
+Conclusions and Extensions
+
+potential outcomes approach to causality, also known as the
+Rubin Causal Model
+- approach to the statistical analysis of cause and effect based on the framework of potential outcomes, named after Donald Rubin
+- based on the idea of potential outcomes
+- This definition of causal effects becomes much more problematic if there is no way for one of the potential outcomes to happen, ever. For example, what is the causal effect of Joe's height on his weight? Naively, this seems similar to our other examples. We just need to compare two potential outcomes: what would Joe's weight be under the treatment (where treatment is defined as being 3 inches taller) and what would Joe's weight be under the control (where control is defined as his current height).
+- A moment's reflection highlights the problem: we can't increase Joe's height. There is no way to observe, even conceptually, what Joe's weight would be if he were taller because there is no way to make him taller. We can't manipulate Joe's height, so it makes no sense to investigate the causal effect of height on weight. Hence the slogan: No causation without manipulation.
+- We require that "the [potential outcome] observation on one unit should be unaffected by the particular assignment of treatments to the other units" (Cox 1958, §2.4). This is called the stable unit treatment value assumption (SUTVA), which goes beyond the concept of independence.
+- In the context of our example, Joe's blood pressure should not depend on whether or not Mary receives the drug. But what if it does? Suppose that Joe and Mary live in the same house and Mary always cooks. The drug causes Mary to crave salty foods, so if she takes the drug she will cook with more salt than she would have otherwise. A high salt diet increases Joe's blood pressure. Therefore, his outcome will depend on both which treatment he received and which treatment Mary receives.
+
+SUTVA violation makes causal inference more difficult. We can account for dependent observations by considering more treatments. We create 4 treatments by taking into account whether or not Mary receives treatment. 
+
+Recall that a causal effect is defined as the difference between two potential outcomes. In this case, there are multiple causal effects because there are more than two potential outcomes. One is the causal effect of the drug on Joe when Mary receives treatment and is calculated, 130 − 140 {\displaystyle 130-140}. Another is the causal effect on Joe when Mary does not receive treatment and is calculated 120 − 125 {\displaystyle 120-125}. The third is the causal effect of Mary's treatment on Joe when Joe is not treated. This is calculated as 140 − 125 {\displaystyle 140-125}. The treatment Mary receives has a greater causal effect on Joe than the treatment which Joe received has on Joe, and it is in the opposite direction.
+
+By considering more potential outcomes in this way, we can cause SUTVA to hold. However, if any units other than Joe are dependent on Mary, then we must consider further potential outcomes. The greater the number of dependent units, the more potential outcomes we must consider and the more complex the calculations become (consider an experiment with 20 different people, each of whose treatment status can effect outcomes for every one else). In order to (easily) estimate the causal effect of a single treatment relative to a control, SUTVA should hold. 
+
+
+For each unit
+in a population, and for each level of a treatment, there is a potential outcome. Compar-
+isons of these potential outcomes define the causal effects; we view these as well-defined
+irrespective of the assignment mechanism, and thus irrespective of what we actually are
+able to observe. We often place restrictions on these potential outcomes. Most impor-
+tant in the current text is the stability assumption, or SUTVA, that rules out differences
+between potential outcomes corresponding to different levels of the treatment for units
+other than the unit under consideration, and rules out unrepresented levels of treatments
+
+We can observe at most one of the potential outcomes for each unit. Causal inference
+is therefore intrinsically a missing data problem. Given the potential outcomes, there is
+a key role in our approach for the assignment mechanism, which defines which potential
+outcomes are observed and which are missing. The current text is largely organized by
+different types of assignment mechanisms. The simplest is that of a classical random-
+ized experiment where the researcher knows the assignment mechanism entirely. 
+
+### Mantenimiento de Animales
 
 Los animales se mantienen de manera constante en cajas comunales de acrílico con rejilla de acero inoxidable, son mantenidos a temperatura ambiente controlada de 20°C controlada por termostato y un calentador ambiental eléctrico de aceite. La humedad ambiental se regula mediante un humidificador y se mantiene alrededor de 50%, con un ciclo de luz/oscuridad de 12:12. Los ratones se mantienen en una cama mezcla de viruta comercial para roedores con ocote molido de grano fino para ratones en una mezcla de 1:1, esto con el fin de darles una cama cómoda (viruta) pero con capacidad extra de absorción de agua y amoniaco (ocote). El alimento es ad libitum (LabDiet  - 5001). Los animales se cambian de cama y se lavan sus cajas dos veces por semana. Se mantienen en colonias de entre 2 y 5 animales. Adicionalmente se les coloca material de enriquecimiento y nidificación (como tubos de cartón y papel picado) dentro de sus cajas.
 
@@ -539,6 +804,13 @@ Ver
 
 Posteriormente se llevará a cabo un protocolo del laberinto espacial de Morris para evaluar el desempeño cognitivo. Este protocolo consiste en hacer nadar durante 60 segundos a los ratones en un recipiente con agua a 27℃. En estos 60 segundos, los ratones deben de encontrar una plataforma oculta guiándose únicamente por pistas visuales que se encuentran en el cuarto de prueba. Esta prueba se realiza 4 veces seguidas por cada ratón durante 5 días. Al termino de estas pruebas de entrenamiento, se realizan 2 pruebas de retención de memoria, donde se deja nadar al ratón durante 60 segundos en el mismo recipiente, pero ahora sin la plataforma oculta. Por último, se realiza una última prueba donde la plataforma se cambia de lugar. Esta última prueba, conocida como aprendizaje reversa, se utilizar para dilucidar la flexibilidad cognitiva en los ratones (ver qué tan efectivamente pueden reaprender la prueba) (Garthe y Kempermann, 2013).
 
+
+## Mouse tracking
+
+[@kieslich2017]:
+Mouse-tracking was first introduced as a paradigm in the cognitive sciences by Spivey, Grosjean, and Knoblich (2005). In their study on language processing, participants received auditory instructions to click on one of two objects (e.g., “click the candle”). A picture of the target object was presented together with a picture of a distractor that was either phonologically similar (e.g., “candy”) or dissimilar (e.g., “dice”). Participants’ mouse movements were more curved towards the distractor if it was phonologically similar than if it was dissimilar, suggesting a parallel processing of auditory input that activated competing representations.
+
+Following Spivey et al. (2005), mouse-tracking has been used to gain insight into the temporal development of cognitive processes in a growing number of psychological domains, such as social cognition, decision making, and learning (for a review, see Freeman et al., 2011). More recently, researchers have extended the initial paradigm, combining mouse-tracking with more advanced methods. For example, mouse-tracking has been used in conjunction with eye-tracking to study the dynamic interplay of information acquisition and preference development in decision making under risk (Koop & Johnson, 2013).
 
 ## Perfusión
 
@@ -602,6 +874,10 @@ df_pruebas <- read.csv("./datos/df_pruebas.csv")
 
 ```
 
+
+::: {.callout-note}{.callout-caution collapse="true"}
+Eliminar ratones?
+
     -   En prueba 2:
 
         -   2b se olvidó de todo, está muy por debajo del 11%
@@ -613,12 +889,10 @@ df_pruebas <- read.csv("./datos/df_pruebas.csv")
     -   Prueba 1:
 
         -   Gris 2 está en 11%
-        
-        
+
 De aquí (latencias) podemos ver que el animal "***1b***" y el "***4-1"*** no promediaron una latencia menor a 17 segundos (aprendizaje) en el Entrenamiento 4. Por otro lado,"***2b"*** no aprendió en los entrenamientos reversa.
 
 De acuerdo al análisis de cuadrante, en la P1, los animales "2-1"y "1b" son los que menos aprendieron, pero están arriba del 25%. Para la P2, pasa algo similar con "2b" y "1b". En reversa, los que más aprendieron fueron "2-1", "2b" y "1b".
-
 ```
 # limpiar
 
@@ -645,10 +919,11 @@ wm_ent <- wm_df |>
 wm_p <- wm_df |> 
   filter(!str_detect(Stage, "entrenamiento"))
 ```
+:::
+
 
 ```{r recode_variables}
-#| code-fold: true
-#| code-summary: Ver limpieza de datos
+#| include: false
 
 # ---- renombrar y Recodificar variables ----
 # renombrar tratamientos
@@ -679,8 +954,6 @@ df_pruebas$stage <- as.factor(df_pruebas$stage)
 
 ```
 
-NOTA RTRACK
-- Parece que hay algunos tratamientos que se quedaron como Sal-CUMS. Hay que ver si pertenecen a F o a K
 
 ```{r rtrack_preparar}
 #| include: false
@@ -770,7 +1043,7 @@ file_names <- file_names %>%
 
 ```{r rtrack_experimentos}
 #| code-fold: true
-#| code-summary: Lectura experimentos Rtrack
+#| code-summary: Leer experimentos Rtrack
 #| eval: false
 
 tictoc::tic()
@@ -848,20 +1121,6 @@ Wolfer, D P, and H P Lipp. 1992. “A New Computer Program for Detailed Off-Line
 
 ### Latencia de escape post
 
-```{r}
-#| code-fold: true
-#| code-summary: Ver código
-#| label: tbl-latencias_post_tabla_df
-#| tbl-cap: Tabla df latencias post
-
-df_entpost_latencia <- df_ent_post |> 
-  dplyr::select(latencia, tratamientos, id, dia_completo)
-
-sjPlot::view_df(df_entpost_latencia, 
-                show.frq = T, show.prc = T, show.na = T)
-
-```
-
 #### Regresión bayesiana de efectos mixtos
 
 Este parámetro mide los segundos que tardan los ratones en llegar a la plataforma en los días de entrenamiento. Hay 4 entrenamientos en la plataforma original y 2 en la plataforma reversa. Evalúa un aprendizaje general de la prueba, aunque no toma en cuenta si este aprendizaje depende del hipocampo. La latencia de escape es una de las métricas más utilizadas para evaluar el aprendizaje en el MWM [@garthe2013].
@@ -890,20 +1149,17 @@ El modelo de regresión bayesiana tiene los siguientes parámetros:
 
     -   Predictores: El modelo incluye efectos fijos y efectos aleatorios. Los efectos fijos son una interacción entre el tiempo (como una variable numérica de día centrado) y el tratamiento (una variable categórica). Esto permite al modelo estimar cómo el efecto del tiempo sobre la Latencia cambia a través de diferentes tratamientos. Los efectos aleatorios están especificados por (tiempo\|sujetos), indicando que la pendiente del tiempo puede variar por sujetos. Esto capta la idea de que la relación entre Latencia y tiempo podría diferir entre diferentes sujetos.
 
-  ```
-    As shown in \autoref{fig:latcensored}, the `saline+CUM` groups show a higher proportion of censored data.   
 
-    \begin{figure}[tp!]
-    \begin{fullwidth}
-    \includegraphics[scale=0.5]{figuras/latencias_violin.png}
-    \caption{Scape Latencies after Stress. A. Scatter Plot showing in red the censored data. B. Violin plot shows a higher density of values around the 60 seconds mark for the saline-CUM groups, highlighting the censored data in this groups.}
-    \label{fig:latcensored}
-    \end{fullwidth}
-    \end{figure}
+As shown in fig:latcensored, the `saline+CUM` groups show a higher proportion of censored data.   
 
-    As shown in \autoref{fig:latanova}, if we use a linear approach model, we could model this test with a RM-ANOVA as a linear relationship between day and latency. Although this is the traditional approach, not accounting for the censored data underestimates the initial and final performance and overestimates the middle performance (consequence of fitting a straight line to a curved data).
+![](./figuras/latencias_violin.png)
+Scape Latencies after Stress. A. Scatter Plot showing in red the censored data. B. Violin plot shows a higher density of values around the 60 seconds mark for the saline-CUM groups, highlighting the censored data in this groups.
 
-    The repeated-measures ANOVA \autoref{fig:latanova} (formula: Latency ~ treatments * stage
+As shown in fig:latanova, if we use a linear approach model, we could model this test with a RM-ANOVA as a linear relationship between day and latency. Although this is the traditional approach, not accounting for the censored data underestimates the initial and final performance and overestimates the middle performance (consequence of fitting a straight line to a curved data).
+
+![](./figuras/anova.png)
+
+The repeated-measures ANOVA \autoref{fig:latanova} (formula: Latency ~ treatments * stage
     + Error(id/stage)) suggests that:
 
       - The main effect of stage is statistically significant and large (F(1, 251) = [89.66], p < 0.001, 95% CI [0.02, 1.00])
@@ -915,15 +1171,7 @@ El modelo de regresión bayesiana tiene los siguientes parámetros:
 
     Effect sizes were labelled following Field's (2013) recommendations.
 
-    \begin{figure}[tp!]
-    \begin{fullwidth}
-    \includegraphics[scale=0.5]{figuras/anova.png}
-    \caption{repeated-measures ANOVA.}
-    \label{fig:latanova}
-    \end{fullwidth}
-    \end{figure}
-
-    With this information, we can already conclude some insightful thoughts. For example, we have evidence that on the first day of the trial, the `saline + CUM` groups have the worst performance. However, on the second day, no effect is perceived. 
+With this information, we can already conclude some insightful thoughts. For example, we have evidence that on the first day of the trial, the `saline + CUM` groups have the worst performance. However, on the second day, no effect is perceived. 
 
     However, using a mixed effects models regression, we could get more information with our data, like: 
 
@@ -941,110 +1189,32 @@ El modelo de regresión bayesiana tiene los siguientes parámetros:
     - Linear Mixed Effects Model without Censored Data. 
 
     First, if we compare the Intercept and Slopes of this models, we can see how not accounting for the censored data underestimates the effects:
-
-
-    **Bayesian Model**:
-
-    \begin{center}
-    \begin{tabular}{||c c c||} 
-     \hline
-     Treatment & Intercept & Slope \\ [0.5ex] 
-     \hline\hline
-     Flx         & 30.63  & -1.59  \\ 
-     \hline
-     Flx-CUM     & 52.33  & -1.51  \\
-     \hline
-     Ket-CUM     & 69.86  & -1.47  \\
-     \hline
-     Sal-CUM-F   & 71.76  & -1.67  \\
-     \hline
-     Sal-CUM-K   & 85.00  & -1.37  \\ [1ex] 
-     \hline
-    \end{tabular}
-    \end{center}
-
-    **GLM Model**:
-
-    \begin{center}
-    \begin{tabular}{||c c c||} 
-     \hline
-     Treatment & Intercept & Slope \\ [0.5ex] 
-     \hline\hline
-     Flx         & 27.34  & -1.59  \\ 
-     \hline
-     Flx-CUM     & 38.43  & -1.51  \\
-     \hline
-     Ket-CUM     & 45.90  & -1.47 \\
-     \hline
-     Sal-CUM-F   & 50.17  & -1.67 \\
-     \hline
-     Sal-CUM-K   & 48.429  & -1.37 \\ [1ex] 
-     \hline
-    \end{tabular}
-    \end{center}
-
-
-    **Linear Model** (slope units shown in original units for this model):
-
-    \begin{center}
-    \begin{tabular}{||c c c||} 
-     \hline
-     Treatment & Intercept & Slope  \\ [0.5ex] 
-     \hline\hline
-     Flx         & 30.42  & -20.00 \\ 
-     \hline
-     Flx-CUM     & 28.65  & -13.73  \\
-     \hline
-     Ket-CUM     & 32.61  & -14.18  \\
-     \hline
-     Sal-CUM-F   & 47.17  & -29.23 \\
-     \hline
-     Sal-CUM-K   & 42.35  & -21.25  \\ [1ex] 
-     \hline
-    \end{tabular}
-    \end{center}
-
-    The relevance of this effects is more clearly shown if we plot the estimated means of the models (\autoref{fig:latmodeles})
-
-    \begin{figure}
-    \begin{fullwidth}
-    \includegraphics[scale=0.5]{figuras/bay_effect_plots.png}
-    \caption{Model Effects. A. Bayesian Regression with Censored Data. B. GLM without censored Data. C. Linear mixed effect model without censored data. Plotted with 66 credible intervals. }
-    \label{fig:latmodeles}
-    \end{fullwidth}
-    \end{figure}
-
-    As we can see in \autoref{fig:latmodeles}, failing to account for the curvature of the data with a linear model (fig C) gives the impression that all treatments behave in a similar fashion. Using a GLM (fig. B) is able to better shape the curvature of our data, accounting for the floor effects. If we incorporate the censored data (fig. A), we can give a better estimate of the real values, highlighting that there is a more pronaunced difference between the treatments. This can be seen more clearly in \autoref{fig:latproba}.
-
-    \begin{figure}
-    \begin{fullwidth}
-    \includegraphics[scale=0.5]{figuras/plot_predicted.png}
-    \caption{Latency probabilities. This plot highlights the initial difference of the saline treatments. Plotted with 89 percent credible intervals.}
-    \label{fig:latproba}
-    \end{fullwidth}
-    \end{figure}
-
-    Based on the bayesian regression, we can get the adjusted means, contrast them (adjusting them with Tukey) and plot the posterior distributions from the contrasts, as shown in figure \autoref{fig:latcontra}.
-
-    \begin{figure}
-    \begin{fullwidth}
-    \includegraphics[scale=0.5]{figuras/lat_lay_contrasts.jpg}
-    \caption{Bayes Regression Contrasts. Adjusted with Tukey HSD.}
-    \label{fig:latcontra}
-    \end{fullwidth}
-    \end{figure}
-```
-
-    Para ver con análisis de supervivencia ver [@andersen2021] .
     
+The relevance of this effects is more clearly shown if we plot the estimated means of the models fig:latmodeles
 
-#### Análisis de ssupervivencia
+
+![](figuras/bay_effect_plots.png)
+Model Effects. A. Bayesian Regression with Censored Data. B. GLM without censored Data. C. Linear mixed effect model without censored data. Plotted with 66 credible intervals.
+
+
+As we can see in fig:latmodeles, failing to account for the curvature of the data with a linear model (fig C) gives the impression that all treatments behave in a similar fashion. Using a GLM (fig. B) is able to better shape the curvature of our data, accounting for the floor effects. If we incorporate the censored data (fig. A), we can give a better estimate of the real values, highlighting that there is a more pronaunced difference between the treatments. This can be seen more clearly in fig:latproba.
+
+![](figuras/plot_predicted.png)
+Latency probabilities. This plot highlights the initial difference of the saline treatments. Plotted with 89 percent credible intervals. 
+
+
+Based on the bayesian regression, we can get the adjusted means, contrast them (adjusting them with Tukey) and plot the posterior distributions from the contrasts, as shown in figure fig:latcontra.
+
+![](figuras/lat_lay_contrasts.jpg)
+Bayes Regression Contrasts. Adjusted with Tukey HSD.
+
 
 ### Estrategias de búsqueda
 
-PENDIENTE: sacar estrategias. Podemos dividir las estrategias en egocéntricas(\`0\`) y alocéntricas (\`1\`). De esta manera podemos realizar una regresión logística.
 
 Estrategias de búsqueda: El grupo de Garthe y Kempermann (Garthe et al., 2009) definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma durante los entrenamientos. De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. El análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo (Hernández-Mercado & Zepeda, 2022).
+
+![](figuras/garthe_2013.png)
 
 ```{r}
 #| code-fold: true
@@ -1067,6 +1237,42 @@ Rtrack::plot_strategies(Rtrack::threshold_strategies(estrategias_rtrack, 0.4), e
 ![](./figuras/rtrack/estrategias_sal_cums_f.png)
 ![](./figuras/rtrack/estrategias_ket_cums.png)
 ![](./figuras/rtrack/estrategias_sal_cums_k.png)
+
+
+```{r estrategias_recode}
+
+estrategias_df <- read.csv("./datos/rtrack/exportado_estrategias_final.csv") |> 
+# exportado_estrategias_final_thresholded.csv
+  janitor::clean_names() |> 
+  dplyr::select(x_target_id, x_day, x_trial, stage, tratamiento, name) |> 
+  dplyr::mutate(estrategias = case_when(name %in% c("corrected path", "direct path", "directed search") ~ 1, # hipocampo_dependientes 
+                                        name %in% c("chaining",  "random path", "scanning", "thigmotaxis") ~ 0, # hipocampo_independientes
+                                        name %in% c("perseverance") ~ 3)
+  ) |> 
+  dplyr::mutate(estrategias_hipo = case_when(name %in% c("corrected path", "direct path", "directed search") ~ "hipocampo_dependientes",   
+                                        name %in% c("chaining",  "random path", "scanning", "thigmotaxis") ~ "hipocampo_independientes", # 
+                                        name %in% c("perseverance") ~ "perseverancia")
+  )
+
+```
+
+Post
+
+```{r estrategias_plot}
+
+estrategias_df |> dplyr::filter(str_detect(stage, "entrenamiento_rev")) |> 
+  ggpubr::ggbarplot(
+    x = "x_day",
+    y = "estrategias", 
+    color = "estrategias_hipo",
+    fill = "estrategias_hipo",
+    facet.by = "tratamiento"
+  )
+
+```
+
+- [ ] PEND: regresión logística (ver @Amelchenko)
+
 
 ### Eficiencia
 
@@ -1273,6 +1479,7 @@ performance::check_model(lmer_eficiencia,
 Con RM-ANOVA
 
 ```{r}
+#| eval: false
 
 df_ent_post_aov_eficiencia <- df_ent_post
 
@@ -1349,193 +1556,264 @@ Data Format: Make sure your data format aligns with the requirements of the func
 El análisis de las 3 pruebas del laberinto (adquisición, retención y aprendizaje reversa) se puede realizar con distintas métricas. De acuerdo a Maei y Frankland (Maei, Zaslavsky, Teixeira, et al., 2009), las medidas más utilizadas, en orden, son: porcentaje de tiempo en cuadrante blanco (4 cuadrantes), porcentaje de tiempo en zona blanco (definida como un círculo alrededor de la localización de la plataforma) y número de cruces (cruces alrededor de la localización de la plataforma). Sin embargo, los parámetros que reflejan con mayor precisión el desempeño en estas pruebas son: distancia promedio al blanco y entropía de Shannon (Maei, Zaslavsky, Wang, et al., 2009). Esta última métrica parece ser la más sensible al aprendizaje de la prueba del laberinto acuático. Está definida como la incertidumbre con la que se conoce una variable. Esta incertidumbre reduce con información (aprendizaje). En este sentido, una certidumbre de "0" significaría que el ratón pasó todo el tiempo en la localización de la plataforma blanco. Por otro lado, si el ratón exploró todo el laberinto acuático durante la prueba, la entropía sería máxima.
 
 
+### Mapas de calor
+
+the usefulness of movement tracking as a process-tracing method only depends on there being a link between cognitive process and movement, not whether the mapping is continuous or discrete. In either scenario, movement tracking provides valuable information on the development of the preference-formation process, which can be used in at least three ways. First, the trajectory of the movement can shed light on the relative strength of preference for the options, or, in other words, the degree of choice competition. Second, the movement trajectory can be used to identify the time point at which the preference-formation process commits to a particular option, and in some cases the order of commitments, including the detection of changes of mind (Wulff et al., 2019). Third, by varying features of the individual choice problems, movement trajectories can reveal at what point these features are considered during preference formation (e.g., Sullivan et al., 2015). [@wulff2021]
+
+```{r}
+#| code-fold: true
+#| code-summary: Ver código heatmaps con Rtrack
+#| eval: false
+
+# ---- P1 ----
+flx_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Flx-CUMS
+flx_CUMS_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-F
+sal_cums_f_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Ket-CUMS
+ket_cums_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-K
+sal_cums_k_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# ---- P2 ----
+flx_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Flx-CUMS
+flx_CUMS_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-F
+sal_cums_f_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Ket-CUMS
+ket_cums_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-K
+sal_cums_k_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+
+# ---- P-Rev ----
+
+flx_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Flx-CUMS
+flx_CUMS_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-F
+sal_cums_f_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Ket-CUMS
+ket_cums_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-K
+sal_cums_k_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+
+
+# ---- p1 plot ----
+
+# Flx
+Rtrack::plot_density(
+  flx_p1_metrics,
+  title = "FLX P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_p1_metrics,
+  title = "FLX-CUMS P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_p1_metrics,
+  title = "Sal-CUMS-FLX P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_p1_metrics,
+  title = "Ket-CUMS P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_p1_metrics,
+  title = "Sal-CUMS-Ket P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+# ---- p2 plot ----
+
+# Flx
+Rtrack::plot_density(
+  flx_p2_metrics,
+  title = "FLX P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_p2_metrics,
+  title = "FLX-CUMS P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_p2_metrics,
+  title = "Sal-CUMS-FLX P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_p2_metrics,
+  title = "Ket-CUMS P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_p2_metrics,
+  title = "Sal-CUMS-Ket P-2",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+# ---- rev plot ----
+# Flx
+Rtrack::plot_density(
+  flx_rev_metrics,
+  title = "FLX reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+
+# Flx-CUMS
+Rtrack::plot_density(
+  flx_CUMS_rev_metrics,
+  title = "Flx-CUMS reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-F
+Rtrack::plot_density(
+  sal_cums_f_rev_metrics,
+  title = "Sal-CUMS-F reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Ket-CUMS
+Rtrack::plot_density(
+  ket_cums_rev_metrics,
+  title = "Ket-CUMS reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+# Sal-CUMS-K
+Rtrack::plot_density(
+  sal_cums_k_rev_metrics,
+  title = "Sal-CUMS-K reversal",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+
+```
+
+
+Pendientes
+
+- [gif trajectory animation](http://pascalkieslich.github.io/mousetrap/reference/mt_animate.html)
+- [difference heatmap](difference-heatmap of two trajectory heatmap images)
+
 ### Distancia Media
 
 Como se mencionó antes, esta es una métrica mucho más sensible que las anteriores. Aquí, una menor distancia implica un mejor aprendizaje espacial. El resultado es similar: hay diferencia significativa entre el grupo control y el grupo de Ketamina+CUMS (Tukey; p=0.0158).
 
-```
 
 According to (Maei et al., 2009), mean distance to the paltaform outperforms the typical probe meassures (time in quadrant, time in zone, number of crossings). 
 
-\begin{figure}
-\begin{fullwidth}
-\includegraphics[scale=0.5]{figuras/1.jpg}
-\caption{Target.}
-\label{fig:l}
-\end{fullwidth}
-\end{figure}
+![](figuras/1.jpg)
 
-\begin{figure}
-\begin{fullwidth}
-\includegraphics[scale=0.5]{figuras/2.jpg}
-\caption{NE}
-\label{fig:la}
-\end{fullwidth}
-\end{figure}
+![](figuras/2.jpg)
 
-\begin{figure}
-\begin{fullwidth}
-\includegraphics[scale=0.5]{figuras/3.jpg}
-\caption{SO.}
-\label{fig:latco}
-\end{fullwidth}
-\end{figure}
-
-## Probe time in Quadrants
-
-We used the Dirichlet distribution to determine whether the fraction of time spent in the quadrants is uniformly distributed (Maugard et al., 2019). This allowed to overcome the problem of the constant-sum constraints of the MWM assay, in which the data points (i.e., the time that is spent in each quadrant of the maze as a fraction of the overall time of the assay) are not independent of each other (a requirement of the tests, e.g., ANOVA). 
-
-This analysis was followed by single-sample t tests with Bonferroni correction for multiple comparisons to characterize the preference for a particular quadrant in the groups showing a divergence from uniformity.
-
-Probe 1 Quadrant Time
-
-\begin{center}
-\begin{tabular}{||c c c||} 
- \hline
- Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
- \hline\hline
- Flx         & 4.18576e-05  & YES  \\ 
- \hline
- Flx-CUM     & 1.28023e-09  & YES  \\
- \hline
- Ket-CUM     & 3.26186e-06  & YES  \\
- \hline
- Sal-CUM-F   & 0.0193724  & YES  \\
- \hline
- Sal-CUM-K   & 5.28868e-05  & YES  \\ [1ex] 
- \hline
-\end{tabular}
-\end{center}
-
-
-Probe 2 Quadrant Time
-
-\begin{center}
-\begin{tabular}{||c c c||} 
- \hline
- Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
- \hline\hline
- Flx        & 0.02  & YES  \\ 
- \hline
- Flx-CUM     & 0.0672  & NO  \\
- \hline
- Ket-CUM     & 0.3148  & NO  \\
- \hline
- Sal-CUM-F   & 0.0150616  & YES  \\
- \hline
- Sal-CUM-K   & 0.456421  & NO  \\ [1ex] 
- \hline
-\end{tabular}
-\end{center}
-
-Probe 3 Quadrant Time
-
-\begin{center}
-\begin{tabular}{||c c c||} 
- \hline
- Treatment & p-value & Quadrant-Preference \\ [0.5ex] 
- \hline\hline
- Flx         & 0.0028  & YES  \\ 
- \hline
- Flx-CUM     & 2.55151e-08  & YES  \\
- \hline
- Ket-CUM     & 1.28023e-09  & YES  \\
- \hline
- Sal-CUM-F   & 0.274735  & NO  \\
- \hline
- Sal-CUM-K   & 9.79929e-07  & YES  \\ [1ex] 
- \hline
-\end{tabular}
-\end{center}
-
-
-PENDIENTE: Creo que se puede usar el mismo analisis para tiempo en zona. 
-```
-
-Estadísticos
-
-```
-result <- prueba_1 %>%
-  group_by(Tratamientos) %>%
-  summarise(
-    n = n(),  # Renamed 'count' to 'n'
-    promedio = mean(Distancia_media_blanco, na.rm = TRUE),  # Renamed 'mean' to 'promedio'
-    sd = sd(Distancia_media_blanco, na.rm = TRUE)
-  ) %>%
-  flextable::flextable()  # Convert the result to a Flextable
-
-# Display the Flextable
-result
-```
-
-ANOVA
-
-```
-# Compute the analysis of variance
-res.aov <- aov(Distancia_media_blanco ~ Tratamientos, data = prueba_1)
-# # Summary of the analysis
-# summary(res.aov)
-# 
-# 
-# 
-# res.aov <- anova_test(
-#   data = pruebas_df,
-#   dv = Distancia_media_blanco,
-#   between = Tratamientos
-# )
-# #
-# get_anova_table(res.aov)
-
-
-
-aov.p1.distancia_media <- prueba_1 |>
-  rename(Tiempo = Stage) 
-
-myft <- aov.p1.distancia_media %>%
-  ezANOVA(
-    data = .,
-    dv = .(Distancia_media_blanco),
-    wid = .(Id),
-    between = .(Tratamientos),
-    type = 3
-  ) %>%
-  purrr::pluck("ANOVA") %>%
-  mutate(
-    # p = format(p, scientific = FALSE),
-    F = round(F, 2), # round "F" to 3 decimal places
-    p = round(p, 4),
-    ges = round(ges, 3), # round "ges" to 3 decimal places
-    # # p = case_when(
-    #   p > 0.05 ~ p,
-    # p <= 0.05 & p > 0.01 ~ "P ≤ 0.05",
-    # p <= 0.01 & p > 0.001 ~ "P ≤ 0.01",
-    # p <= 0.001 & p > 0.0001 ~ "P ≤ 0.001",
-    # p <= 0.0001 ~ "P ≤ 0.0001",
-    # TRUE ~ as.character(p)
-    # )
-  ) %>%
-  # select(-`p<.05`) %>%
-  rename(
-    Efecto = Effect,
-    `Tamaño del Efecto` = ges
-  ) %>%
-  relocate(F, .after = Efecto) %>%
-  flextable() %>%
-  # add_footer_lines("ns = P > 0.05
-  #                   * = P ≤ 0.05 , ** = P ≤ 0.01, *** = P ≤ 0.001, **** = P ≤ 0.0001
-  #                   Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo") %>%
-  add_footer_lines("Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo")%>%                   
-  theme_zebra() %>%
-  align(i = 1, part = "header", align = "center") %>%
-  # add_header_lines(values = "ANOVA de diseño mixto") 
-  add_header_lines(values = c("one-way ANOVA", "Distancia Media P-1"))
-# color(~ p %in% c("*", "**", "***", "****"), ~Efecto, color = "red") %>%
-# color(~ p %in% c("*", "**", "***", "****"), ~p, color = "red") %>%
-# color(~ `Tamaño del Efecto` >= 0.14, ~`Tamaño del Efecto`, color = "red") %>%
-# color(~ `Tamaño del Efecto` >= 0.6 & `Tamaño del Efecto` < 0.14, ~`Tamaño del Efecto`, color = "green") 
-
-myft
-```
+![](figuras/3.jpg)
 
 ### Entropía
 
@@ -1915,14 +2193,21 @@ entropia_rtrack |>
 ```
 
 
-### Porcentaje en Cuadrantes
+### Probe time in Quadrants
+
+We used the Dirichlet distribution to determine whether the fraction of time spent in the quadrants is uniformly distributed (Maugard et al., 2019). This allowed to overcome the problem of the constant-sum constraints of the MWM assay, in which the data points (i.e., the time that is spent in each quadrant of the maze as a fraction of the overall time of the assay) are not independent of each other (a requirement of the tests, e.g., ANOVA). 
+
+This analysis was followed by single-sample t tests with Bonferroni correction for multiple comparisons to characterize the preference for a particular quadrant in the groups showing a divergence from uniformity.
+
+PENDIENTE: Creo que se puede usar el mismo analisis para tiempo en zona. 
 
 En el análisis de porcentaje en cuadrante, la cual es una de las métricas menos sensibles, no tenemos resultados interesantes. Parece haber un olvido en la prueba 2 (retención) en todos los grupos sometidos a CUMS, aunque no hay nada significativo.
 
 
-ANOVA 
+```{r anova_dist_med}
+#| eval: false
+#| include: false
 
-```
 wm_df_pruebas_cuadrante_cumsctrl <- wm_df_pruebas_analysis |> 
   dplyr::filter(str_detect(Tratamiento, "CUMS_ctrl")) 
 
@@ -2236,9 +2521,10 @@ p + gridExtra::tableGrob(tab2[1:11]) + gridExtra::tableGrob(res.aov) +
 
 ```
 
-ANOVA2
+```{r anova_dist_med2}
+#| eval: false
+#| include: false
 
-```
 ### Con Cuadrante en X
 
 bar <- ggbarplot(
@@ -2375,244 +2661,93 @@ Esta es una métrica más sensible que cuadrante. De manera interesante, podemos
 
 ### Cruces al annulus
 
-### Mapas de calor
+## Estadísticos generales
 
-```{r}
-#| code-fold: true
-#| code-summary: Ver código heatmaps con Rtrack
+
+```{r estadisticos_resumen}
 #| eval: false
+#| include: false
 
-# ---- P1 ----
-flx_p1_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
-                               (rtrack_experimento$factors$`_Day` == 5)]
-# Flx-CUMS
-flx_CUMS_p1_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 5)]
-# Sal-CUMS-F
-sal_cums_f_p1_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
-                               (rtrack_experimento$factors$`_Day` == 5)]
-# Ket-CUMS
-ket_cums_p1_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 5)]
-# Sal-CUMS-K
-sal_cums_k_p1_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
-                               (rtrack_experimento$factors$`_Day` == 5)]
-# ---- P2 ----
-flx_p2_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
-                               (rtrack_experimento$factors$`_Day` == 6)]
-# Flx-CUMS
-flx_CUMS_p2_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 6)]
-# Sal-CUMS-F
-sal_cums_f_p2_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
-                               (rtrack_experimento$factors$`_Day` == 6)]
-# Ket-CUMS
-ket_cums_p2_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 6)]
-# Sal-CUMS-K
-sal_cums_k_p2_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
-                               (rtrack_experimento$factors$`_Day` == 6)]
-
-# ---- P-Rev ----
-
-flx_rev_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
-                               (rtrack_experimento$factors$`_Day` == 9)]
-# Flx-CUMS
-flx_CUMS_rev_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 9)]
-# Sal-CUMS-F
-sal_cums_f_rev_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
-                               (rtrack_experimento$factors$`_Day` == 9)]
-# Ket-CUMS
-ket_cums_rev_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
-                               (rtrack_experimento$factors$`_Day` == 9)]
-# Sal-CUMS-K
-sal_cums_k_rev_metrics =
-  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
-                               (rtrack_experimento$factors$`_Day` == 9)]
-
-
-# ---- p1 plot ----
-
-# Flx
-Rtrack::plot_density(
-  flx_p1_metrics,
-  title = "FLX P-1",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
-
-# Flx-CUMS
-Rtrack::plot_density(
-  flx_CUMS_p1_metrics,
-  title = "FLX-CUMS P-1",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-F
-Rtrack::plot_density(
-  sal_cums_f_p1_metrics,
-  title = "Sal-CUMS-FLX P1",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Ket-CUMS
-Rtrack::plot_density(
-  ket_cums_p1_metrics,
-  title = "Ket-CUMS P1",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-K
-Rtrack::plot_density(
-  sal_cums_k_p1_metrics,
-  title = "Sal-CUMS-Ket P1",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
-# ---- p2 plot ----
-
-# Flx
-Rtrack::plot_density(
-  flx_p2_metrics,
-  title = "FLX P-2",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
-
-# Flx-CUMS
-Rtrack::plot_density(
-  flx_CUMS_p2_metrics,
-  title = "FLX-CUMS P-2",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-F
-Rtrack::plot_density(
-  sal_cums_f_p2_metrics,
-  title = "Sal-CUMS-FLX P-2",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Ket-CUMS
-Rtrack::plot_density(
-  ket_cums_p2_metrics,
-  title = "Ket-CUMS P-2",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-K
-Rtrack::plot_density(
-  sal_cums_k_p2_metrics,
-  title = "Sal-CUMS-Ket P-2",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
-# ---- rev plot ----
-# Flx
-Rtrack::plot_density(
-  flx_rev_metrics,
-  title = "FLX reversal",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
-
-# Flx-CUMS
-Rtrack::plot_density(
-  flx_CUMS_rev_metrics,
-  title = "Flx-CUMS reversal",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-F
-Rtrack::plot_density(
-  sal_cums_f_rev_metrics,
-  title = "Sal-CUMS-F reversal",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Ket-CUMS
-Rtrack::plot_density(
-  ket_cums_rev_metrics,
-  title = "Ket-CUMS reversal",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-# Sal-CUMS-K
-Rtrack::plot_density(
-  sal_cums_k_rev_metrics,
-  title = "Sal-CUMS-K reversal",
-  col = viridis(300), # 738
-  resolution = 900,
-  feature.col = "#D20062",
-  feature.lwd = 4,
-  legend = TRUE
-)
-
+result <- prueba_1 %>%
+  group_by(Tratamientos) %>%
+  summarise(
+    n = n(),  # Renamed 'count' to 'n'
+    promedio = mean(Distancia_media_blanco, na.rm = TRUE),  # Renamed 'mean' to 'promedio'
+    sd = sd(Distancia_media_blanco, na.rm = TRUE)
+  ) %>%
+  flextable::flextable()  # Convert the result to a Flextable
 
 ```
 
+```{r anova_r}
+#| eval: false
+#| include: false
+
+# Compute the analysis of variance
+res.aov <- aov(Distancia_media_blanco ~ Tratamientos, data = prueba_1)
+# # Summary of the analysis
+# summary(res.aov)
+# 
+# 
+# 
+# res.aov <- anova_test(
+#   data = pruebas_df,
+#   dv = Distancia_media_blanco,
+#   between = Tratamientos
+# )
+# #
+# get_anova_table(res.aov)
+
+
+
+aov.p1.distancia_media <- prueba_1 |>
+  rename(Tiempo = Stage) 
+
+myft <- aov.p1.distancia_media %>%
+  ezANOVA(
+    data = .,
+    dv = .(Distancia_media_blanco),
+    wid = .(Id),
+    between = .(Tratamientos),
+    type = 3
+  ) %>%
+  purrr::pluck("ANOVA") %>%
+  mutate(
+    # p = format(p, scientific = FALSE),
+    F = round(F, 2), # round "F" to 3 decimal places
+    p = round(p, 4),
+    ges = round(ges, 3), # round "ges" to 3 decimal places
+    # # p = case_when(
+    #   p > 0.05 ~ p,
+    # p <= 0.05 & p > 0.01 ~ "P ≤ 0.05",
+    # p <= 0.01 & p > 0.001 ~ "P ≤ 0.01",
+    # p <= 0.001 & p > 0.0001 ~ "P ≤ 0.001",
+    # p <= 0.0001 ~ "P ≤ 0.0001",
+    # TRUE ~ as.character(p)
+    # )
+  ) %>%
+  # select(-`p<.05`) %>%
+  rename(
+    Efecto = Effect,
+    `Tamaño del Efecto` = ges
+  ) %>%
+  relocate(F, .after = Efecto) %>%
+  flextable() %>%
+  # add_footer_lines("ns = P > 0.05
+  #                   * = P ≤ 0.05 , ** = P ≤ 0.01, *** = P ≤ 0.001, **** = P ≤ 0.0001
+  #                   Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo") %>%
+  add_footer_lines("Tamaño del efecto  ≧ 0.14 = Alto,   ≧ 0.06 = Medio,  ≤ 0.06 = Bajo")%>%                   
+  theme_zebra() %>%
+  align(i = 1, part = "header", align = "center") %>%
+  # add_header_lines(values = "ANOVA de diseño mixto") 
+  add_header_lines(values = c("one-way ANOVA", "Distancia Media P-1"))
+# color(~ p %in% c("*", "**", "***", "****"), ~Efecto, color = "red") %>%
+# color(~ p %in% c("*", "**", "***", "****"), ~p, color = "red") %>%
+# color(~ `Tamaño del Efecto` >= 0.14, ~`Tamaño del Efecto`, color = "red") %>%
+# color(~ `Tamaño del Efecto` >= 0.6 & `Tamaño del Efecto` < 0.14, ~`Tamaño del Efecto`, color = "green") 
+
+myft
+```
 
 
 ## Otras
@@ -2622,16 +2757,350 @@ Rtrack::plot_density(
 ```{r}
 
 campo_abierto_kg1 <- read.csv("./datos_otras_pruebas/campo_abierto/campo_abierto_ketamina_g1.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(animal, treatment, stage, distance, periferia_time, medio_time, centro_time, centro_number_line_crossings) |> 
+  dplyr::rename(id = animal, time = stage) 
+  
 
 campo_abierto_fg1 <- read.csv("./datos_otras_pruebas/campo_abierto/resultados_fluoxetina_abierto.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(animal, tratamiento, tiempo, distance, periferia_time, medio_time, centro_time, centro_number_line_crossings) |> 
+  dplyr::mutate(time = case_when(tiempo == "pre-cums" ~ "1_pre_CUMS", 
+                                 tiempo == "postcums" ~ "2_post_CUMS" )) |>
+  dplyr::select(-tiempo) |> 
+  dplyr::rename(id = animal, treatment = tratamiento)
+
+
+campo_abierto_df <- rbind(campo_abierto_fg1, campo_abierto_kg1)
 
 ```
 
 Tiempo En periferia
 
+```{r label, options}
+
+campo_abierto_df |>  
+  ggpubr::ggboxplot(
+    x = "treatment",
+    y = "periferia_time", 
+    color = "treatment",
+    # fill = "treatment",
+    facet.by = "time"
+  )
+
+```
+
+Tiempo en medio
+
+```{r}
+campo_abierto_df |>  
+  ggpubr::ggboxplot(
+    x = "treatment",
+    y = "medio_time", 
+    color = "treatment",
+    # fill = "treatment",
+    facet.by = "time"
+  )
+
+```
+
 Tiempo en Centro
+
+```{r}
+
+campo_abierto_df |>  
+  ggpubr::ggboxplot(
+    x = "treatment",
+    y = "centro_time", 
+    color = "treatment",
+    # fill = "treatment",
+    facet.by = "time"
+  )
+
+```
+
+Cruces Centro
+
+```{r}
+
+campo_abierto_df |>  
+  ggpubr::ggboxplot(
+    x = "treatment",
+    y = "centro_number_line_crossings", 
+    color = "treatment",
+    # fill = "treatment",
+    facet.by = "time"
+  )
+
+```
+
+
+Mapas de Calor
+
+Heatmaps make it easy to identify patterns and trends by visually representing data.
+
+Coordebadas: 
+
+![](figuras/of_zonas.jpg)
+
+- apparatus - campo abierto - view protocol report
+- canara 640 x 480 pixeles
+- 750 mm
+- sup izq 129, 411
+- sup derecha 429, 410
+
+[comprobar coordenadas con esta página](https://www.desmos.com/calculator/mhq4hsncnh)
+
+- test 26 seg 
+00:55:252 inf izq (370, 815), 
+01:43:758 inf der (1035, 825), 
+00:16:115 sup iz (370, 132.5), 
+01:20:624 sup der (1070, 140)
+- 
+
+```{r}
+
+path <- fs::path("./datos_otras_pruebas/campo_abierto/rtrack/mm_v3") 
+
+csv_files <- fs::dir_ls(path, glob = "*.csv")
+
+process_file <- function(f) {
+  df <- read_csv(f) %>%
+    # Rename
+    rename(
+      "Time" = "Time (s)",
+      "X" = "Centre position X",
+      "Y" = "Centre position Y") |> 
+    # Remove the first row
+    slice(-1) %>%
+    # Keep every 6th column
+    select(which((seq_along(df) - 1) %% 6 == 5)) %>%
+    # Divide X and Y by 10
+    # mutate(across(c(X, Y), ~ .x / 1))
+    # mutate(across(c(X, Y), ~ .x))
+    mutate(across(everything(), ~ .x))
+  # Save the modified dataframe back to the file
+  write_csv(df, f)
+}
+
+# Apply the function to all CSV files
+walk(csv_files, process_file)
+
+of_experiment = Rtrack::read_experiment("./datos_otras_pruebas/campo_abierto/rtrack/Experiment.xlsx", data.dir = "./datos_otras_pruebas/campo_abierto/rtrack/mm_v3",
+    threads = 0)
+
+flx_cums_metrics_pre =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Sal-CUMS-Flx"]
+
+flx_cums_metrics_pre =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Flx-CUMS"]
+
+Rtrack::plot_density(
+  flx_cums_metrics_pre,
+  title = "flx_cums_metrics_pre",
+  # col = viridis(300) # 738
+  # resolution = 900,
+  # feature.col = "#D20062",
+  # feature.lwd = 4,
+  # legend = TRUdE
+)
+
+
+Rtrack::plot_variable("path.length", experiment = of_experiment, factor = "Tratamiento")
+
+Rtrack::plot_variable("velocity", experiment = of_experiment, factor = "Tratamiento")
+
+Rtrack::plot_variable("roaming.entropy", experiment = of_experiment, factor = "Tratamiento")
+
+Rtrack::plot_variable("time.in.wall.zone", experiment = of_experiment, factor = "Tratamiento")
+
+Rtrack::plot_variable("time.in.corner.zone", experiment = of_experiment, factor = "Tratamiento")
+
+
+flx_cums_metrics_pre =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Flx-CUMS"]
+
+flx_cums_metrics_pre =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Flx-CUMS" &
+                               (of_experiment$factors$`_Day` == 1)]
+
+flx_cums_metrics_post =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Flx-CUMS" &
+                               (of_experiment$factors$`_Day` == 2)]
+
+sal_cums_flx_metrics_pre =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Sal-CUMS-Flx" &
+                               (of_experiment$factors$`_Day` == 1)]
+
+sal_cums_flx_metrics_post =
+  of_experiment$metrics[of_experiment$factors$Tratamiento == "Sal-CUMS-Flx" &
+                               (of_experiment$factors$`_Day` == 2)]
+
+
+# ---- p1 plot ----
+
+# Flx
+Rtrack::plot_density(
+  flx_cums_metrics_pre,
+  title = "flx_cums_metrics_pre",
+  col = viridis(30), # 738
+  # resolution = 900,
+  # feature.col = "#D20062",
+  # feature.lwd = 4,
+  legend = TRUE
+)
+Rtrack::plot_density(
+  flx_cums_metrics_post,
+  title = "Flx_cums_metrics_post",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+Rtrack::plot_density(
+  sal_cums_flx_metrics_pre,
+  title = "sal_cums_flx_metrics_pre",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+Rtrack::plot_density(
+  sal_cums_flx_metrics_post,
+  title = "sal_cums_flx_metrics_post",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#D20062",
+  feature.lwd = 4,
+  legend = TRUE
+)
+
+```
+
+Con mousetrap @kieslich2017
+
+- import
+- Trajectories are remapped using mt_remap_symmetric which ensures that every trajectory starts at the bottom of the coordinate system and ends in the top left corner
+- mt_align_start is needed to align all trajectories to the same initial coordinates (0, 0)
+- mt_measures
+- hen typically time-normalized so that each trajectory contains the same number of recorded coordinates regardless of its response time (Spivey et al., 2005). To this end, mt_time_normalize computes time-normalized trajectories using a constant (but adjustable)numberoftimestepsofequal length (101 by default, following Spivey et al.).
+- mt_plot_aggregate: average the timenormalized trajectories per condition (first within and then across participants) and to plot the resulting aggregate trajectories
+
+Otros:
+- [mt_time_normalize](http://pascalkieslich.github.io/mousetrap/reference/mt_time_normalize.html)
+- [mt_resample](http://pascalkieslich.github.io/mousetrap/reference/mt_resample.html)
+- [mt_average](http://pascalkieslich.github.io/mousetrap/reference/mt_average.html)
+- mt_standarize
+- mt_subset
+- mt_measures
+- mt_angles
+- mt_sample_entropy
+- mt_diffmap
+- mt_animate
+- mt_map
+- mt_plot
+
+trajectory indices @wulff2021:
+- trial-level summaries of primarily three distinct characteristics of movement trajectories: curvature, temporal development, and spatiotemporal complexity.
+- Curvature Indices: how strongly a trajectory is bent towards a nonchosen option. Curvature is commonly defined in reference to an idealized movement trajectory that directly connects the start and end points of the observed trajectory through a straight line (e.g., Freeman & Ambady, 2010; Spivey et al., 2005). Relative to this line, curvature is quantified as the perpendicular distance of either a single or all points on the trajectory. Two single-point measures are maximum absolute deviation (MAD)2 and maximum deviation above the ideal trajectory MDabove. MAD is the more commonly employed measure of the two.
+- Complexity Indices: aim to measure a trajectory’s spatiotemporal degree of disorder (Hehman et al., 2015). Three complexity indices are commonly recruited in the literature. The most frequently employed index is the number of flips, directional changes4 along the axis of interest, typically the horizontal axis (Freeman & Ambady, 2010). Similar to flips, reversals measure the number of times a trajectory crosses the midline between options (Koop & Johnson, 2013). A somewhat different index is sample entropy, which measures the level of spatiotemporal disorder of a dimension of interest (Dale et al., 2007; Hehman et al., 2015). Sample entropy, which is often employed in time-series analysis, achieves this by quantifying temporal self-similarity. 
+  - [mt_sample_entropy](http://pascalkieslich.github.io/mousetrap/reference/mt_sample_entropy.html): Calculate sample entropy for each trajectory as a measure of the complexity of movements along one specific dimension. 
+  
+- Temporal Indices: aim to measure the temporal development of the movement. There are two sets of temporal indices. The first set of indices decomposes the overall response time (i.e., the time between the trial onset and the choice) into two components: movement time, defined as the time during which the movement is ongoing, and idle time, defined as the total time during which there is no movement
+- mt_measures
+- mt_aggregate_per_subject
+...ver más en wolf
+- mt_plot() 
+- mt_heatmap
+- mt_diffmap...
+analyzing the temporal evolution evolution using
+- 
+
+How decisions evolve [@scherbaum2010]
+To study the process of decision-making under conflict, researchers typically analyze response latency and accuracy. However, these tools provide little evidence regarding how the resolution of conflict unfolds over time. Here, we analyzed the trajectories of mouse movements while participants performed a continuous version of a spatial conflict task (the Simon task). We applied a novel combination of multiple regression analysis and distribution analysis to determine how conflict on the present trial and carry-over from the previous trial affect responding. Response on the previous trial and the degree of conflict on the previous and the current trial all influenced performance, but they did so differently: The previous response influenced the early part of the mouse trajectory, but the degree of previous and current conflict influenced later parts. This suggests that in this task experiencing conflict may not proactively ready the system to handle conflict on the next trial; rather, when conflict is experienced on the subsequent trial the previous compensatory processing may be re-activated more efficiently.
+- In everyday life, we frequently have to decide between competing action tendencies.
+- When deciders contemplate between alternatives, we assume that they are in conflict. How such conflicts between different action tendencies are resolved by the brain has been studied extensively in the laboratory with tasks inducing response conflicts (cf. Botvinick, 2007) such as the Simon task. 
+- While the degree of conflict in the current trial is one influence on the processes determining the final decision in a Simon task, cognitive psychologists have also highlighted the role of other influences such as response and stimulus repetitions (e.g. Wühr & Ansorge, 2005) or previous experience of response conflict as additional factors that determine response selection processes in the current trial (e.g. Egner, 2007; Stürmer, Leuthold, Soetens, Schröter, & Sommer, 2002). Especially the latter one, conflict in the previous trial, has been shown to reduce the influence of conflicting information in the current trial,
+- [mt_plot_riverbed](http://pascalkieslich.github.io/mousetrap/reference/mt_plot_riverbed.html)
+
+
+
+
+```{r}
+
+# install.packages("readbulk")
+# install.packages("mousetrap")
+library(readbulk)
+library(mousetrap)
+
+raw_data <- read_bulk(directory = "./datos_otras_pruebas/campo_abierto/rtrack/Data", extension = ".csv")
+
+
+
+mousetrap_df2 <- mt_import_long(
+  raw_data,
+  xpos_label = "X",
+  ypos_label = "Y",
+  # zpos_label = NULL,
+  timestamps_label = "Time",
+  # add_labels = "File",
+  mt_id_label = "File",
+  # mt_seq_label = "mt_seq",
+  # reset_timestamps = TRUE,
+  verbose = TRUE
+)
+
+mt_heatmap(
+  mousetrap_df2,
+  # use = "trajectories",
+  dimensions = c("xpos", "ypos"),
+  # filename = NULL,
+  # ...,
+  # upscale = 1,
+  # plot_dims = TRUE,
+  verbose = TRUE
+)
+
+mt_heatmap_ggplot(
+  mousetrap_df2,
+  dimensions = c("xpos", "ypos")
+  # use2 = "data",
+  # facet_row = NULL,
+  # facet_col = NULL,
+  # ...
+)
+
+mt_heatmap_ggplot(mousetrap_df2, xres=500, n_shades=5, mean_image=0.2,   colors = c("white", "pink", "violet"))
+
+
+
+of_heat <-  mt_heatmap_raw(
+  mousetrap_df2,
+  # use = "trajectories",
+  dimensions = c("xpos", "ypos"),
+  # variable = NULL,
+  # bounds = NULL,
+  # xres = 1000,
+  # upsample = 1,
+  # norm = FALSE,
+  colors = c("black", "pink", "violet"),
+  n_shades = c(1000, 1000),
+  # smooth_radius = 1.5,
+  # low_pass = 200,
+  auto_enhance = TRUE,
+  # mean_image = 0.15,
+  # mean_color = 0.25,
+  # aggregate_lwd = 0,
+  # aggregate_col = "black",
+  # n_trajectories = NULL,
+  # seed = NULL,
+  verbose = TRUE
+)
+of_heat$img
+mt_heatmap_ggplot(of_heat, xres=500, n_shades=5, mean_image=0.2)
+```
 
 ### Lab En Cruz
 
@@ -2647,7 +3116,95 @@ lab_cruz_kg1 <- read.csv("./datos_otras_pruebas/lab_cruz/laberinto_cruz_ketamina
 lab_cruz_fg1 <- read.csv("./datos_otras_pruebas/lab_cruz/laberinto_cruz_fluox_g1.csv") |> 
   janitor::clean_names()
 
+
+
 ```
+
+```{r}
+
+# install.packages("readbulk")
+# install.packages("mousetrap")
+library(readbulk)
+library(mousetrap)
+
+raw_data <- read_bulk(directory = "./datos_otras_pruebas/lab_cruz/coordenadas", extension = ".csv") |> 
+  janitor::clean_names()
+
+
+
+mousetrap_cruz_df <- mt_import_long(
+  raw_data,
+  xpos_label = "centre_position_x",
+  ypos_label = "centre_position_y",
+  # zpos_label = NULL,
+  timestamps_label = "time_s",
+  # add_labels = "File",
+  mt_id_label = "file",
+  # mt_seq_label = "mt_seq",
+  reset_timestamps = TRUE,
+  verbose = TRUE
+)
+
+mt_heatmap(
+  mousetrap_cruz_df,
+  # use = "trajectories",
+  # dimensions = c("xpos", "ypos"),
+  # filename = NULL,
+  # ...,
+  # upscale = 1,
+  # plot_dims = TRUE,
+  verbose = TRUE
+)
+
+mt_heatmap_ggplot(
+  mousetrap_cruz_df,
+  dimensions = c("xpos", "ypos")
+  # use2 = "data",
+  # facet_row = NULL,
+  # facet_col = NULL,
+  # ...
+)
+
+mt_heatmap_ggplot(
+  mousetrap_cruz_df,
+  # xres = 1000,
+  # n_shades = 30,
+  auto_enhance = FALSE,
+  # low_pass = 50,
+  # smooth_radius = 3,
+  # norm = TRUE,
+  # mean_image = 0.2,
+  colors = c("black", "lightblue", "violet")
+)
+
+
+
+of_heat <-  mt_heatmap_raw(
+  mousetrap_df2,
+  # use = "trajectories",
+  dimensions = c("xpos", "ypos"),
+  # variable = NULL,
+  # bounds = NULL,
+  # xres = 1000,
+  # upsample = 1,
+  # norm = FALSE,
+  colors = c("black", "pink", "violet"),
+  n_shades = c(1000, 1000),
+  # smooth_radius = 1.5,
+  # low_pass = 200,
+  auto_enhance = TRUE,
+  # mean_image = 0.15,
+  # mean_color = 0.25,
+  # aggregate_lwd = 0,
+  # aggregate_col = "black",
+  # n_trajectories = NULL,
+  # seed = NULL,
+  verbose = TRUE
+)
+of_heat$img
+mt_heatmap_ggplot(of_heat, xres=500, n_shades=5, mean_image=0.2)
+```
+
 
 ### Nado Forzado
 
@@ -2658,18 +3215,84 @@ Inmovilidad por Minuto
 ```{r}
 
 nado_forzado_kg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_ketamina_g1.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(animal, treatment, stage, time_immobile_s) |> 
+  dplyr::rename(id = animal)
 
 nado_forzado_segmentos_kg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_ketamina_g1_segmentos.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(-test, -code,-trial, -apparatus) |> 
+  dplyr::rename(id = animal, 
+                inmovil_0_60 = x0_60_time_immobile_s, 
+                inmovil_60_120 = x60_120_time_immobile_s, 
+                inmovil_120_180 = x120_180_time_immobile_s, 
+                inmovil_180_240 = x180_240_time_immobile_s, 
+                inmovil_240_300 = x240_300_time_immobile_s,
+                inmovil_300_360 = x300_360_time_immobile_s)
 
 nado_forzado_fg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_fluoxetina_g1.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(animal, treatment, stage, time_immobile_s) |> 
+  dplyr::rename(id = animal)
 
 nado_forzado_segmentos_fg1 <- read.csv("./datos_otras_pruebas/nado_forzado/nado_forzado_fluoxetina_g1_segmentos.csv") |> 
-  janitor::clean_names()
+  janitor::clean_names() |> 
+  dplyr::select(-test, -code,-trial, -apparatus) |> 
+  dplyr::rename(id = animal, 
+                inmovil_0_60 = x0_60_time_immobile_s, 
+                inmovil_60_120 = x60_120_time_immobile_s, 
+                inmovil_120_180 = x120_180_time_immobile_s, 
+                inmovil_180_240 = x180_240_time_immobile_s, 
+                inmovil_240_300 = x240_300_time_immobile_s,
+                inmovil_300_360 = x300_360_time_immobile_s)
+
+
+###
+###
+
+nado_forzado_df <- 
+  rbind(nado_forzado_kg1, nado_forzado_fg1)
+
+nado_frozado_segmentos_df <- 
+  rbind(nado_forzado_segmentos_kg1, nado_forzado_segmentos_fg1)
 
 ```
+
+plots
+
+```{r}
+nado_forzado_df |>
+  ggpubr::ggbarplot(
+    x = "treatment",
+    y = "time_immobile_s", 
+    color = "treatment",
+    fill = "treatment",
+    facet.by = "stage"
+  )
+
+nado_frozado_segmentos_df |>
+  pivot_longer(
+    cols = starts_with("inmovil"),
+    names_to = "inmovilidad",
+    names_prefix = "inmovil_",
+    values_to = "tiempo_inmovilidad",
+    values_drop_na = TRUE
+  ) |> 
+  ggpubr::ggline(
+    x = "inmovilidad",
+    y = "tiempo_inmovilidad", 
+    color = "treatment",
+    fill = "treatment",
+    facet.by = "stage",
+    add = "mean_se",
+    numeric.x.axis = TRUE
+    # error.plot = "errorbar"
+  )
+
+```
+
+
+
 
 
 # Discusión
