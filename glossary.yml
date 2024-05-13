@@ -31,9 +31,21 @@ error de tipo I: |
 error de tipo II: |
    También llamado error de tipo beta o falso negativo, se comete cuando el investigador no rechaza la hipótesis nula siendo esta falsa en la población. Es equivalente a la probabilidad de un resultado falso negativo
 
+RM-ANOVA: |
+   ANOVA de medidas repetidas. 
+
 SNC: |
    Sistema Nervioso Central.
+
+distribución de probabilidad a priori: |
+    'distribución de probabilidad que expresa alguna incertidumbre acerca de p antes de tomar en cuenta los datos.'
    
+efecto piso: |
+   'Situación donde una alta proporción de sujetos tiene un rendimiento cercano a cero en una prueba, sesgando la distribución.'
+
+efecto techo: |
+   'Situación donde una alta proporción de sujetos tiene un rendimiento cercano al máximo en una prueba, sesgando la distribución.'
+
 tálamo: |
    'estructura que se encuentra situada en el centro del encéfalo, por encima del hipotálamo. Forma parte del diencéfalo. Está formado por varios núcleos neuronales (sustancia gris) entre los que se intercalan fibras nerviosas (sustancia blanca).Constituye una estación intermedia para la información sensitiva procedente de la médula espinal se dirige a la corteza cerebral. También tiene funciones motoras y se conecta con el cerebelo.'
 
@@ -88,6 +100,10 @@ SSRI: |
 autoreceptores: |
     'type of receptor located in the membranes of nerve cells. It serves as part of a negative feedback loop in signal transduction. It is only sensitive to the neurotransmitters or hormones released by the neuron on which the autoreceptor sits.'
 
+MCO: |
+    'mínimos cuadrados ordinarios o mínimos cuadrados lineales es un método para encontrar los parámetros poblacionales en un modelo de regresión lineal. se basa en la minimización del error cuadrático. También podemos utilizar el método del máximo de verosimilitud y el estimador del método generalizado de momentos. De manera intuitiva, el objetivo del método de los cuadrados mínimos es minimizar el error de predicción entre los valores reales y predichos. El método de mínimos cuadrados ordinarios es en el que se basan todos los análisis englobados dentro del modelo lineal general (t-Student, regresión lineal simple y múltiple, Análisis de la Varianza…).'
+
+
 SESOI: |
   Smallest Effect Size of Interest: the smallest effect that is theoretically or practically meaningful
 
@@ -99,3 +115,19 @@ html: |
 
   * Item 1
   * List 2
+
+location-scale: |
+    'El modelo lineal para localización y escala (location and scale LMLS) es un modelo de regresión que tiene como variables explicatorias a la media (location) y la desviación estándar (la escala). [Ver](https://cran.r-project.org/web/packages/lmls/vignettes/lmls.pdf)'  
+    
+
+censura de datos: |
+    'La censura ocurre cuando el valor de una observación solo se conoce parcialmente; por ejemplo, en datos de tiempo hasta el evento, cuando el evento no ha ocurrido para algunos sujetos durante el período de estudio. Esta especificación del modelo sugiere que algunas observaciones de Latencia están censuradas a la derecha.'    
+
+convergió: |
+    'Cuando se realiza modelización estadística, especialmente en métodos bayesianos, se utilizan cadenas de Markov Monte Carlo (MCMC) para obtener estimaciones de los parámetros del modelo. La convergencia de estas cadenas se refiere a que han llegado a un estado estable donde las estimaciones de los parámetros no cambian significativamente con más simulaciones. Esto es esencial porque asegura que las estimaciones son representativas de la distribución posterior real de los parámetros.'  
+    
+indices confiables: |
+    'se refieren principalmente al tamaño efectivo de la muestra (ESS) de las estimaciones posteriores.SS (Effective Sample Size): Indica el tamaño de la muestra efectiva de las estimaciones posteriores después de considerar la correlación entre muestras consecutivas en las cadenas MCMC. Un ESS alto significa que las estimaciones del parámetro se basan en una cantidad suficiente de información independiente, lo cual es crucial para la precisión de las estimaciones. Generalmente, un ESS más alto (por ejemplo, en los miles) es deseable y se considera un indicador de fiabilidad en las estimaciones.'
+
+Rhat : |
+    '(o factor de reducción potencial): Es una medida que se utiliza para evaluar la convergencia de las cadenas MCMC. Un valor de Rhat cercano a 1.00 (por ejemplo, 1.001 o 1.002) indica que las cadenas han convergido bien. Valores de Rhat superiores a 1.1 pueden sugerir problemas de convergencia y que las cadenas necesitan más iteraciones o revisión en el proceso de muestreo.'  

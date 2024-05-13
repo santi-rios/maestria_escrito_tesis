@@ -1,0 +1,586 @@
+---
+title: "Caracterización de los efectos de la Fluoxetina sobre el aprendizaje espacial y la flexibilidad cognitiva en un modelo de estrés crónico en ratón"
+# subtitle: ""
+# description: ""
+abstract: |
+    El estrés crónico tiene efectos profundos sobre distintos aspectos de la cognición, incluyendo la flexibilidad cognitiva dependiente del hipocampo (Tafet y Nemeroff, 2016). Estos impactos cognitivos pueden ser estudiados en modelos de roedores utilizando el Laberinto Acuático de Morris (MWM) (Hernández-Mercado y Zepeda, 2022).  Sin embargo, estos estudios han dependido predominantemente del análisis de métricas y métodos estadísticos que no necesariamente modelan la relación entre el estrés crónico y la flexibilidad cognitiva dependiente del hipocampo. Aunque estos métodos han aportado valiosas perspectivas, sus limitaciones para manejar conjuntos de datos biológicos complejos son cada vez más reconocidos. Esta problemática se observa en la creciente literatura que no ha logrado encontrar una relación clara entre el estrés crónico, mecanismos cognitivos afectados a nivel de hipocampo y el efecto antidepresivo de fármacos como fluoxetina (David et al., 2009). Este estudio explora las ventajas de utilizar técnicas de análisis que modelen mejor la relación para el estudio de la flexibilidad cognitiva. A través de un análisis comparativo que involucra a ratones sometidos a estrés crónico y tratamiento farmacológico con fluoxetina, demostramos cómo estos enfoques pueden proporcionar interpretaciones más matizadas de los datos, acomodando la variabilidad individual y la estructura jerárquica de los diseños experimentales comúnmente utilizados en esta área. Nuestros hallazgos revelan que estos enfoques no solo ofrecen una mayor flexibilidad y precisión predictiva, sino que también mejoran la comprensión de los efectos cognitivos del estrés y la eficacia de posibles intervenciones. Al integrar metodologías estadísticas avanzadas con protocolos experimentales rigurosos, esta investigación contribuye al perfeccionamiento de los modelos de neurociencia cognitiva y apoya el desarrollo de estrategias terapéuticas dirigidas para las alteraciones cognitivas relacionadas con el estrés.
+keywords: |
+    Morris Water Maze, Cognitive Flexibility, Mixed Models.
+title-block-banner: true
+author:
+  - name: Garcia Rios Santiago
+    email: santiago_gr@ciencias.unam.mx
+    affiliations:
+      - name: Facultad de Ciencias
+        url: https://www.fciencias.unam.mx/
+format: 
+  html:
+    lang: es  # figure, note, warning, code
+    embed-resources: true # self-contained file
+    # code-fold: true # retraer código
+    # code-summary: "Mostrar código"
+    theme: "sandstone" # cyborg, quartz, slate, solar, superhero, vapor
+    page-layout: full
+    anchor-sections: true
+    # smooth-scroll: true
+date: "today"
+editor: source
+  # markdown: 
+  #   wrap: 72
+# markdown:
+#     wrap: sentence
+# editor_options: 
+#   chunk_output_type: console
+execute:
+  echo: true  
+  warning: false
+  cache: true
+toc: true
+# toc-title: Contents
+number-sections: true
+comments:
+  hypothesis: true
+lightbox: true
+glossary:
+  path:  glossary.yml
+  popup: hover
+  show: true
+# bibliography: references.bib
+bibliography: zotlib.bib
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+
+```
+
+# Resultados y discusión
+
+## Entrenamientos
+
+### Latencias
+
+La latencia de escape es una de las métricas más utilizadas para evaluar el aprendizaje en el laberinto acuático de Morris ({{< glossary MWM >}}). Este parámetro cuantifica el tiempo, en segundos, que tardan los ratones en localizar la plataforma durante los días de entrenamiento, que incluyen cuatro sesiones en la configuración original y dos en la fase reversa. Esta métrica es crucial para evaluar el aprendizaje espacial en el {{< glossary MWM >}}, dado que a medida que los roedores aprenden la ubicación de la plataforma oculta, el tiempo requerido para alcanzarla se reduce, evidenciando una menor latencia. No obstante, esta métrica no considera si el aprendizaje observado depende específicamente del hipocampo, como señalan estudios anteriores [@garthe2013].
+
+Además, los métodos estadísticos comúnmente empleados para analizar esta métrica no siempre son los más adecuados para modelar adecuadamente el comportamiento de los roederes. 
+
+El análisis estadístico de esta prueba debería tener en cuenta los siguientes aspectos [@young2021]:
+
+-   Reconocer que los datos de un mismo día para un mismo animal, así como los datos de un animal a lo largo de los días, están altamente correlacionados.
+
+-   Modelar el {{< glossary "efecto piso" >}} y el {{< glossary "effecto techo" >}} en el rendimiento, lo que introduce una curvatura en la relación entre la latencia y los ensayos. Estos efectos dificultan obtener medidas de tendencia central y comparar medias entre grupos.
+
+-   Considerar la {{< glossary "censura de datos" >}} que se produce cuando se alcanza el valor límite de $60$ segundos. Esta censura subestima la media y la varianza, lo que conlleva a una disminución artificial en las latencias reportadas.
+
+Aunque el análisis de varianza de medidas repetidas ({{< glossary "RM-ANOVA" >}}), comúnmente utilizado, intenta abordar el primer problema, no considera adecuadamente los dos últimos. Como mostró @young2009, analizar las latencias de escape con {{< glossary "RM-ANOVA" >}} puede resultar en una alta tasa de errores de {{< glossary "error de tipo I"  >}} y {{< glossary "error de tipo II" >}} , en comparación con otros análisis, como los modelos lineal con efectos mixtos o los modelos lineales generalizados con distribuciones no normales.
+
+Para superar estos desafíos, se puede emplear un modelo de regresión bayesiana con efectos mixtos [@young2021]. Este modelo permite utilizar una distribución no normal que tenga un mínimo de $0$ (ya que las latencias no pueden ser menores o iguales a 0) y una cola superior prolongada (modelar correctamente el {{< glossary "efecto piso" >}} y el {{< glossary "effecto techo" >}}). Las distribuciones de latencia son típicamente sesgadas, mostrando valores altos en los primeros días y menores en días subsiguientes debido al aprendizaje. Bajo estos supuestos, se pueden utilizar distribuciones Gamma o Weibull, las cuales se ajustan mejor a este tipo de datos (véase @fig-distribucionescomparacion para una comparación de distribuciones).
+
+```{r ditribucionesGammaWibull}
+#| code-fold: true
+#| code-summary: Ver código
+#| label: fig-distribucionescomparacion
+#| fig-cap: Comparación de distribuciones Gamma, Weibull y Normal. 
+
+
+
+# Definir parámetros de distribuciones
+
+# Gamma 
+shape_gamma <- 2
+rate_gamma <- 1
+
+# Weibull
+shape_weibull <- 2
+scale_weibull <- 2
+
+# Normal
+mean_normal <- 5
+sd_normal <- 2
+
+# Generar datos para cada distribución
+x_values <- seq(0, 15, length.out = 100)
+gamma_data <- dgamma(x_values, shape = shape_gamma, rate = rate_gamma)
+weibull_data <- dweibull(x_values, shape = shape_weibull, scale = scale_weibull)
+normal_data <- dnorm(x_values, mean = mean_normal, sd = sd_normal)
+
+# Cread dataframe para plot 
+df.distribuciones <- data.frame(x = x_values,
+                                Gamma = gamma_data,
+                                Weibull = weibull_data,
+                                Normal = normal_data)
+
+# Plot
+ggplot(df.distribuciones, aes(x = x)) +
+    geom_line(aes(y = Gamma, colour = "Gamma"), size = 1.2) +
+    geom_line(aes(y = Weibull, colour = "Weibull"), size = 1.2) +
+    geom_line(aes(y = Normal, colour = "Normal"), size = 1.2) +
+    labs(
+      x = "Valor",
+      y = "Densidad") +
+    scale_colour_manual("", 
+                        breaks = c("Gamma", "Weibull", "Normal"),
+                        values = c("#FF2E63", "#00215E", "#95E1D3")) +
+  ggthemes::theme_base() +
+  theme(legend.position = "top")
+
+
+
+
+```
+
+Por último, al utilizar una regresión Bayesiana con la {{< glossary "distribución de probabilidad a priori" >}} propuesta por @young2021, es posible considerar los datos censurados y no reducir artificialmente las latencias ni varianzas. Como menciona Young, considerar esta censura de datos es altamente importante cuando estamos tratando de entender si existen diferencias en el aprendizaje del MWM en nuestros grupos experimentales.
+
+Como se muestra en @fig-scatviolinpost, el grupo de `Salina-CUMS` tienen una mayor proporción de datos censurados. 
+
+![Latencias de Escape en entrenamientos reversa después del estrés. A) Gráfico de dispersión mostrando en rojo los datos censurados. B) Gráficos de violín muestran una mayor densidad en la marca de los 60 segundos en el grupo de Salina-CUMS en el día uno, resaltando la censura de datos en este grupo.](figuras/latencias_scatviolin_post.png){#fig-scatviolinpost}
+
+Para tomar en cuenta estos datos censurados, ajustamos un modelo de efectos mixtos Bayesiano (distribución Gamma con función log-link) para predecir las latencias a través de los entrenamientos reversa en los distintos tratamientos (fórmula `Latencia|censurados ~ tiempo * tratamientos`). El modelo incluye al tiempo y sujetos como efectos aleatorios (fórmula `1 + tiempo | id`). Es decir, la pendiente de la latencia en el tiempo puede variar por sujetos. Esto permite capturar el fenomeno donde la relación entre Latencia y tiempo puede diferir entre diferentes sujetos.
+
+Se utilizó la distribución previa de @young2021 (t-student, regresión {{< glossary "location-scale" >}}, **location** = 4.50, **scale** = 0.25). El poder predictivo del modelo es substancial (`R2 = 0.53, 95% CI [0.50, 0.58]`). El modelo fue estimado con métodos de Montecarlo basados en cadenas de Markov (4 cadenas con 4000 iteraciones y 2000 de calentamiento). Dentro de este modelo, tenemos: 
+
+
+i.   El efecto del intercepto (`Mediana = 2.52, 95% CI [2.23, 2.90]`) tiene 100.00% de probabilidad de ser positivo (`> 0`) y 100.00% de probabilidad de ser significativo (`> 0.05`), y 100.00%. La estimación {{< glossary convergió >}} con éxtio ( {{< glossary Rhat >}} = `1.001`) y los {{< glossary "indices confiables" >}} (`ESS = 2550`). 
+i.   El efecto del tiempo (`Median = -1.92, 95% CI [-2.67, -0.43]`) tiene 100.00% de probabilidad de ser negativo (`< 0`), 100.00% de probabilidad de ser significativo (`> 0.05`). La estimación convergió con éxtio (`Rhat = 1.002`) y los índices son confiables (`ESS = 1333`).
+i.   El efecto de **Flx-CUMS** (`Mediana = -0.46, 95% CI [-0.83, -0.07]`) tiene 98.71%  de probabilidad de ser negativo (`< 0`), 97.97% de ser significativo (`< -0.05`), y 79.39% de ser un efecto grande (`< -0.30`). La estimación convergió con éxtio (`Rhat = 1.000`) y los índices son confiables (`ESS = 6893`). 
+i.   El efecto de **Salina-CUMS** (`Mediana = 0.08, 95% CI [-0.30, 0.43]`) tiene 67.41%  de probabilidad de ser positive (`> 0`), 56.75% de ser significativo (`> 0.05`), y 10.94% de ser un efectogrande (`> 0.30`). La estimación convergió con éxtio (`Rhat = 1.002`) y los índices son confiables (`ESS = 3727`). 
+i.   El efecto de **Flx-CUMS** (`Mediana = -0.46, 95% CI [-0.83, -0.07]`) tiene 98.71%  de probabilidad de ser negativo (`< 0`), 97.97% de ser significativo (`< -0.05`), y 79.39% de ser un efecto grande (`< -0.30`). La estimación convergió con éxtio (`Rhat = 1.000`) y los índices son confiables (`ESS = 6893`). 
+i.   El efecto de **Salina-CUMS** (`Mediana = 0.08, 95% CI [-0.30, 0.43]`) tiene 67.41%  de probabilidad de ser positive (`> 0`), 56.75% de ser significativo (`> 0.05`), y 10.94% de ser un efectogrande (`> 0.30`). La estimación convergió con éxtio (`Rhat = 1.002`) y los índices son confiables (`ESS = 3727`). 
+i.   El efecto de **tiempo** x **Flx-CUMS** (`Mediana = 0.02, 95% CI [-0.23, 0.34]`) tiene 56.96%  de probabilidad de ser positive (`> 0`), 38.22% de ser significativo (`> 0.05`), y 3.38% de ser un efecto grande (`> 0.30`). La estimación convergió con éxtio (`Rhat = 1.000`) y los índices son confiables (`ESS = 4939`). 
+i.   El efecto de **tiempo** x **Salina-CUMS** (`Mediana = 0.07, 95% CI [-0.16, 0.60]`) tiene 73.79%  de probabilidad de ser positive (`> 0`), 57.20% de ser significativo (`> 0.05`), y 12.07% de ser un efectogrande (`> 0.30`). La estimación convergió con éxtio (`Rhat = 1.001`) y los índices son confiables (`ESS =  4024`). 
+
+Los efectos fueron calculados siguiendo el marco de *Prueba de significancia y existencia de efectos* (Effect eXistence and sIgnificance Testing o SEXIT). De acuerdo a este marco, no se da un *p-value* que de manera dicotómica acepte o rechaze nuestra hipótesis nula, sino que describe 3 probabilidades: de dirección, de significancia y de tamño del efecto. El umbral en el que un efecto se considera como no depresciable y grande es de $0.05$ y $0.30$. 
+
+De acuerdo a este marco, podemos visualizar los estimados de esta regresión (@fig-bayesbpepostlatencias), así como la distribución de los estimados sobre la región de "*no efecto*" (ROPE) (@fig-bayesropepostlat).
+
+
+![Estimados de los parámetros bayesianos (bpe) del modelo Bayesiano con Medias y HDI al 89%. En Rojo se resalta la región de no efecto.](figuras/bayes_bpe_post_latencias.png){#fig-bayesbpepostlatencias}
+
+![Distribución de los parámetros y región ROPE.](figuras/plot_rope_post_bayes.png){#fig-bayesropepostlat}
+
+Para visualizar la diferencia de modelar las latencias considerando la {{< glossary "censura de datos" >}}, así como el {{< glossary "efecto piso" >}} y el {{< glossary "efecto techo" >}}, comparamos 3 tipos de modelados (@fig-bayescomparacionespost): a) Modelo Bayesiano de efectos mixtos tomando en cuenta los valores censurados y distribución gamma, b) Modelo lineal generalizado de efectos mixtos tomando sin tomar en cuenta los valores censurados y con distribución gamma, c) Modelo de efectos mixtos sin tomar en cuenta los valores censurados. Como se observa, tomar en cuenta los valores censurados (A), resalta la diferencia entre los grupos. Además, modelar con una distribución gamma (A y B) representa correctamente el efecto piso.
+
+Con estos datos, tenemos evidencia que en los primeros entrenamientos reversa, el grupo de `Salina+CUMS` tiene el peor rendimiento. Sin embargo, al paso del tiempo, este efecto desaparece rápidamente. 
+
+![Valores predichos de los 3 modelos. A) Tomando en cuenta datos censurados, B) GLM, C) LMER. Greaficados con HDI al .66. El tiempo está centrado para facilitar la convergencia e interpretación del modelo.](figuras/bay_effect_plots_post.png){#fig-bayescomparacionespost} 
+
+Para determinar cómo se diferenciaban estos modelos de regresión con el tradicionalmente utilizado ({{< glossary "RM-ANOVA" >}}) (ver @fig-rmANOVApost y @tbl-aovreplatpost), se ajustó un ANOVA de medidas repetidas que sugiere:
+
+- El efecto principal de los tratamientos es estadísticamente significativo (F(2, 20) = 2.85, p = 0.08.
+- El efecto principal de los tratamientos es estadísticamente significativo (F(1, 20) = 60.81, p = 0.001.
+- La interacción entre tratamientos y prueba es estadísticamente significativa (F(2, 20) = 5.46, p = 0.013.
+
+
+![RM-ANOVA reversas.](figuras/aov_plot.post_comps.png){#fig-rmANOVApost}
+
+| Efecto             | DFn  | DFd   | F     | p    | p\<0.05 | ges  |
+|--------------------|------|-------|-------|------|---------|------|
+| Tratamiento        | 2.00 | 20.00 | 2.85  | 0.08 | \*      | 0.13 |
+| Prueba             | 1.00 | 20.00 | 60.81 | 0.00 | \*      | 0.60 |
+| Tratamiento:Prueba | 2.00 | 20.00 | 5.46  | 0.01 | \*      | 0.21 |
+
+: ANOVA de medidas repetidas. Entrenamientos Reversa. {#tbl-aovreplatpost}
+
+Como se observa, el modelo de regresión Bayesiana resalta más las diferencias entre grupos en el primer día gracias a que toma en cuenta la censura de datos. En segundo lugar, se observa cómo utilizar modelos lineales no captura correctamente el efecto piso de la prueba.  
+
+
+### Estrategias de búsqueda
+
+
+Desde 1984, @morris1984 entendía las limitaciones de utilizar las latencias de escape como una medida del asprendizaje espacial. Utilizando ratones con lesiones hipocampales y corticales, en este artículo identificó que el aprendizaje espacial podía ser evaluado con la direccionalidad de la trayectoria del animal: a medida que el aprendizaje espacial mejoraba, el animal tomaba una direccionalidad más precisa hacia la plataforma (una linea recta). 
+
+Décadas depsués, el grupo de Garthe y Kempermann [@garthe2009] definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma en el MWM durante los entrenamientos (ver @fig-garthe_2009). De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. De este modo, el análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo [@hernandez-mercado2022].
+
+![Estrategias de búsqueda en los entrenamientos del MWM. ](figuras/garthe_2013.png){#fig-garthe_2009}
+
+Para cálcular las estrategias de búsqueda en el MWM, se utilizó el paquete de R "*Rtrack*" (@overall2020). Overall, en colaboración con Garthe y Kempermann, toman como base las estrategias definidas por @garthe2009, pero mejoran el algorítmo de clasificación al utiliza un clasificador de *machine learning* (random forest, previamente entrenado con 3111 datos).
+
+Para facilitar el análisis y debido a la falta de una *n* mayor (tanto en animales, como en tiempos), se agruparon las estrategias en 3 tipos (enfoque similar a @amelchenko2023): 
+
+- Hipocampo-dependientes: tigmotáxis, búsqueda aleatoria y exploración.
+
+- Hipocampo-independientes: búsqueda dirijida, búsqueda enfocada y nado directo.
+
+- Perseverancia. Se considera aparte debido a la importancia de este fenómeno en la evaluación de la flexibilidad cognitiva. 
+
+
+![Estrategias de búsqueda entrenamientos normales](figuras/estrategias_pre_porcentajes.png){#fig-estrategiaspre} 
+
+De acuerdo a estas divisiones, podemos observar que en los entrenamientos reversa (@fig-estrategias), el grupo de Salina+CUMS parece tener una mayor proporción de estrategias independientes de hipocampo en el primer día.
+
+![Estrategias de búsqueda en los 2 días de entrenamiento reversa](figuras/estrategias_reversa_porcentajes.png){#fig-estrategias} 
+
+
+| Entrenamiento | Tratamiento | Hipo-Dependientes | Hipo-Independientes | Perseverancia | Total |
+|---------------|-------------|-------------------|---------------------|---------------|-------|
+| Rev-1         | Flx         | 25                | 10                  | 1             | 36    |
+| Rev-1         | Flx-CUMS    | 11                | 12                  | 5             | 28    |
+| Rev-1         | Sal-CUMS    | 11                | 21                  | 6             | 38    |
+| Rev-2         | Flx         | 20                | 10                  | 0             | 30    |
+| Rev-2         | Flx-CUMS    | 23                | 4                   | 1             | 28    |
+| Rev-2         | Sal-CUMS    | 25                | 11                  | 4             | 40    |
+| TOAL          |             | 115               | 68                  | 17            | 200   |
+
+: Frecuencia de estrategias empleadas en los entrenamientos reversa. Entrenamientos Reversa. {#tbl-reversafrecuencias}
+
+
+Para analizar si existe una preferencia de estrategias de un día a otro, se realizó una prueba de independencia de **Xi-cuadrada** para determinar si existe una asociación significativa entre día y estrategia utilizada. 
+         
+- $H_0$: Las variables son independientes. No hay relación entre las variables categóricas. 
+
+- $H_a$: Las variables son dependientes. Hay relación entre las variables categóricas. 
+
+
+**Fluoxetina**
+
+- X\^2 estadístico = 1.018519 
+- p_value = 0.6009406 
+- d.f. = 2
+
+|           | hipocampo_dependientes | hipocampo_independientes | perseverancia |
+| --------- | ---------------------- | ------------------------ | ------------- |
+| Reversa-1 | 25                     | 10                       | 1             |
+| Reversa-2 | 20                     | 10                       | 0             |
+
+
+**Flx-CUMS**
+
+- X\^2 estadístico = 10.90196 
+- p_value = 0.01153909 
+- d.f. = 2
+
+|           | hipocampo_dependientes | hipocampo_independientes | perseverancia |
+| --------- | ---------------------- | ------------------------ | ------------- |
+| Reversa-1 | 11                     | 12                       | 5             |
+| Reversa-2 | 23                     | 4                        | 1             |
+
+
+**Sal-CUMS** 
+
+- X\^2 estadístico = 8.92403 
+- p_value = 0.004292095 
+- d.f. = 2
+
+|           | hipocampo_dependientes | hipocampo_independientes | perseverancia |
+| --------- | ---------------------- | ------------------------ | ------------- |
+| Reversa-1 | 11                     | 21                       | 6             |
+| Reversa-2 | 25                     | 11                       | 4             |
+
+
+Los p-values significativos (< a 0.05) en **Flx-CUMS** y **Sal-CUMS**  sugieren que hay diferencias significativas en la preferencia de estrategias entre el entrenamiento reversa 1 y el entrenamiento reversa 2. Observando la @fig-estrategias, parece ser que adoptan más estrategias dependientes de hipocampo con el tiempo. 
+
+Para entender mejor la interacción entre variables categóricas (prueba, tipo de estrategia [cuenta] y tratamiento), ajustamos una regresión de Poisson (glm con link=log) (@thm-latpois). La variable de respuesta es el número de tipo de estrategias, y las variables predictoras son el tiempo y tratamiento. El modelo fue estimado con máxima verosimilitud.
+
+::: {#thm-latpois}
+$$
+\log ({ E( \operatorname{count} ) })  = \alpha + \beta_{1}(\operatorname{dia}) + \beta_{2}(\operatorname{tratamiento}_{\operatorname{Flx-CUMS}}) + \beta_{3}(\operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}}) + \beta_{4}(\operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{5}(\operatorname{estrategias\_hipo}_{\operatorname{perseverancia}}) + \beta_{6}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Flx-CUMS}}) + \beta_{7}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}}) + \beta_{8}(\operatorname{dia} \times \operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{9}(\operatorname{dia} \times \operatorname{estrategias\_hipo}_{\operatorname{perseverancia}}) + \beta_{10}(\operatorname{tratamiento}_{\operatorname{Flx-CUMS}} \times \operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{11}(\operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}} \times \operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{12}(\operatorname{tratamiento}_{\operatorname{Flx-CUMS}} \times \operatorname{estrategias\_hipo}_{\operatorname{perseverancia}}) + \beta_{13}(\operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}} \times \operatorname{estrategias\_hipo}_{\operatorname{perseverancia}}) + \beta_{14}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Flx-CUMS}} \times \operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{15}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}} \times \operatorname{estrategias\_hipo}_{\operatorname{hipocampo\_independientes}}) + \beta_{16}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Flx-CUMS}} \times \operatorname{estrategias\_hipo}_{\operatorname{perseverancia}}) + \beta_{17}(\operatorname{dia} \times \operatorname{tratamiento}_{\operatorname{Sal-CUMS-F}} \times \operatorname{estrategias\_hipo}_{\operatorname{perseverancia}})
+$$
+:::
+
+A partir de este modelo, se calcularon las medias marginales (@fig-emmeansestrategiaspost). Las medias marginales se calculan ajustando por otros factores o covariables en el modelo (en nuestro caso, la interacción de tiempo, tratamientos y tipo de estrategia). Esto significa que representan el efecto medio de un factor específico, controlando o 'promediando' los efectos de los otros factores. Esto es útil en experimentos con diseños complejos o con múltiples factores y niveles.
+
+Al calcular las medias marginales, se pueden obtener estimaciones que son más comparables entre grupos o tratamientos. Esto se debe a que cada media marginal refleja una estimación que es ajustada por todos los otros factores en el modelo, presentando un escenario 'promedio' para cada grupo.
+
+Las medias marginales consideran toda la estructura del modelo, incluyendo efectos fijos y aleatorios. Esto las hace especialmente relevantes para la interpretación en modelos de efectos mixtos, donde los efectos aleatorios juegan un rol crucial. Además, proveen una base para hacer predicciones ajustadas y generalizables más allá del conjunto de datos actual, especialmente en modelos predictivos que incluyen variables aleatorias y fijas.
+
+La gran diferencia con las medias calculadas, las cuales son simplemente el promedio aritmético de los datos observados dentro de cada grupo o nivel de factor, es que estas últimas no ajustan por la posible confusión de otros factores o la estructura de dependencia dentro de los datos (como en los datos agrupados o jerárquicos). Además, las medias calculadas pueden estar sesgadas porque el número de observaciones en cada grupo puede ser diferente. 
+
+
+![emmeans estrategias post](figuras/estrategias_emmeans.png){#fig-emmeansestrategiaspost}
+
+Podemos observar en @fig-emmeansestrategiaspost que en un inicio, los grupos de estrés tienden a utilizar menos estrategias dependientes de hipocampo, pero con el tiempo se normaliza. Por otro lado, llama la atención que el grupo de Flx no presenta perseverancia al día 2, al mismo tiempo que Flx-CUMS parece reducir esta perseverancia al día dos, mientras que Sal-CUMS-F todavía parece presentar un poco de este fenómeno. 
+
+### Distancia Media al Annulus
+
+
+Se ajustó un modelo lineal mixto (estimado utilizando REML y el optimizador nloptwrap) (@thm-distannulusent) para predecir la distancia_annulus_so con tiempo_centrado y tratamientos (fórmula: distancia_annulus_so ~ tiempo_centrado * tratamientos). El modelo incluyó id como efecto aleatorio (fórmula: ~1 | id). El poder explicativo total del modelo es sustancial (R2 condicional = 0.34) y la parte relacionada solo con los efectos fijos (R2 marginal) es de 0.24. La intersección del modelo, correspondiente a tiempo_centrado = 0 y tratamientos = Flx, está en 0.34 (IC del 95% [0.29, 0.38], t(131) = 14.67, p < .001). Dentro de este modelo:
+
+i. El efecto del tiempo centrado es estadísticamente significativo y negativo (beta = -0.13, IC del 95% [-0.20, -0.06], t(131) = -3.79, p < .001; beta estandarizada = -0.65, IC del 95% [-0.99, -0.31])
+
+i. El efecto de los tratamientos [Flx-CUMS] es estadísticamente no significativo y positivo (beta = 0.04, IC del 95% [-0.01, 0.10], t(131) = 1.49, p = 0.138; beta estandarizada = 0.39, IC del 95% [-0.13, 0.90])
+
+i. El efecto de los tratamientos [Sal-CUMS-F] es estadísticamente significativo y positivo (beta = 0.10, IC del 95% [0.04, 0.16], t(131) = 3.27, p = 0.001; beta estandarizada = 0.88, IC del 95% [0.35, 1.41])
+
+i. El efecto de tiempo centrado × tratamientos [Flx-CUMS] es estadísticamente no significativo y positivo (beta = 0.07, IC del 95% [-0.0074, 0.15], t(131) = 1.79, p = 0.075; beta estandarizada = 0.36, IC del 95% [-0.04, 0.76])
+
+i. El efecto de tiempo centrado × tratamientos [Sal-CUMS-F] es estadísticamente no significativo y positivo (beta = 0.06, IC del 95% [-0.02, 0.14], t(131) = 1.44, p = 0.153; beta estandarizada = 0.31, IC del 95% [-0.12, 0.73])
+
+
+Los parámetros estandarizados se obtuvieron ajustando el modelo en una versión estandarizada del conjunto de datos. Los Intervalos de Confianza del 95% (IC) y los valores p se calcularon utilizando una aproximación de la distribución t de Wald.
+
+Por motivos de comparación también se ajustó un RM-ANOVA, el cual sugiere que:
+
+i. El efecto principal de tratamientos es estadísticamente significativo y grande (F(2, 17) = 5.73, p = 0.013;
+Eta2 (partial) = 0.40, 95% CI [0.07, 1.00])
+
+i. El efecto principal de la prueba no es estadísticamente significativo y muy pequeño (F(1, 17) = 0.08, p =
+0.778; Eta2 (partial) = 4.79e-03, 95% CI [0.00, 1.00])
+
+i. La interacción entre tratamientos y prueba es estadísticamente significativa y grande (F(2, 17) =
+4.61, p = 0.025; Eta2 (partial) = 0.35, 95% CI [0.03, 1.00])
+
+
+::: {#thm-distannulusent}
+$$
+\begin{aligned}
+  \operatorname{distancia\_annulus\_so}_{i}  &\sim N \left(\alpha_{j[i]} + \beta_{1}(\operatorname{tiempo\_centrado}), \sigma^2 \right) \\
+    \alpha_{j}  &\sim N \left(\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \gamma_{2}^{\alpha}(\operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \gamma_{3}^{\alpha}(\operatorname{tiempo\_centrado} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \gamma_{4}^{\alpha}(\operatorname{tiempo\_centrado} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}), \sigma^2_{\alpha_{j}} \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+::: 
+
+![Reporte de modelo de efectos mixtos y RM-ANOVA.](tablas/lmer_aov_dist_media_so_ent_post.png){#fig-lmeraovdistmedent}
+
+
+
+
+![Estimados de la distancia media del modelo.](figuras/aov_dist_media_so_ent_post.png)
+![Comparación múltiple del modelo de distancia media. Se resalta la diferencia entre el grupo de Flx y Saluna+CUMS en distintos tiempos. ](tablas/lmer_dis_media_so_ent_post_comps.png)
+
+Si bien, parece que tanto el modelo de efectos mixtos, como el RM-ANOVA (@fig-lmeraovdistmedent) producen resultados similares, hay que considerar las mayores restricciones que el RM-ANOVA tiene sobre los datos. Esto se evidencia si comparamos varios supuestos del modelo lineal de efectos mixtos (@fig-supuestosdistmediarev) contra uno de los supuestos más importantes del RM-ANOVA (@fig-supuestosrmanovadistmedent).
+
+
+![Supuestos del modelo lineal de efectos mixtos para distancia media al annulus reversa.](figuras/lmer_dist_media_so_ent_post_check.png){#fig-supuestosdistmediarev}
+
+![Supuesto de homogeneidad de varianza para el modelado de RM-ANOVA](figuras/aov_dis_media_so_ent_post_check.png){#fig-supuestosrmanovadistmedent}
+
+![Distancia media al annulus en entrenamientos originales. No se encontraron contrastes significativos.](figuras/lmer_dis_media_ne_ent_pre.png)
+
+
+
+## Pruebas
+
+El análisis de las 3 pruebas del laberinto (adquisición, retención y aprendizaje reversa) se puede realizar con distintas métricas. De acuerdo a @maei2009, las medidas más utilizadas, en orden, son: porcentaje de tiempo en cuadrante blanco (4 cuadrantes), porcentaje de tiempo en zona blanco (definida como un círculo alrededor de la localización de la plataforma) y número de cruces (cruces alrededor de la localización de la plataforma). Sin embargo, los parámetros que reflejan con mayor precisión el desempeño en estas pruebas son: distancia promedio al blanco y entropía de Shannon. 
+
+### Mapas de calor
+
+El seguimiento de movimiento aporta información valiosa sobre el desarrollo del proceso de formación de preferencias, la cual puede emplearse de al menos tres maneras. La trayectoria del movimiento puede iluminar la fuerza relativa de la preferencia por las opciones (cuadrantes), o, en otras palabras, el grado de competencia entre las elecciones (cuadrante original vs cuadrante reversa) [@wulff2021]. 
+
+**Fluoxetina**
+
+::: {layout="[1, 1, 1]"}
+![P-1](./figuras/rtrack/heatmap_flx_p1.png){group="heatmap-flx"}
+
+![P-2](./figuras/rtrack/heatmap_flx_p2.png){group="heatmap-flx"}
+
+![P-Rev](./figuras/rtrack/heatmap_flx_prev.png){group="heatmap-flx"}
+:::
+
+**Fluoxetina-CUMS**
+
+::: {layout="[1, 1, 1]"}
+
+![P-1](./figuras/rtrack/heatmap_flx_cums_p1.png){group="heatmap-flxcum"} 
+
+![P-2](./figuras/rtrack/heatmap_flx_cums_p2.png){group="heatmap-flxcum"}
+
+
+![P-Rev](./figuras/rtrack/heatmap_flx_cums_rev.png){group="heatmap-flxcum"}
+:::
+
+**Salina-CUMS-F**
+
+::: {layout="[1, 1, 1]"}
+
+![P-1](./figuras/rtrack/heatmap_sal_cums_flx_p1.png){group="heatmap-salcumflx"} 
+
+
+![P-2](./figuras/rtrack/heatmap_sal_cums_flx_p2.png){group="heatmap-salcumflx"}
+
+
+![P-Rev](./figuras/rtrack/heatmap_sal_cums_flx_prev.png){group="heatmap-salcumflx"}
+:::
+
+**Ketamina-CUMS**
+
+::: {layout="[1, 1, 1]"}
+
+![P-1](./figuras/rtrack/heatmap_ket_cums_p1.png){group="heatmap-ketcums"} 
+
+![P-2](./figuras/rtrack/heatmap_ket_cums_p2.png){group="heatmap-ketcums"}
+
+
+![P-Rev](./figuras/rtrack/heatmap_ket_cums_prev.png){group="heatmap-ketcums"}
+:::
+
+**Salina-CUMS-K**
+
+::: {layout="[1, 1, 1]"}
+
+![P-1](./figuras/rtrack/heatmap_sal_cums_ket_p1.png){group="heatmap-salcumket"} 
+
+![P-2](./figuras/rtrack/heatmap_sal_cums_ket_p2.png){group="heatmap-salcumket"}
+
+
+![P-Rev](./figuras/rtrack/heatmap_sal_cums_ket_prev.png){group="heatmap-salcumket"}
+:::
+
+### Distancia Media
+
+Como se mencionó antes, esta es una métrica mucho más sensible que las anteriores. Aquí, una menor distancia implica un mejor aprendizaje espacial. 
+
+
+$$
+\begin{aligned}
+  \operatorname{distancia\_media\_blanco}_{i}  &\sim N \left(\mu, \sigma^2 \right) \\
+    \mu &=\alpha_{j[i]} + \beta_{1}(\operatorname{prueba}_{\operatorname{P-2}}) + \beta_{2}(\operatorname{prueba}_{\operatorname{P-Rev}}) + \beta_{3}(\operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{4}(\operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{5}(\operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{6}(\operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{7}(\operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{8}(\operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) \\
+    \alpha_{j}  &\sim N \left(\mu_{\alpha_{j}}, \sigma^2_{\alpha_{j}} \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+![Distancia Media al annulus en las pruebas.](figuras/dis_media_pruebas_comps.png)
+![Comparaciones múltiples del modelo de efectos mixtos.](tablas/distancia_media_pruebas_comps.png)
+
+
+![Tabla de regresión del modelo utilizado.](tablas/dist_media_pruebas_fluox.png)
+
+
+
+![Supuestos del modelo.](figuras/distancia_media_pruebas_supuestos.png)
+
+
+### Entropía
+
+Está definida como la incertidumbre con la que se conoce una variable. Esta incertidumbre reduce con información (aprendizaje). En este sentido, una certidumbre de "0" significaría que el ratón pasó todo el tiempo en la localización de la plataforma blanco. Por otro lado, si el ratón exploró todo el laberinto acuático durante la prueba, la entropía sería máxima.
+
+El cálculo de esta métrica está basado en la descripción del artículo de @maei2009. 
+
+Para calcular esta métrica, se debe hacer lo siguiente: 
+
+i. Tener las coordenadas del animal y la plataforma (en pixeles).
+
+i. Calculamos la distancia del animal a la plataforma en cada tiempo. Para esto usamos la distancia Euclidiana tomando en cuenta las coordenadas del animal ($x_a, y_a$) y de la plataforma planco ($x_b, y_b$)
+
+$$d = \sqrt{(x_a - x_b) + (y_a - y_b)^2} $$
+
+i. Calculamos la varianza de los vectores de las distancias del animal respecto a la plataforma.
+
+i. Calculamos $H_{error}$ basados en la fórmula $H_{error} = log(varianza_{distancia})$
+
+i. Calculamos la varianza de la trayectoria $var(X_a) + var(Y_a)$
+
+i. Para calcular la entropía de la trayectoria, realizamos la operación $H_{trayectoria} = log(var_{trayectoria})$
+
+i. Por último, calculamos la entropía total $H_{total} = H_{error} + H_{trayectoria}$
+
+
+
+De acuerdo a estos supuestos, se ajustó el siguiente modelo:
+
+$$
+\begin{aligned}
+  \operatorname{entropia\_blanco}_{i}  &\sim N \left(\alpha_{j[i]} + \beta_{1}(\operatorname{stage}_{\operatorname{prueba\_2}}) + \beta_{2}(\operatorname{stage}_{\operatorname{prueba\_rev}}), \sigma^2 \right) \\
+    \alpha_{j}  &\sim N \left(\gamma_{0}^{\alpha} + \gamma_{1}^{\alpha}(\operatorname{tratamiento}_{\operatorname{Fluoxetina-CUMS}}) + \gamma_{2}^{\alpha}(\operatorname{tratamiento}_{\operatorname{Salina-CUMS-F}}) + \gamma_{3}^{\alpha}(\operatorname{stage}_{\operatorname{prueba\_2}} \times \operatorname{tratamiento}_{\operatorname{Fluoxetina-CUMS}}) + \gamma_{4}^{\alpha}(\operatorname{stage}_{\operatorname{prueba\_rev}} \times \operatorname{tratamiento}_{\operatorname{Fluoxetina-CUMS}}) + \gamma_{5}^{\alpha}(\operatorname{stage}_{\operatorname{prueba\_2}} \times \operatorname{tratamiento}_{\operatorname{Salina-CUMS-F}}) + \gamma_{6}^{\alpha}(\operatorname{stage}_{\operatorname{prueba\_rev}} \times \operatorname{tratamiento}_{\operatorname{Salina-CUMS-F}}), \sigma^2_{\alpha_{j}} \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+![Tabla de regresión para el modelo de Entropía.](tablas/entropia_blanco.png)
+
+![Medias marginales estimadas con el modelo de entropía.](figuras/entropia_blanco.png)
+
+![](tablas/entropia_blanco_comps.png)
+
+
+![Supuestos del modelo de entropía. Todos los supuestos caen dentro de los intervalos de confianza de sus respectivos supuestos.](figuras/entropia_blanco_supuestos.png)
+
+
+### Tiempo en cuadrantes
+
+
+
+$$
+\begin{aligned}
+  \operatorname{tiempo\_cuadrante}_{i}  &\sim N \left(\mu, \sigma^2 \right) \\
+    \mu &=\alpha_{j[i]} + \beta_{1}(\operatorname{prueba}_{\operatorname{P-2}}) + \beta_{2}(\operatorname{prueba}_{\operatorname{P-Rev}}) + \beta_{3}(\operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{4}(\operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{5}(\operatorname{cuadrante}_{\operatorname{\_no}}) + \beta_{6}(\operatorname{cuadrante}_{\operatorname{\_se}}) + \beta_{7}(\operatorname{cuadrante}_{\operatorname{\_so}}) + \beta_{8}(\operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{9}(\operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{10}(\operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{11}(\operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{12}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-2}}) + \beta_{13}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-Rev}}) + \beta_{14}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-2}}) + \beta_{15}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-Rev}}) + \beta_{16}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-2}}) + \beta_{17}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-Rev}}) + \beta_{18}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{19}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{20}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{21}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{22}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{23}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{24}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{25}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{26}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{27}(\operatorname{cuadrante}_{\operatorname{\_no}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{28}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{29}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{30}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{31}(\operatorname{cuadrante}_{\operatorname{\_se}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{32}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{33}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Flx-CUMS}}) + \beta_{34}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-2}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) + \beta_{35}(\operatorname{cuadrante}_{\operatorname{\_so}} \times \operatorname{prueba}_{\operatorname{P-Rev}} \times \operatorname{tratamientos}_{\operatorname{Sal-CUMS-F}}) \\
+    \alpha_{j}  &\sim N \left(\mu_{\alpha_{j}}, \sigma^2_{\alpha_{j}} \right)
+    \text{, for id j = 1,} \dots \text{,J}
+\end{aligned}
+$$
+
+
+
+![Estimados de tiempo en cuadrante ajustados a partir del modelo de efectos mixtos. En la marca de 15 segundos se dibuja una línea para indicar el punto que se considera como prefrencia.](figuras/tiempo_cuadrante_fluox.png)
+![Comparaciones múltiples del modelo de efectos mixtos.](tablas/cuadrantes_fluox_comparaciones.png)
+
+
+
+### Porcentaje en Zonas
+
+
+![](figuras/tiempo_zona_fluox.png)
+
+![](tablas/tiempo_zona_fluox_comps.png)
+
+
+## Otros resultados y discusión
+
+### Cepa de ratones utilizada
+
+En el protocolo experimental original se tenían contempladas otras pruebas conductuales para evaluar los estados de tipo ansioso y de tipo depresivo. Sin embargo, tenemos resultados problemáticos. Por ejemplo, parece ser que la fluoxetina tiene efectos ansiogénicos (@fig-periferia, @fig-mediazona, @fig-centrozona), que la ketamina promueve conductas de tipo depresivas (@fig-inmovilidadsegm) o que la solución salina tiene efectos antidepresivos (@fig-inmovilidadtotal). 
+
+En investigaciones biomédicas, la selección de la cepa de ratones es crucial dado que las características genéticas y fisiológicas pueden influir significativamente en los resultados experimentales. En mi estudio, utilicé una cepa híbrida de ratones C57BL6/J cruzados con BALB/c, lo que parece haber impactado los resultados obtenidos, posiblemente debido a la heterogeneidad genética y la variabilidad en la respuesta al estrés y a los fármacos.
+
+Un estudio relevante [@gosselin2017] que examina las respuestas comportamentales y farmacológicas en las cepas C57BL6/J y BALB/c nos proporciona una visión clara de cómo las diferencias entre estas cepas pueden afectar los resultados experimentales. Según este estudio, mientras que los ratones BALB/c mostraron efectos antidepresivos esperados al ser tratados con fluoxetina bajo un protocolo de estrés crónico leve impredecible, los ratones C57BL6/J exhibieron respuestas paradójicas, como un aumento en la latencia de olfateo en pruebas de supresión de la novedad alimentaria, un efecto contrario al esperado.
+
+Este hallazgo es significativo porque destaca la complejidad inherente al trabajar con cepas híbridas como la utilizada en mi experimento. La combinación de características de dos cepas con respuestas farmacológicas y comportamentales distintas podría llevar a una variabilidad fenotípica en la descendencia que complica la interpretación de los efectos del tratamiento. Esto es especialmente relevante en estudios de comportamiento y farmacología, donde la consistencia genética es esencial para la reproducibilidad y la interpretación clara de los resultados.
+
+En otro estudio se utilizaró el laberinto elevado más cruz (EPM) y campo abierto (OF) y se analizaron las variables de comportamiento de estas cepas y sus híbridos F1 (B6CBF1), así como ratones quiméricos C57BL/6 × BALB/c (CHIM) creados mediante agregación de embriones. Este análisis reveló diferencias significativas dependiendo del grado de quimerismo, especialmente en los ratones CHIM [@carola2004].
+
+Los ratones CHIM con un componente de pelaje predominante de C57BL/6 o BALB/c mostraron comportamientos similares a la cepa dominante, mientras que aquellos con un grado intermedio de quimerismo exhibieron comportamientos que diferían de ambas cepas consanguíneas. Además, se observó que los ratones CHIM y B6CBF1 con quimerismo intermedio compartían estrategias de afrontamiento al estrés que no describen las cepas consanguíneas, como una actividad motora mayormente limitada a áreas protegidas y intentos de acercarse a áreas ansiogénicas mientras procesan y almacenan información externa.
+
+Estos hallazgos son cruciales, ya que indican que la presencia equilibrada de los antecedentes genéticos de C57BL/6 y BALB/c, ya sea en la misma célula o en células diferentes, genera estrategias de afrontamiento al estrés distintas a las de las cepas consanguíneas. Este fenómeno subraya la complejidad de trabajar con cepas híbridas, como en el caso de mi estudio, donde la combinación genética podría haber conducido a respuestas conductuales y farmacológicas no previstas, complicando la interpretación de los resultados experimentales. La variabilidad en las respuestas observadas podría, por lo tanto, ser atribuida a la diversidad genética y fenotípica de la cepa cruzada utilizada, lo que resalta la importancia de seleccionar cuidadosamente la cepa en investigaciones que evalúan comportamientos complejos y respuestas a tratamientos.
+
+Además, investigaciones adicionales sobre la anatomía hipocampal en quimeras artificiales generadas por la agregación de embriones de las cepas C57BL/6J y BALB/cJ refuerzan la idea de la complejidad inherente al uso de modelos híbridos en estudios científicos. Contrario a lo esperado, las quimeras no siempre mostraron características intermedias entre las cepas parentales. En muchos casos, estas quimeras mostraron rangos fenotípicos que superaban cualitativa y cuantitativamente los de las cepas parentales consanguíneas [@crusio1990].
+
+Este hallazgo sugiere que los efectos observados en las quimeras pueden no representar simplemente una mezcla de los fenotipos de sus cepas parentales, sino que pueden manifestar características completamente nuevas y únicas. Esta variabilidad fenotípica intensifica los desafíos al intentar aislar los efectos de un genotipo particular en estudios que involucran modelos quiméricos o genéticamente heterogéneos. 
+
+Por lo tanto, en el contexto de mi experimento, la utilización de una cepa cruzada de C57BL/6J y BALB/cJ podría haber contribuido significativamente a los resultados inesperados, debido a la presencia de características fenotípicas no anticipadas que no son típicas de ninguna de las cepas parentales. Esto ilustra la importancia de una selección cuidadosa de la cepa y del entendimiento profundo del fondo genético en estudios de comportamiento y neurología, especialmente cuando se emplean modelos híbridos o quiméricos cuyas respuestas pueden ser impredecibles y altamente variables.
+
+Por suerte, para los experimentos de Fluoxetina, la mayoría de los animales provenían de linajes cercanos. Sin embargo, este no fue el caso para los casos de Ketamina+CUMS y Salina+CUMS(grupo ketamina).
+
+### Inferencia Causal
+
+La discusión anterior va ligada al problema de encontrar una inferencia causal en nuestros datos como consecuencia de asociaciones espurias. 
+
+
+Aumentar el número de grupos experimentales en un intento de controlar o explorar estas variaciones puede no ser la estrategia más eficaz. Primero, incrementar el número de grupos diluye la potencia estadística de los análisis, pues divide la muestra total en múltiples subgrupos, reduciendo la capacidad de detectar diferencias significativas donde realmente existen. Segundo, la introducción de múltiples grupos control o experimentales adicionales puede llevar a la generación de resultados que, aunque estadísticamente significativos, son difíciles de interpretar debido a la amplificación de efectos menores o irrelevantes biológicamente, resultado de la propia heterogeneidad del modelo.
+
+Además, el uso de numerosos grupos controla con la intención de establecer comparaciones adicionales puede, paradójicamente, introducir más variables confusas. Esto es particularmente relevante en estudios que involucran genotipos con respuestas potencialmente impredecibles, como es el caso con modelos quiméricos o híbridos. En tales situaciones, cada grupo adicional no solo consume más recursos y tiempo, sino que también complica la interpretación global de los datos, pudiendo llevar a conclusiones erróneas o a la identificación de diferencias que son artefactos del diseño experimental más que de influencias experimentales genuinas.
+
+
+En el diseño de estudios experimentales que intentan esclarecer relaciones causales entre la exposición y los resultados, es fundamental manejar adecuadamente la confusión, que surge cuando tanto la exposición como el resultado están fuertemente asociados con una tercera variable, un término conocido como 'ensalada causal' [@rubin2005]. En este enfoque, se agregan indiscriminadamente variables de control a un modelo estadístico, observando cambios en las estimaciones y luego narrando una historia sobre la causalidad. Este método, aunque frecuentemente empleado en biología y ciencias sociales, no solo es propenso a interpretaciones erróneas, sino que también puede complicar la identificación de verdaderas relaciones causales.
+
+En mi experimento, el uso de una cepa híbrida de ratones introduce una variabilidad genética significativa, lo cual podría relacionarse con múltiples variables confusoras potenciales. Añadir más grupos experimentales en un intento de controlar estas variables confusoras podría, paradójicamente, llevar a un mayor riesgo de caer en la trampa de la 'ensalada causal'. Esto sucede porque cada grupo adicional podría introducir su propia dinámica y asociaciones con variables terceras no identificadas, lo que podría confundir aún más cualquier análisis causal.
+
+Por tanto, mantener un número limitado de grupos experimentales permite un control más riguroso de las variables y una interpretación más clara y directa de los datos. Este enfoque restringido ayuda a evitar la complejidad añadida y las interpretaciones erróneas que pueden surgir al tratar de ajustar y controlar múltiples grupos con variabilidad genética heterogénea. Además, un diseño más simplificado facilita la comparación directa entre grupos seleccionados específicamente para explorar las relaciones de interés, minimizando así la influencia de confusores potenciales y aumentando la validez de las conclusiones causales del estudio.
+
+
+### Campo abierto
+
+
+
+
+![Tiempo En periferia.](figuras/tiempo_periferia.png){#fig-periferia}
+
+![Tiempo en Zona Medio](figuras/tiempo_medio.png){#fig-mediazona}
+
+
+![Tiempo Centro](figuras/tiempo_centro.png){#fig-centrozona}
+
+
+
+![Cruces Centro](figuras/centro_cruces.png)
+
+
+
+
+### Nado Forzado
+
+![Inmovilidad total](figuras/nado_forzado_inmovilidad_total.png){#fig-inmovilidadtotal}
+
+![Inmovilidad por segmentos](figuras/nado_forzado_segmentos.png){#fig-inmovilidadsegm}
+
