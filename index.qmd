@@ -2,10 +2,10 @@
 title: "Caracterización de los efectos de la Fluoxetina sobre el aprendizaje espacial y la flexibilidad cognitiva en un modelo de estrés crónico en ratón"
 # subtitle: ""
 # description: ""
-abstract: |
-    El estrés crónico tiene efectos profundos sobre distintos aspectos de la cognición, incluyendo la flexibilidad cognitiva dependiente del hipocampo (Tafet y Nemeroff, 2016). Estos impactos cognitivos pueden ser estudiados en modelos de roedores utilizando el Laberinto Acuático de Morris (MWM) (Hernández-Mercado y Zepeda, 2022).  Sin embargo, estos estudios han dependido predominantemente del análisis de métricas y métodos estadísticos que no necesariamente modelan la relación entre el estrés crónico y la flexibilidad cognitiva dependiente del hipocampo. Aunque estos métodos han aportado valiosas perspectivas, sus limitaciones para manejar conjuntos de datos biológicos complejos son cada vez más reconocidos. Esta problemática se observa en la creciente literatura que no ha logrado encontrar una relación clara entre el estrés crónico, mecanismos cognitivos afectados a nivel de hipocampo y el efecto antidepresivo de fármacos como fluoxetina (David et al., 2009). Este estudio explora las ventajas de utilizar técnicas de análisis que modelen mejor la relación para el estudio de la flexibilidad cognitiva. A través de un análisis comparativo que involucra a ratones sometidos a estrés crónico y tratamiento farmacológico con fluoxetina, demostramos cómo estos enfoques pueden proporcionar interpretaciones más matizadas de los datos, acomodando la variabilidad individual y la estructura jerárquica de los diseños experimentales comúnmente utilizados en esta área. Nuestros hallazgos revelan que estos enfoques no solo ofrecen una mayor flexibilidad y precisión predictiva, sino que también mejoran la comprensión de los efectos cognitivos del estrés y la eficacia de posibles intervenciones. Al integrar metodologías estadísticas avanzadas con protocolos experimentales rigurosos, esta investigación contribuye al perfeccionamiento de los modelos de neurociencia cognitiva y apoya el desarrollo de estrategias terapéuticas dirigidas para las alteraciones cognitivas relacionadas con el estrés.
-keywords: |
-    Morris Water Maze, Cognitive Flexibility, Mixed Models.
+# abstract: |
+#     El estrés crónico tiene efectos profundos sobre distintos aspectos de la cognición, incluyendo la flexibilidad cognitiva dependiente del hipocampo (Tafet y Nemeroff, 2016). Estos impactos cognitivos pueden ser estudiados en modelos de roedores utilizando el Laberinto Acuático de Morris (MWM) (Hernández-Mercado y Zepeda, 2022).  Sin embargo, estos estudios han dependido predominantemente del análisis de métricas y métodos estadísticos que no necesariamente modelan la relación entre el estrés crónico y la flexibilidad cognitiva dependiente del hipocampo. Aunque estos métodos han aportado valiosas perspectivas, sus limitaciones para manejar conjuntos de datos biológicos complejos son cada vez más reconocidos. Esta problemática se observa en la creciente literatura que no ha logrado encontrar una relación clara entre el estrés crónico, mecanismos cognitivos afectados a nivel de hipocampo y el efecto antidepresivo de fármacos como fluoxetina (David et al., 2009). Este estudio explora las ventajas de utilizar técnicas de análisis que modelen mejor la relación para el estudio de la flexibilidad cognitiva. A través de un análisis comparativo que involucra a ratones sometidos a estrés crónico y tratamiento farmacológico con fluoxetina, demostramos cómo estos enfoques pueden proporcionar interpretaciones más matizadas de los datos, acomodando la variabilidad individual y la estructura jerárquica de los diseños experimentales comúnmente utilizados en esta área. Nuestros hallazgos revelan que estos enfoques no solo ofrecen una mayor flexibilidad y precisión predictiva, sino que también mejoran la comprensión de los efectos cognitivos del estrés y la eficacia de posibles intervenciones. Al integrar metodologías estadísticas avanzadas con protocolos experimentales rigurosos, esta investigación contribuye al perfeccionamiento de los modelos de neurociencia cognitiva y apoya el desarrollo de estrategias terapéuticas dirigidas para las alteraciones cognitivas relacionadas con el estrés.
+# keywords: |
+#     Morris Water Maze, Cognitive Flexibility, Mixed Models.
 title-block-banner: true
 author:
   - name: Garcia Rios Santiago
@@ -77,7 +77,7 @@ Este panorama resalta la necesidad urgente de comprender mejor los mecanismos su
 
 Los trastornos depresivos van más allá de los síntomas emocionales, afectando profundamente las capacidades cognitivas de los individuos. Estos problemas cognitivos, que incluyen dificultades en la atención, memoria y la flexibilidad cognitiva, son a menudo algunos de los aspectos más debilitantes de la depresión. La {{< glossary "flexibilidad cognitiva" add_to_table=true >}} hace referencia a la capacidad de una persona para adaptarse y cambiar su pensamiento en respuesta a situaciones cambiantes o nuevas. Esta habilidad implica poder cambiar de perspectiva o enfoque mental y adaptarse a nuevas reglas o expectativas. La flexibilidad cognitiva es una parte importante de la función ejecutiva, un conjunto de habilidades cognitivas que nos permiten planificar, organizar, tomar decisiones, mantener la atención, y regular el comportamiento [@anacker2017]. Esta capacidad de adaptar el pensamiento y el comportamiento a situaciones nuevas y cambiantes, es crucial para manejar las complejidades de la vida diaria.
 
-En personas con depresión, la disminución de la flexibilidad cognitiva puede manifestarse en una dificultad para desvincularse de pensamientos negativos y adaptarse a nuevos contextos o perspectivas, lo que a su vez puede perpetuar y agravar los síntomas depresivos. De manera similar, en los desórdenes de ansiedad también se puede observar una falta de flexibilidad cognitiva como pensamientos negativos recurrentes que agravian el padecimiento [@uddin2021].
+En personas con depresión, la disminución de la flexibilidad cognitiva puede manifestarse en una dificultad para desvincularse de pensamientos negativos y adaptarse a nuevos contextos o perspectivas, lo que a su vez puede perpetuar y agravar los síntomas depresivos. De manera similar, en los desórdenes de ansiedad también se puede observar una falta de flexibilidad cognitiva como pensamientos negativos recurrentes que agravian el padecimiento [@cognitive_uddin_2021].
 
 La mayoría de los pacientes con trastornos depresivos experimentan, en cierta medida, deterioros cognitivos. Parece que los trastornos cognitivos constituyen un síntoma patológico central de la depresión y no deberían ser considerados simplemente como secundarios a ella. Por lo tanto, los síntomas cognitivos deben ser vistos como una dimensión parcialmente independiente del trastorno depresivo mayor y un objetivo importante de cualquier tratamiento que se implemente [@maramis2021].
 
@@ -87,7 +87,7 @@ La flexibilidad conductual es la manifestación física de la flexibilidad cogni
 
 Richard Lazarus define al estrés en torno a una relación entre el individuo y el ambiente, en el cual un estímulo no placentero, aversivo y/o amenazante para la homeostasis de un individuo es experimentado de manera que exede los recursos para lidiar con él [@folkman2013].
 
-Diversos factores afectan la respuesta al estrés y la susceptibilidad de que desencadene trastornos, como depresivos o de ansiedad. Estos van desde aspectos psicológicos (experiencia subjetiva del estrés, recursos para lidiar con estresores), hasta biológicos (cascadas neuroendócrinas, procesamiento de información) [@tafet2016]. En presencia de estresores crónicos, impredecibles e incontrolables, la capacidad fisiológica de lidiar con estos no será suficiente, contribuyendo al desarrollo de desordenes depresivos y de ansiedad [@hill2012a].
+Diversos factores afectan la respuesta al estrés y la susceptibilidad de que desencadene trastornos, como depresivos o de ansiedad. Estos van desde aspectos psicológicos (experiencia subjetiva del estrés, recursos para lidiar con estresores), hasta biológicos (cascadas neuroendócrinas, procesamiento de información) [@tafet2016]. En presencia de estresores crónicos, impredecibles e incontrolables, la capacidad fisiológica de lidiar con estos no será suficiente, contribuyendo al desarrollo de desordenes depresivos y de ansiedad [@hill2012].
 
 
 #### Respuesta fisiológica al estrés
@@ -134,14 +134,14 @@ Muchos factores neurotróficos se han asociado a la respuesta del estrés cróni
 
 El modelo de estrés crónico moderado impredecible (CUMS) fue desarrollado como un modelo animal de depresión hace más de 20 años. @katz1981 y colegas demostraron a principios de los ochentas que exponer a ratones a estrsores de manera crónica inducía una reducción en los roedores de un estímulo reforzante (sucrosa). En las décadas posteriores, el investigador Paul Willner publicó y expandió en las conductas que este modelo inducía en los roedores: afectaba el sueño, patrones de acicalamiento, conductas sexuales, conductas de agresión, entre muchas otras [@willner1997]. Gracias a la caracterización de este investigador en este protocolo, se ha establecido como un modelo válido para el estudio de conductas de tipo depresivas en roedores [@willner1997a]. 
 
-Este modelo ha sigo utilizado para examinan variables neurobiológicas asociadas con la depresión, aunque no siempre es fácil validar exactamente cúales cambios neurobiológicos inducidos por el CUMS son paralelos a los documentados en el trastorno depresivo. Sin embargo, es un protocolo que provoca una serie de cambios neurobiológicos que reflejan aquellos vistos en los trastornos depresivos y puede ser una herramienta adecuada para investigar nuevos sistemas que podrían estar alterados en la depresión, y así ayudar en el desarrollo de nuevos objetivos para el tratamiento de la depresión [@hill2012a]. Como revisa @willner2017, el CUMS tiene *validez de predicción* (el rendimiento en el protocolo predice el rendimiento que queremos modelar), *validez de apariencia* (similitudes fenomenológicas) y *validez de constructo* (modelo tiene bases teóricas razonables).
+Este modelo ha sigo utilizado para examinan variables neurobiológicas asociadas con la depresión, aunque no siempre es fácil validar exactamente cúales cambios neurobiológicos inducidos por el CUMS son paralelos a los documentados en el trastorno depresivo. Sin embargo, es un protocolo que provoca una serie de cambios neurobiológicos que reflejan aquellos vistos en los trastornos depresivos y puede ser una herramienta adecuada para investigar nuevos sistemas que podrían estar alterados en la depresión, y así ayudar en el desarrollo de nuevos objetivos para el tratamiento de la depresión [@hill2012]. Como revisa @willner2017, el CUMS tiene *validez de predicción* (el rendimiento en el protocolo predice el rendimiento que queremos modelar), *validez de apariencia* (similitudes fenomenológicas) y *validez de constructo* (modelo tiene bases teóricas razonables).
 
 
 ##### Efectos sobre cognición
 
 El CUMS tiene efectos sobre varios aspectos de la Cognición (habilidad de procesar información, valorarla y utilizar el conocimiento por medio de conductas dirigidas, aprendizaje, memoria, atención, razonamiento, sentimientos, toma de desiciones) [@bondi2008]. Una consecuencia de estos efectos cognitivos, es la aparición de conductas maladaptativas en las pruebas de conducta, como la dificultad de reaprender una tarea (falta de flexibilidad cognitiva) [@maramis2021].
 
-Debido a que el Hipocampo regula distintos apectos de la cognición, esta estructura está intimamente relacionada con las alteraciones cognitivas producidas por el CUMS. @el-azis2022 y colaboradores reportan que el CUMS tiene efectos sobre la adquisisición de memoria espacial (evaluada a través del laberinto acuático de Morris), la cuál depende en gran medida de la integridad del hipocampo. Sin embargo, poco se ha estudiado sobre la relación de el CUMS con un proceso específico de la cognición, la flexibilidad cognitiva y cómo se relaciona con el hipocampo y el protocolo de CUMS.
+Debido a que el Hipocampo regula distintos apectos de la cognición, esta estructura está intimamente relacionada con las alteraciones cognitivas producidas por el CUMS. @el-aziz2022 y colaboradores reportan que el CUMS tiene efectos sobre la adquisisición de memoria espacial (evaluada a través del laberinto acuático de Morris), la cuál depende en gran medida de la integridad del hipocampo. Sin embargo, poco se ha estudiado sobre la relación de el CUMS con un proceso específico de la cognición, la flexibilidad cognitiva y cómo se relaciona con el hipocampo y el protocolo de CUMS.
 
 ## Hipocampo
 
@@ -154,13 +154,13 @@ El hipocampo está implicado en diversas funciones cognitivas, incluyendo el apr
 
 La **neurogénesis hipocampal adulta** (NHA) es un fenómeno que desafía la antigua creencia que el cerebro adulto es incapaz de generar nuevas neuronas a lo largo de la vida. La {{< glossary NHA add_to_table=true >}} implica la proliferación de células progenitoras neurales, su diferenciación en neuronas, y su integración eventual en circuitos neuronales. Este fenómeno no solo es crucial para la plasticidad cerebral y la formación de recuerdos, sino que también se ha vinculado con la regulación del estado de ánimo y la respuesta al estrés [@anacker2017].
 
-En roedores la neurogénesis adulta está bien descrita en dos zonas: {{< glossary "zona subventricular" add_to_table=true >}} y {{< glossary "zona subgranular" add_to_table=true >}} en el {{< glossary "giro dentado" add_to_table=true >}}. En la zona subventricular, las células madre neurales se diferencian en distintos tipos de neuronas olfativas. En el giro dentado, las células madre neurales producen neuronas glutamatérgicas que se integran en la capa granular y proyectan sus axones hacia la región de CA3 del hipocampo [@denoth-lippuner2021].
+En roedores la neurogénesis adulta está bien descrita en dos zonas: {{< glossary "zona subventricular" add_to_table=true >}} y {{< glossary "zona subgranular" add_to_table=true >}} en el {{< glossary "giro dentado" add_to_table=true >}}. En la zona subventricular, las células madre neurales se diferencian en distintos tipos de neuronas olfativas. En el giro dentado, las células madre neurales producen neuronas glutamatérgicas que se integran en la capa granular y proyectan sus axones hacia la región de CA3 del hipocampo [@formation_denothlippuner_2021].
 
 Utilizando timidina radioactiva, el estudio pionero de @altman1965 presentó la primera evidencia de la presencia de células no diferenciadas en la capa granular del giro dentado en el hipocampo de ratas adultas. Decadas después, utilizando técnicas de inmunihistoquímica en cerebros post-mortem, @neurogenesis_eriksson_1998 fue el primero en presentar evidencia de la presencia de células progenitoras en el giro dentado de humanos. 
 
-Sin embargo, la existencia de la neurogénesis hipocampal en adultos humanos ha sido un tema controvertido en los últimos años. Por un lado, algunos estudios, como el de @sorrells2018, no han encontrado evidencia de neurogénesis en adultos. Por otro lado, investigaciones como la de @boldrini2018 han llegado a la conclusión opuesta. Estas discrepancias se deben en gran medida a las diferencias en las metodologías utilizadas para detectar la neurogénesis y a las diversas interpretaciones de los resultados. Es probable que este debate continúe en los próximos años hasta que se desarrollen metodologías más precisas y confiables. Además, la creciente evidencia de diferencias en los procesos de neuroplasticidad entre distintos mamíferos sugiere que debemos ser cautelosos al extrapolar las conclusiones de estudios que analicen la NHA en roedores (que abarcan aspectos conductuales, celulares, genéticos, etc.) a implicaciones en humanos, según señalan @larosa2018.
+Sin embargo, la existencia de la neurogénesis hipocampal en adultos humanos ha sido un tema controvertido en los últimos años. Por un lado, algunos estudios, como el de @sorrells2018, no han encontrado evidencia de neurogénesis en adultos. Por otro lado, investigaciones como la de @human_boldrini_2018 han llegado a la conclusión opuesta. Estas discrepancias se deben en gran medida a las diferencias en las metodologías utilizadas para detectar la neurogénesis y a las diversas interpretaciones de los resultados. Es probable que este debate continúe en los próximos años hasta que se desarrollen metodologías más precisas y confiables. Además, la creciente evidencia de diferencias en los procesos de neuroplasticidad entre distintos mamíferos sugiere que debemos ser cautelosos al extrapolar las conclusiones de estudios que analicen la NHA en roedores (que abarcan aspectos conductuales, celulares, genéticos, etc.) a implicaciones en humanos, según señalan @larosa2018.
 
-Al menos en roedores, esta neurogénsis hipocampal involucra la presencia de células madres neurales a lo largo de la vida del roedor. Estas células madre neurales (NSCs) generan nuevas neuronas a lo largo de la vida en el cerebro estos animales. Las neuronas nacidas en la adultez moldean la función cerebral y la dinámica del hipocampo, por lo que el estudio de la dinámica de la NHA es un factor importante a considerar en las funciones cognitivas [@denoth-lippuner2021]. 
+Al menos en roedores, esta neurogénsis hipocampal involucra la presencia de células madres neurales a lo largo de la vida del roedor. Estas células madre neurales (NSCs) generan nuevas neuronas a lo largo de la vida en el cerebro estos animales. Las neuronas nacidas en la adultez moldean la función cerebral y la dinámica del hipocampo, por lo que el estudio de la dinámica de la NHA es un factor importante a considerar en las funciones cognitivas [@formation_denothlippuner_2021]. 
 
 ![Neurogénesis Hipocampal Adulta en roedores.](figuras/nha.png){fig-align="center"}
 
@@ -213,7 +213,7 @@ Actualmente, la depresión es tratada farmacológicamente utilizando medicamento
 
 Adicionalmente, los ISRS se utilizan en el tratamiento del trastorno de pánico y el trastorno obsesivo-compulsivo. Sin embargo, tienen el problema de generar efectos terapéuticos semanas o meses posteriores al inicio de su tratamiento, tener una efectividad comprometida, y un 70% de los pacientes responden de manera incompleta a los ISRS, siendo el resto difícil de tratar (pacientes con depresión resistente a los fármacos) [@latest_lin_2023].
 
-Muchos autores han recalcado que hasta la fecha, no tenemos evidencia dura del efecto antidepresivo de los ISRS, recalcando que el efecto antidepresivo podría incluso deberse a un efecto placebo [@latest_moncrieff_2018, @Kirsch2019]. Otros autores señalan que la falta de efectividad proviene más bien del desconocimiento del mecanismo de acción de estos fármacos. El grupo de Igor Branchi propone que hay un poco entendimiento de las vías involucradas en el mecanismo de acción de estos fármacos: conductuales, neurogénesis, BDNF, HPA, LTP. Pero sobre todo, este grupo señala que el menor entendimiento que tenemos es cómo estas vías fisiológicas reguladas por los fármacos interactúan con el ambiente. De acuerdo a la Hipótesis de suceptibilidad unidireccional al cambio que este grupo estudia, los antidepresivos no cambian el estado de ánimo por sí mismos, sino que crean una ventana de oportunidad para el cambio. Esta a su vez puede ser influenciada por el ambiente, positivo o negativo [@branchi2011b].
+Muchos autores han recalcado que hasta la fecha, no tenemos evidencia dura del efecto antidepresivo de los ISRS, recalcando que el efecto antidepresivo podría incluso deberse a un efecto placebo [@latest_moncrieff_2018; @juul2021]. Otros autores señalan que la falta de efectividad proviene más bien del desconocimiento del mecanismo de acción de estos fármacos. El grupo de Igor Branchi propone que hay un poco entendimiento de las vías involucradas en el mecanismo de acción de estos fármacos: conductuales, neurogénesis, BDNF, HPA, LTP. Pero sobre todo, este grupo señala que el menor entendimiento que tenemos es cómo estas vías fisiológicas reguladas por los fármacos interactúan con el ambiente. De acuerdo a la Hipótesis de suceptibilidad unidireccional al cambio que este grupo estudia, los antidepresivos no cambian el estado de ánimo por sí mismos, sino que crean una ventana de oportunidad para el cambio. Esta a su vez puede ser influenciada por el ambiente, positivo o negativo [@branchi2011].
 
 ### Mecanismo de acción
 
@@ -223,7 +223,7 @@ Se ha demostrado en modelos murinos que el tratamiento crónico con fluoxetina (
 
 Por último, hay que destacar que utilizando técnicas de inmunohistoquímica y electrofisiología en ratones [@kobayashi2011] y primates (*Callithrix jacchus*) [@ohira2019], se han descrito otros procesos de plasticidad hipocampal inducidos por antidepresivos que podrían jugar un papel sobre la flexibilidad cognitiva. Estos grupos han descrito que la fluoxetina puede revertir a neuronas granulares maduras del hipocampo a un fenotipo inmaduro, un fenómeno denominado "demaduración". Al mismo tiempo, este fármaco parece reducir el número de neuronas con redes perineuronales en el giro dentado, un fenómeno que promueve la plasticidad en el cerebro adulto. En conjunto, estos resultados podrían significar que existen otros mecanismos independientes de la NHA que reinstauren un estado de inmadurez al giro dentado que representa un sustrato importante en la cognición y regulación del comportamiento [@umemori2018].
 
-De acuerdo con investigaciones lideradas por Igor Branchini [@branchi2023], los niveles altos de plasticidad inducidos por medicamentos, como los antidepresivos serotoninérgicos y los psicodélicos, no son beneficiosos por sí mismos. Estos fármacos inducen una alta plasticidad (a veces llamados psicoplastógenos) que hacen que el cerebro y el comportamiento sean más susceptibles a cambios según factores contextuales, como las condiciones de vida. Esta suceptibilidad puede ser benéfica si las condiciones de vida mejoran. Sin embargo, si las condiciones de vida no mejoran (o empeoran), esta plasticidad inducida por los fármacos puede ser detrimental.
+De acuerdo con investigaciones lideradas por Igor Branchini [@branchi2022], los niveles altos de plasticidad inducidos por medicamentos, como los antidepresivos serotoninérgicos y los psicodélicos, no son beneficiosos por sí mismos. Estos fármacos inducen una alta plasticidad (a veces llamados psicoplastógenos) que hacen que el cerebro y el comportamiento sean más susceptibles a cambios según factores contextuales, como las condiciones de vida. Esta suceptibilidad puede ser benéfica si las condiciones de vida mejoran. Sin embargo, si las condiciones de vida no mejoran (o empeoran), esta plasticidad inducida por los fármacos puede ser detrimental.
 
 
 
@@ -1089,7 +1089,7 @@ Estrategias de búsqueda en los entrenamientos del MWM. En A y B, estrategias in
 
 :::
 
-Para cálcular las estrategias de búsqueda en el MWM, se utilizó el paquete de R "*Rtrack*" (@overall2020). Overall, en colaboración con Garthe y Kempermann, toman como base las estrategias definidas por @garthe2009, pero mejoran el algorítmo de clasificación al utiliza un clasificador de *machine learning* (random forest, previamente entrenado con 3111 datos).
+Para cálcular las estrategias de búsqueda en el MWM, se utilizó el paquete de R "*Rtrack*" [@overall2020]. Overall, en colaboración con Garthe y Kempermann, toman como base las estrategias definidas por @garthe2009, pero mejoran el algorítmo de clasificación al utiliza un clasificador de *machine learning* (random forest, previamente entrenado con 3111 datos).
 
 Para facilitar el análisis y debido a la falta de una *n* mayor (tanto en animales, como en tiempos), se agruparon las estrategias en 3 tipos (enfoque similar a @amelchenko2023): 
 
@@ -2084,7 +2084,6 @@ Para el caso de los entrenamientos reversa, tenemos los siguientes resultados:
 
 ```{r TablaRegDistMediaEntspostsdos}
 #| echo: false
-#| eval: false
 #| label: tbl-TablaRegDistMediaEntspostsdos
 #| tbl-cap: "Tabla de regresión en Distancias Medias Reversa."
 
@@ -3549,7 +3548,8 @@ De nuevo, se destaca que el grupo de Salina tiene una mayor persistencia en la z
 
 #### Cepa de ratones utilizada
 
-En el protocolo experimental original se tenían contempladas otras pruebas conductuales para evaluar los estados de tipo ansioso y de tipo depresivo. Sin embargo, tenemos resultados problemáticos. Por ejemplo, parece ser que la fluoxetina tiene efectos ansiogénicos (@fig-periferia, @fig-mediazona, @fig-centrozona), que la ketamina promueve conductas de tipo depresivas (@fig-inmovilidadsegm) o que la solución salina tiene efectos antidepresivos (@fig-inmovilidadtotal). 
+En el protocolo experimental original se tenían contempladas otras pruebas conductuales para evaluar los estados de tipo ansioso y de tipo depresivo. Sin embargo, tenemos resultados problemáticos. Por ejemplo, parece ser que la fluoxetina tiene efectos ansiogénicos (@fig-perfieria, @fig-medio, @fig-centro), que la ketamina promueve conductas de tipo depresivas (@fig-inmovSegment) o que la solución salina tiene efectos antidepresivos (@fig-inmovtot). 
+
 
 En investigaciones biomédicas, la selección de la cepa de ratones es crucial dado que las características genéticas y fisiológicas pueden influir significativamente en los resultados experimentales. En mi estudio, utilicé una cepa híbrida de ratones C57BL6/J cruzados con BALB/c, lo que parece haber impactado los resultados obtenidos, posiblemente debido a la heterogeneidad genética y la variabilidad en la respuesta al estrés y a los fármacos.
 
@@ -3618,7 +3618,7 @@ campo_abierto_df$treatment = factor(campo_abierto_df$treatment,
 ```{r perfieria}
 #| echo: false
 #| label: fig-perfieria
-#| tbl-cap: "Periferia."
+#| fig-cap: "Periferia."
 
 campo_abierto_df |>  
   ggpubr::ggdotplot(
@@ -3639,7 +3639,7 @@ campo_abierto_df |>
 ```{r medio}
 #| echo: false
 #| label: fig-medio
-#| tbl-cap: "Medio"
+#| fig-cap: "Medio"
 
 campo_abierto_df |>  
   ggpubr::ggdotplot(
@@ -3660,7 +3660,7 @@ campo_abierto_df |>
 ```{r centro}
 #| echo: false
 #| label: fig-centro
-#| tbl-cap: "Centro"
+#| fig-cap: "Centro"
 
 campo_abierto_df |>  
   ggpubr::ggdotplot(
@@ -3681,7 +3681,7 @@ campo_abierto_df |>
 ```{r cruces}
 #| echo: false
 #| label: fig-cruces
-#| tbl-cap: "cruces"
+#| fig-cap: "cruces"
 
 campo_abierto_df |>  
   ggpubr::ggdotplot(
@@ -3827,7 +3827,7 @@ nado_frozado_segmentos_df |>
     facet.by = "prueba",
     add = "mean_se",
     numeric.x.axis = TRUE,
-    xlab = "Segmento de la Prueba (segundos)",
+    xlab = "Segmento de la prueba por minuto",
     ylab = "Segundos de Inmovilidiad"
     # ggtheme = theme_pubr()
     # error.plot = "errorbar"
@@ -3845,6 +3845,7 @@ nado_frozado_segmentos_df |>
 # Conclusión
 
 En conclusión, el estrés crónico produce una déficit de flexibilidad cognitiva en las pruebas del MWM, evidenciado por la mayor distancia al annulus reversa y el menor tiempo en los cuadrantes y zona del annulus reversa. El tratamiento con fluoxetina previene esta falta de flexibilidad en comparación con el grupo de salina. A pesar de que tenemos evidencia conductual que esto podría estar relacionado con la neurogénesis hipocampal, falta confirmación por parte de la inmunohistoquímica. Por último, se utilizaron métricas en el MWM que destacan la importancia del aprendizaje espacial en el MWM, las cuales no son comunmente utilizadas. De la misma manera, falta confirmación inmunohistoquímica para hacer conclusiones más robustas sobre las bases de estos fenómenos.
+
 # ANEXO 
 
 
