@@ -1,0 +1,1166 @@
+---
+title: "Fluox"
+subtitle: "sinodales"
+author:  "Santi"
+institute: "UNAM"
+format:
+  revealjs:
+    # embed-resources: true
+    transition: slide # fade/slide/convex/concave/zoom/none
+    preview-links: true # navegar links dentro de la misma presentación (iframe)
+    progress: true # mostrar barra de progreso
+    scrollable: true # desplazar verticalmente diapositivas
+    incremental: true # listas aparecen de uno en uno
+    theme: simple # beige/blood/dark/league/moon/night/serif/simple/sky/solarized
+    # logo: "https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-Flat.png"
+    # footer: "[Ver código de la presentación](https://github.com/santi-rios/quarto-iframes/blob/main/index.qmd)"
+    # width: 1280
+    # height: 720
+    chalkboard:
+      buttons: true
+# preload-iframes: true
+# editor: source # visual/source - qué editor usar
+lightbox: true
+execute:
+  echo: true  
+  warning: false
+  cache: true
+bibliography: zotlib.bib
+# revealjs-plugins:
+  # - pointer # requiere instalación. activar con q
+---
+
+
+
+## Estrés y depresión
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+- Estímulo no placentero, aversivo o amenazante para la homeostasis de un individuo es experimentado de manera que excede los recursos para lidiar con él [@lazarus2006].
+
+- Estresores crónicos, impredecibles e incontrolables son causa mayor de desordenes depresivos y de ansiedad [@hill2012].
+:::
+
+::: {.column width="40%"}
+![](figuras_presentacion/estres1.png)
+![](figuras_presentacion/estres2.png)
+
+:::
+
+::::
+
+## Modelo de Estrés Crónico Moderado Impredecible (CUMS)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Protocolo desarrollado en los ochentas [@katz1981; @willner1997] como un modelo de depresión en roedores. 
+
+- Afecta a los roedores a distintos niveles, incluyendo el cognitivo (aprendizaje, memoria) [@alqurashi2022].  
+
+- Hipocampo regula distintos aspectos de la cognición (flexibilidad cognitiva) y el procesamiento emocional [@anacker2017; @leschik2021].
+:::
+
+::: {.column width="50%"}
+![Paul Wilner](figuras_presentacion/paul_willner.png)
+![Sequeira-Cordero. Sci Rep. 2019](figuras_presentacion/sequeira-cordero2019.jpg)
+
+:::
+
+::::
+
+
+## Hipocampo y estrés
+
+- Abundancia de receptores a glucocorticoidies en hipocampo lo hace muy sensible al estrés crónico [@sapolsky1985; @adult_lucassen_2020].
+
+  - Ratones susceptibles al estrés crónico tienen un menor volumen del hipocampo (arresto en crecimiento denrítico, atrofia que reduzca crecimiento dendrítico y disminuya densidad de las espinas, *reducción de neurogénesis adulta*) [@conrad2008; @tse2014].
+
+- En roedores, se ha relacionado la Neurogénesis Hipocampal Adulta a una mayor resiliencia al estrés [@anacker2018] y a mejoras de síntomas de tipo depresivos y ansiosos [@hill2015; @tunc-ozcan2019]
+
+- En humanos, pacientes con trastorno depresivo tienen un mayor número de marcadores de células neurales progenitoras (Ki-87) en el giro dentado cuando estos están medicados con antidepresivos [@boldrini2009]
+
+
+## Neurogénesis Hipocampal Adulta
+
+![](figuras_presentacion/neurogenesis.png)
+
+## Giro dentado y NHA en la cognición
+
+- Aprendizaje, memoria y olvido [@akers2014]
+
+- Flexibilidad cognitiva y aprendizaje espacial [@garthe2009]
+
+- Separación de patrones
+
+## Morris Water Maze
+
+
+![li, 2023](figuras_presentacion/morris_dibujo.png)
+![li, 2023](figuras_presentacion/morris_li.png)
+
+## Flexibilidad Cognitiva
+
+Habilidad mental que permite adaptar pensamientos y conductas en respuesta a las contingencias ambientales cambiantes [@cognitive_uddin_2021]
+
+## Flexibilidad Cognitiva y Neurogénesis
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+![](figuras_presentacion/anacker_wm.png)
+![](figuras_presentacion/anacker_wm_2.png)
+
+:::
+
+::: {.column width="40%"}
+![](figuras_presentacion/toni_2011.png)
+![](figuras_presentacion/anacker_inhibition.png)
+![](figuras_presentacion/anacker_inhibition_3.png)
+
+:::
+
+::::
+
+...
+
+(engramas viejos): pensamientos negativos recurrentes y persistentes
+
+(engramas nuevos): reaprendizaje de experiencias negativas desde una perspectiva de autocompasión [@guler2022]
+
+## Fluoxetina aumenta NHA en hipocampo de rata @malberg2000
+
+![malberg2000](figuras_presentacion/malberg2000.png)
+
+## Pregunta
+
+¿Podrá la ketamina, al igual que la fluoxetina, mejorar el aprendizaje espacial y la flexibilidad cognitiva en un modelo de estrés crónico en ratón? 
+
+## Hipótesis
+
+“La administración de ketamina y fluoxetina mejorará significativamente el aprendizaje espacial y la flexibilidad cognitiva en ratones sometidos a un modelo de estrés crónico."
+
+## Objetivos
+
+- Investigar y comparar los efectos de la ketamina y la fluoxetina en el aprendizaje espacial y la flexibilidad cognitiva en ratones sometidos a un modelo de estrés crónico.
+
+Inducir estados de ansiedad y depression en ratones para evaluar su relación con deficits cognitivos
+CUMS (Monteiro et al., 2015) y Laberinto acuático de Morris
+Investigar los mecanismos subyacentes por los cuales la Ketamina y Fluoxetina ejercen sus efectos sobre el aprendizaje especial y la flexibilidad cognitiva en el contexto del estrés crónico
+Inmunohistoquímica en Giro Dentado
+
+## Diseño experimental
+
+![](figuras/diseno_experimental.png)
+
+
+# Resultados
+
+## setup {visibility="hidden"}
+
+```{r librerias}
+#| include: false
+
+# Básicas 
+library(tidyverse)
+library(plyr)
+
+# plots
+library(gridExtra)
+library(grid)
+library(plotly)
+# library(viridis)
+library(viridisLite)
+library(patchwork)
+library(hexbin)
+
+
+# Bayes
+library(brms)
+library(modelbased)
+library(see)
+library(bayesplot)
+library(bayestestR)
+
+
+# Regresion
+library(lme4)
+library(emmeans)
+library(modelr)
+library(sjPlot)
+library(gtsummary)
+library(performance)
+library(ggeffects)
+
+# Tablas
+library(flextable)
+library(webshot)
+library(report)
+
+# Estadistica
+library(rstatix)
+library(ggpubr)
+
+```
+
+```{r datafrmaes}
+#| include: false
+
+
+df_wm <- read.csv("./datos/df_wm_clean.csv")
+
+# recodificar a factores
+df_wm$tratamientos <- as.factor(df_wm$tratamientos)
+df_wm$id <- as.factor(df_wm$id)
+df_wm$stage <- as.factor(df_wm$stage)
+df_wm$prueba <- as.factor(df_wm$prueba)
+
+# table(df_ent_post$tratamientos) ver tratamientos
+
+
+
+df_wm_flx <- df_wm |> 
+  dplyr::filter(tratamientos %in% c("Flx","Flx-CUMS", "Sal-CUMS-F"))
+
+# table(df_wm_flx$tratamientos)
+
+df_wm_otros <- df_wm |> 
+  dplyr::filter(tratamientos %in% c("Ctrl","Ket-CUMS", "Sal-CUMS-K"))
+
+# table(df_wm_otros$tratamientos)
+
+df_wm_flx$tratamientos = factor(df_wm_flx$tratamientos, 
+                            levels=c("Flx","Flx-CUMS", "Sal-CUMS-F"))
+
+df_wm_otros$tratamientos = factor(df_wm_otros$tratamientos, 
+                            levels=c("Ctrl", "Ket-CUMS", "Sal-CUMS-K"))
+```
+
+```{r datafrmaesLatencias}
+#| include: false
+
+latencias_pre <- df_wm_flx |> 
+  select(latencia, id, tratamientos, stage, dia, tiempo, prueba) |> 
+  dplyr::filter(str_detect(prueba, "Entr"))
+
+
+latencias_post <- df_wm_flx |> 
+  select(latencia, id, tratamientos, stage, dia, tiempo, prueba) |> 
+  dplyr::filter(str_detect(prueba, "Reversa"))
+
+
+latencias_pre$censurado = ifelse(latencias_pre$latencia== 60, 1, 0)
+latencias_pre$Censurado = ifelse(latencias_pre$latencia==60, "SI", "NO")
+
+latencias_post$censurado = ifelse(latencias_post$latencia== 60, 1, 0)
+latencias_post$Censurado = ifelse(latencias_post$latencia==60, "SI", "NO")
+
+
+```
+
+
+```{r dataframesEstrategias}
+#| echo: false
+
+estrategias_df <- read.csv("./datos/rtrack/exportado_estrategias_final.csv") |> 
+  # exportado_estrategias_final_thresholded.csv
+  janitor::clean_names() |> 
+  dplyr::select(x_target_id, x_day, x_trial, stage, tratamiento, name) |> 
+  
+  dplyr::mutate(estrategias = case_when(name %in% c("corrected path", "direct path", "directed search") ~ 1, # hipocampo_dependientes 
+                                        name %in% c("chaining",  "random path", "scanning", "thigmotaxis") ~ 0, # hipocampo_independientes
+                                        name %in% c("perseverance") ~ 3)
+  ) |> 
+  
+  dplyr::mutate(estrategias_hipo = case_when(name %in% c("corrected path", "direct path", "directed search") ~ "hipocampo_dependientes",   
+                                             name %in% c("chaining",  "random path", "scanning", "thigmotaxis") ~ "hipocampo_independientes", # 
+                                             name %in% c("perseverance") ~ "perseverancia")
+  )
+
+## ---- porcentajes-summary
+## counts how many times each strategy was used by each group on each day
+
+
+estrategias_porcentajes_df_pre <- estrategias_df |> 
+  dplyr::filter(str_detect(stage, "entrenamiento")) |>
+  dplyr::filter(!str_detect(stage, "entrenamiento_rev")) |>
+  dplyr::filter(!str_detect(tratamiento, "K")) |>
+  dplyr::group_by(stage, tratamiento, estrategias_hipo) |>
+  dplyr::summarise(cnt = n()) |> 
+  dplyr::mutate(freq = round(cnt / sum(cnt), 3),
+         # dia = case_when(stage == "entrenamiento_rev_1" ~ 1,
+                         # stage == "entrenamiento_rev_2" ~ 2),
+         porcentaje = freq * 100) |> 
+  dplyr::ungroup()
+
+
+estrategias_porcentajes_df <- estrategias_df |> 
+  dplyr::filter(str_detect(stage, "entrenamiento_rev")) |>
+  dplyr::filter(!str_detect(tratamiento, "K")) |>
+  dplyr::group_by(stage, tratamiento, estrategias_hipo) |>
+  dplyr::summarise(cnt = n()) |> 
+  dplyr::mutate(freq = round(cnt / sum(cnt), 3),
+                dia = case_when(stage == "entrenamiento_rev_1" ~ 1,
+                                stage == "entrenamiento_rev_2" ~ 2),
+                porcentaje = freq * 100) |> 
+  dplyr::ungroup()
+
+
+
+```
+
+```{r rtrack}
+#| echo: false
+
+load("./datos/rtrack/final_experiment.RData")
+
+estrategias_rtrack <-  Rtrack::call_strategy(rtrack_experimento)
+
+
+# ---- P1 
+flx_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Flx-CUMS
+flx_CUMS_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-F
+sal_cums_f_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Ket-CUMS
+ket_cums_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+# Sal-CUMS-K
+sal_cums_k_p1_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 5)]
+
+
+
+
+# ---- P2 
+flx_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Flx-CUMS
+flx_CUMS_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-F
+sal_cums_f_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Ket-CUMS
+ket_cums_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+# Sal-CUMS-K
+sal_cums_k_p2_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 6)]
+
+
+# ---- P-Rev 
+
+flx_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Flx-CUMS
+flx_CUMS_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Flx-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-F
+sal_cums_f_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-F" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Ket-CUMS
+ket_cums_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Ket-CUMS" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+# Sal-CUMS-K
+sal_cums_k_rev_metrics =
+  rtrack_experimento$metrics[rtrack_experimento$factors$Tratamiento == "Sal-CUMS-K" &
+                               (rtrack_experimento$factors$`_Day` == 9)]
+
+
+```
+
+```{r dfDistMedPrueb}
+#| echo: false
+
+df.distancia.media.pruebas.flx <- 
+  df_wm_flx |> 
+  # df_wm_otros |> 
+  dplyr::select(distancia_media_blanco, distancia_annulus_so, distancia_annulus_ne, tratamientos, id, prueba, dia) |> 
+  # dplyr::filter(str_detect(prueba, "Ent")) |> 
+  dplyr::filter(str_detect(prueba, "P")) 
+
+
+df.meandist.media.pruebas <- aggregate(df.distancia.media.pruebas.flx$distancia_media_blanco,
+                                       by = list(df.distancia.media.pruebas.flx$prueba, 
+                                                 df.distancia.media.pruebas.flx$tratamientos,
+                                                 df.distancia.media.pruebas.flx$id),
+                                       FUN = 'mean')
+
+colnames(df.meandist.media.pruebas) <- c("prueba","tratamientos","id","distancia_media_blanco")
+
+```
+
+
+## 
+
+```{r}
+
+df_wm_flx |> 
+  dplyr::filter(str_detect(stage, "pru")) |>
+  # dplyr::filter(!str_detect(stage, "entrenamiento_rev")) |>
+  # dplyr::filter(!str_detect(tratamiento, "K")) |>
+  dplyr::group_by(stage, tratamientos) |>
+  dplyr::summarise(cnt = n())
+```
+
+n flx 7
+n flx cums 9
+n sal cums 8
+
+# Entrenamientos  
+
+## Latencias
+
+```{r}
+#| echo: false
+#| label: fig-histogramasdensidadpres
+#| fig-cap: "Densidad de los valores de latencia (versión suavizada de un histograma). Se observa cómo los datos claramente no siguen una distribución normal. Líneas puntadas marcan la media."
+#| fig-subcap: 
+#|   - "Entrenamientos Originales"
+#|   - "Entrenamientos Reversa"
+#| layout-ncol: 2
+
+# mean
+
+
+cdat <- ddply(latencias_pre, "tratamientos", summarise, rating.mean=mean(latencia))
+
+
+latencias_pre |> 
+  ggplot(aes(x = latencia, color = tratamientos, fill = tratamientos)) +
+  geom_density(alpha = 0.15) +
+  geom_vline(data=cdat, aes(xintercept=rating.mean,  colour=tratamientos),
+               linetype="dashed", size=1) +
+  ylim(0, 0.06) +
+  scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#F2AFEF")) +
+  scale_fill_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#F2AFEF")) +
+  labs(
+    # title = "Latencias Entrenamientos Originales",
+    # caption = "Líneas puntadas marcan la media",
+    color = "Tratamientos",
+    fill = "Tratamientos",
+    x = "Valor de Latencia (s)",
+    y = "Densidad") +
+  # ggthemes::theme_base() +
+  ggthemes::theme_clean() +
+  theme(legend.position='top', axis.text = element_text(size = 12),axis.title = element_text(size = 15))
+
+
+
+cdatpost <- ddply(latencias_post, "tratamientos", summarise, rating.mean=mean(latencia))
+
+
+latencias_post |> 
+  ggplot(aes(x = latencia, color = tratamientos, fill = tratamientos)) +
+  geom_density(alpha = 0.15) +
+  ylim(0, 0.06) +
+  geom_vline(data=cdatpost, aes(xintercept=rating.mean,  colour=tratamientos),
+               linetype="dashed", size=1) +
+  scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#F2AFEF")) +
+  scale_fill_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#F2AFEF")) +
+  labs(
+    # title = "Latencias Entrenamientos Reversa",
+    # caption = "Líneas puntadas marcan la media",
+    color = "Tratamientos",
+    fill = "Tratamientos",
+    x = "Valor de Latencia (s)",
+    y = "Densidad") +
+  # ggthemes::theme_base() +
+  ggthemes::theme_clean() +
+  theme(legend.position='top', axis.text = element_text(size = 12),axis.title = element_text(size = 15))
+
+
+```
+
+::: {#fig-latenciascensurados layout-ncol=2}
+![Entrenamientos Originales](figuras/latencias_scatviolin_pre.png){#fig-latenciascencuradospre}
+
+
+![Entrenamientos Reversa](figuras/latencias_scatviolin_post.png){#fig-scatviolinpost}
+
+Censura de datos en latencias de escape. En la parte superior, el gráfico de dispersión muestra en rojo los datos censurados. En la parte inferior, una alta densidad en la marca de 60 segundos resalta la censura de datos. 
+:::
+
+## 
+
+
+![Entrenamientos Originales](figuras/bay_effect_plots_pre.png){#fig-latenpre}
+
+| Tratamiento | Latencia inicial | Latencia Final | Pendiente |
+| ----------- | ---------------- | -------------- | --------- |
+| Flx         | 62.1             | 10.96          | \-0.464   |
+| Flx-CUMS    | 32.8             | 7.85           | \-0.381   |
+| Sal-CUMS-F  | 46.2             | 12.86          | \-0.340   |
+: Parámetros estimados para las latencias originales a partir del modelo Bayesiano.  {#tbl-paramsbaypre .striped .hover}
+
+![Entrenamientos Reversa](figuras/bay_effect_plots_post.png){#fig-latenpost}
+
+| Tratamiento | Latencia inicial | Latencia Final | Pendiente |
+| ----------- | ---------------- | -------------- | --------- |
+| Flx         | 41.3             | 3.85           | \-1.91    |
+| Flx-CUMS    | 65.2             | 6.85           | \-1.82    |
+| Sal-CUMS-F  | 109.2            | 8.38           | \-2.05    |
+: Parámetros estimados para las latencias Reversa a partir del modelo Bayesiano.  {#tbl-paramsbaypost .striped .hover}
+
+
+
+| Modelo          | ELPD      | LOOIC  | WAIC   |
+| --------------- | --------- | ------ | ------ |
+| Bayes Censurado | \-529.248 | 1058.5 | 1049.7 |
+| GLM             | \-629.861 | 1259.7 | 1253.0 |
+| Modelo lineal   | \-769.128 | 1538.3 | 1536.0 |
+: "Criterios de información para los tres modelos. Expected log predictive density (ELPD), donde un mayor número es lo deseado. Leave-one-out cross-validation information criterion (LOOIC),  donde un valor menor es deseado. Widely applicable information criterion (WAIC), donde un menor valor es deseado. En todos los criterios, el modelo Bayesiano tiene los mejores puntajes, seguido del GLM."  {#tbl-regbayscomps .striped .hover}
+
+
+::: footer
+```{r mapascalorfluoxetinalats}
+#| echo: false
+#| layout-ncol: 3
+#| fig-height: 3
+
+
+Rtrack::plot_density(
+  flx_p1_metrics,
+  title = "FLX P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+Rtrack::plot_density(
+  flx_CUMS_p1_metrics,
+  title = "FLX-CUMS P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+
+
+Rtrack::plot_density(
+  sal_cums_f_p1_metrics,
+  title = "Sal-CUMS-FLX P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+```
+
+:::
+
+## Estrategias de búsqueda
+
+![@place_morris_1982](figuras_presentacion/morris1982.jpg)
+
+
+
+![@schmidt2013; @hippocampus_okeefe_1978](figuras_presentacion/shmidt2013.jpg)
+
+![@developments_morris_1984](figuras_presentacion/morris1984jpg.jpg)
+
+Egocéntrico (no usa pistas espacial o antes de integrar un camino adecuado) y alocéntrico
+
+![@miniaci2018](figuras_presentacion/miniaci2018.jpg)
+
+![@garthe2013](figuras_presentacion/garthe2013.jpg)
+
+::: {#fig-entEstrategias layout-ncol=1}
+
+![Estrategias Egocéntricas Aleatorias. Estas no están relacionadas con un intento a escapar del laberinto por medio de una búsqueda de la plataforma. En esta categoría se encuentran, de izquierda a derecha: tigmotaxis, aleatorio (caso 1), aleatorio (caso 2).](figuras/estrategias_random.jpg){#fig-estrategiasrandom}
+
+![Estrategias Egocéntricas Procedurales. El contexto de la búsqueda es relativo al sujeto. En la izquierda, exploración (patrones repetitivos en un área), a la derecha, búsqueda en cadena (individuo sabe que la plataforma está a cierta distancia del muro y se mueve en circulos).](figuras/estrategias_chaining.jpg){#fig-estrategiachaining}
+
+![Estrategias Alocéntricas. El individuo se mueve de forma dirigida y orientada a la plataforma. De izquierda a derecha: búsqueda dirigida (se mueve al blanco, aunque con errores que involucran cambios de orientación), búsqueda enfocada (se mueve casi sin errores hacia el blanco), nado directo (nada en línea recta hacia el blanco), perseverancia (búsqueda dirigida hacia blanco anterior). ](figuras/estrategias_directas.jpg){#fig-estrategiasalocentricas}
+
+Estrategias de búsqueda en los entrenamientos del MWM. En A y B, estrategias independientes de hipocampo. En C, estrategias alocéntricas dependientes del hipocampo. En naranja se muestra la localización de la plataforma blanco. En gris se muestra la localización de la plataforma vieja (casos de entrenamiento reversa). El triángulo amarillo representa la zona ideal que debería de seguir el roedor para llegar al blanco. 
+
+:::
+
+## porcentajes plots
+
+
+```{r porcentajesEstrategiasPlots}
+#| echo: false
+#| label: fig-porcentajesEstrategiasPlots
+#| fig-cap: "Porcentaje de Estrategias de búsqueda utilizadas en los entrenamientos."
+#| fig-subcap: 
+#|   - "Entrenamientos Originales"
+#|   - "Entrenamientos Reversa"
+#| layout-ncol: 1
+
+estrategias_porcentajes_df_pre$estrategias_hipo = factor(estrategias_porcentajes_df_pre$estrategias_hipo, 
+                                levels=c("hipocampo_dependientes","hipocampo_independientes"), 
+                                labels = c("Alocéntricas","Egocéntricas"))
+
+estrategias_porcentajes_df_pre$tratamiento = factor(estrategias_porcentajes_df_pre$tratamiento, 
+                                levels=c("Flx","Flx-CUMS", "Sal-CUMS-F"), 
+                                labels = c("Flx [***]","Flx-CUMS [*]", "Sal-CUMS-F [***]"))
+
+estrategias_porcentajes_df_pre |> 
+  # dplyr::filter(str_detect(experimento, "Flx")) |>
+  ggplot(
+    aes(
+      x = stage,
+      y = freq,
+      color = estrategias_hipo,
+      fill = estrategias_hipo
+      # label = porcentaje
+    )) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  geom_label(aes(label = scales::percent(freq)), size = 4, position = position_stack(reverse = TRUE, vjust = 0.5), color = "black", show.legend = FALSE) +
+  # geom_bar(stat = "identity") +
+  scale_color_manual(values = c("#046582", "#BBBFCA", "#C86B85")) +
+  scale_fill_manual(values = c("#046582", "#BBBFCA", "#C86B85")) +
+  facet_wrap(vars(tratamiento)) +
+  scale_x_discrete(name = "Dia", labels = c("1", "2", "3", "4")) +
+  scale_y_continuous(name = "", labels = scales::percent_format()) +
+  labs(fill = "", color = "") +
+  # ggthemes::theme_clean() +
+  ggthemes::theme_base() +
+  # ggthemes::theme_few() +
+  theme(legend.position='top', axis.text = element_text(size = 12),axis.title = element_text(size = 15)) 
+  # annotate(
+  # "text",
+  # label = "**",
+  # x = 2.5,
+  # y = 1.03,
+  # size = 10,
+  # colour =  "#00ADB5")
+# ) +
+#   annotate(
+#     "text",
+#     label = "**",
+#     x = "P-Rev",
+#     y = .50,
+#     size = 8.5,
+#     colour =  "#FF2E63"
+#   ) +
+#   annotate(
+#     "text",
+#     label = "**",
+#     x = "P-Rev",
+#     y = .50,
+#     size = 8.5,
+#     colour =  "#FF2E63"
+#   )
+
+
+estrategias_porcentajes_df$estrategias_hipo = factor(estrategias_porcentajes_df$estrategias_hipo, 
+                                levels=c("hipocampo_dependientes","hipocampo_independientes", "perseverancia"), 
+                                labels = c("Alocéntricas","Egocéntricas", "Perseverancia"))
+
+estrategias_porcentajes_df$tratamiento = factor(estrategias_porcentajes_df$tratamiento, 
+                                levels=c("Flx","Flx-CUMS", "Sal-CUMS-F"), 
+                                labels = c("Flx [ns]","Flx-CUMS [*]", "Sal-CUMS-F [**]"))
+
+estrategias_porcentajes_df |> 
+  ggplot(
+    aes(
+      x = stage,
+      y = freq,
+      color = estrategias_hipo,
+      fill = estrategias_hipo,
+      # label = porcentaje
+    )) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  geom_label(aes(label = scales::percent(freq)), size = 4, position = position_stack(reverse = TRUE, vjust = 0.5), color = "black", show.legend = FALSE) +
+  # geom_bar(stat = "identity") +
+  scale_color_manual(values = c("#046582", "#BBBFCA", "#C86B85")) +
+  scale_fill_manual(values = c("#046582", "#BBBFCA", "#C86B85")) +
+  # scale_fill_paletteer_d("futurevisions::atomic_orange") +
+  # scale_fill_paletteer_d("nbapalettes::hornets") +
+  # scale_fill_paletteer_d("nbapalettes::timberwolves") +
+  # scale_fill_paletteer_d("rockthemes::deelite") +
+  # scale_color_paletteer_d("rockthemes::muse", direction = -1) +
+  # scale_fill_paletteer_d("rockthemes::muse", direction = -1) +
+  facet_wrap(vars(tratamiento)) +
+  scale_x_discrete(name = "Dia", labels = c("1", "2")) +
+  scale_y_continuous(name = "", labels = scales::percent_format()) +
+  labs(fill = "", color = "") +
+  ggthemes::theme_clean() +
+  # ggthemes::theme_few() +
+  theme(legend.position='top', axis.text = element_text(size = 12),axis.title = element_text(size = 15)) 
+# coord_flip()
+# facet_grid(~ estrategias_hipo) +
+```
+
+::: footer
+```{r mapascalorfluoxetinaporc}
+#| echo: false
+#| layout-ncol: 3
+#| fig-height: 3
+
+
+Rtrack::plot_density(
+  flx_p1_metrics,
+  title = "FLX P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+Rtrack::plot_density(
+  flx_CUMS_p1_metrics,
+  title = "FLX-CUMS P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+
+
+Rtrack::plot_density(
+  sal_cums_f_p1_metrics,
+  title = "Sal-CUMS-FLX P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+```
+
+:::
+
+##
+
+```{r poissonModelado}
+#| echo: false
+
+
+
+glme.poisson.pre <- glmer(count ~ dia * tratamiento * estrategias_hipo +
+                            (1 | x_target_id),
+                          family = poisson(link = "log"), 
+                          data = estrategias.poisson.flx.pre.agrupado)
+
+glme.poisson.post <- glmer(count ~ dia * tratamiento * estrategias_hipo +
+                           (1 | x_target_id),
+                           family = poisson(link = "log"),
+                           data = estrategias.poisson.flx.post.agrupado)
+
+glm.poisson.post <- glm(count ~ dia * tratamiento * estrategias_hipo,
+                           family = poisson(link = "log"),
+                           data = estrategias.poisson.flx.post.agrupado.2)
+
+
+```
+
+
+```{r reglogiEq}
+#| echo: false
+#| label: fig-poissonEquaciones
+#| fig-cap: "Ecuación de regresión de Poisson."
+#| layout-ncol: 1
+
+equatiomatic::extract_eq(glme.poisson.pre, wrap = TRUE, terms_per_line = 1, operator_location = "start")
+
+# equatiomatic::extract_eq(glme.poisson.post, wrap = TRUE, terms_per_line = 1, operator_location = "start")
+
+```
+
+
+```{r poisonplotsEmmeans}
+#| echo: false
+#| label: fig-poisonplotsEmmeans
+#| fig-cap: "Medias Estimadas a partir de la regresión de Poisson. Las medias graficadas representan el estimado de estrategias utilizadas por tratamiento en cada día de los entrenamientos (4 pruebas por día). No se encontraron diferencias significativas en las medias. Las medias marginales están calculadas a tres niveles, prueba, tratamientos y tipo de estrategia. Graficado con Media + error estándar."
+#| fig-subcap: 
+#|   - "Entrenamientos Originales"
+#|   - "Entrenamientos Reversa"
+#| layout-ncol: 1
+
+emm.estrategias.flx.pre <- emmeans(glme.poisson.pre, ~ dia | tratamiento | estrategias_hipo, cov.reduce = F,        
+        type = "response") # displayed results to be back-transformed to the response scale
+# trans = "log"
+
+
+emm.estrategias.flx.pre.df <- as.data.frame(emm.estrategias.flx.pre) |> 
+  dplyr::mutate(estrategias_hipo = recode(estrategias_hipo,
+                                          "hipocampo_dependientes" = "Alocéntricas",
+                                          "hipocampo_independientes" = "Egocéntricas"))
+
+ggplot(emm.estrategias.flx.pre.df,
+                    aes(
+                      x = dia,
+                      y = rate, # rate emmeans
+                      group = tratamiento,
+                      color = tratamiento
+                    )) +
+  geom_line(linewidth = 0.3, linetype = "dashed", position = position_dodge(0.1)) +
+  geom_point(size = 4, position = position_dodge(0.1), aes(shape = tratamiento)) +
+  # geom_point(size = 7, shape = 21, position = position_dodge(0.1)) +
+  geom_pointrange(aes(ymin = rate-SE, ymax = rate+SE),
+                  size = 0.75, position = position_dodge(0.1)) +
+  scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#862B0D")) +
+  labs(
+    # caption = "Graficado con error estándar",
+    color = "Tratamientos",
+    shape = "Tratamientos",
+    x = "Entrenamiento",
+    y = "Media Estimada") +
+  ylim(0, 4) +
+  # scale_x_discrete(labels=c("entrenamiento_rev_1"="1", "entrenamiento_rev_2"="2")) +
+  # theme_classic() +
+  # ggthemes::theme_base() +
+  ggthemes::theme_clean() +
+  facet_grid(~ estrategias_hipo) +
+  theme(legend.position='top', axis.text = element_text(size = 10),axis.title = element_text(size = 15)) 
+
+
+
+
+# latencias_post_emmeans_aov.df <- as.data.frame(latencias_post_emmeans_aov)
+
+
+####### POST
+
+emm.estrategias.flx.post <- emmeans(glm.poisson.post, ~ dia | tratamiento | estrategias_hipo, cov.reduce = T)       
+        # type = "response") # displayed results to be back-transformed to the response scale
+# trans = "log"
+
+
+emm.estrategias.flx.post.df <- as.data.frame(emm.estrategias.flx.post) |> 
+  dplyr::mutate(estrategias_hipo = recode(estrategias_hipo,
+                                          "hipocampo_dependientes" = "Alocéntricas",
+                                          "hipocampo_independientes" = "Egocéntricas"))
+
+ggplot(emm.estrategias.flx.post.df,
+                    aes(
+                      x = dia,
+                      y = emmean, # rate emmeans
+                      group = tratamiento,
+                      color = tratamiento
+                    )) +
+  geom_line(linewidth = 0.3, linetype = "dashed", position = position_dodge(0.1)) +
+  geom_point(size = 4, position = position_dodge(0.1), aes(shape = tratamiento)) +
+  # geom_point(size = 7, shape = 21, position = position_dodge(0.1)) +
+  geom_pointrange(aes(ymin = emmean-SE, ymax = emmean+SE),
+                  size = 0.75, position = position_dodge(0.1)) +
+  scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#862B0D")) +
+  labs(
+    # caption = "Graficado con error estándar",
+    color = "Tratamientos",
+    shape = "Tratamientos",
+    x = "Entrenamiento",
+    y = "Media Estimada") +
+  ylim(0, 4) +
+  # scale_y_continuous(name, breaks, labels, limits, trans) +
+  scale_x_discrete( 
+                    limits=c("1","2")) +
+  # scale_x_discrete(labels=c("entrenamiento_rev_1"="1", "entrenamiento_rev_2"="2")) +
+  # theme_classic() +
+  # ggthemes::theme_base() +
+  ggthemes::theme_clean() +
+  facet_grid(~ estrategias_hipo) +
+  theme(legend.position='top', axis.text = element_text(size = 10),axis.title = element_text(size = 15)) 
+
+
+######## COMPS EMMEANS
+
+# emmeans(glm.poisson.post, ~ dia | tratamiento | estrategias_hipo, cov.reduce = F)
+# 
+# 
+# aov_em_post <- emmeans(glm.poisson.post, pairwise ~ tratamiento | dia | estrategias_hipo, adjust = "fdr", cov.reduce = F)$contrasts |>
+#   dplyr::as_tibble() |>  
+#   dplyr::select(-df, -t.ratio) |>
+#   dplyr::rename(Estimado = estimate) |> 
+#   dplyr::filter(p.value <= 0.05) |>
+#   tidyr::separate(contrast, into = c("Tratamiento_1", "Tratamiento_2"), sep = " - ") |> 
+#   gt::gt()  |> 
+#   tab_footnote("Comparaciones múltiples ajustadas con Tukey HSD") |> 
+#   fmt_number(decimals = 3) |>
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#222831")),
+#     values = c("Flx")
+#   ) |> 
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#00ADB5")),
+#     values = c("(Flx-CUMS)")) |>
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#FF2E63")),
+#     values = c(("(Sal-CUMS-F)"))
+#     ) |> 
+#   opt_stylize(style = 1) 
+# 
+# aov_em_post
+
+```
+
+::: footer
+```{r mapascalorfluoxetina}
+#| echo: false
+#| layout-ncol: 3
+#| fig-height: 3
+
+
+Rtrack::plot_density(
+  flx_p1_metrics,
+  title = "FLX P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+Rtrack::plot_density(
+  flx_CUMS_p1_metrics,
+  title = "FLX-CUMS P-1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+
+
+
+Rtrack::plot_density(
+  sal_cums_f_p1_metrics,
+  title = "Sal-CUMS-FLX P1",
+  col = viridis(300), # 738
+  resolution = 900,
+  feature.col = "#E87FB0",
+  feature.lwd = 4,
+  legend = F
+)
+```
+
+:::
+
+# Pruebas
+
+## Distancia Media
+
+```{r ModeladoDistanciaMedia}
+#| echo: false
+
+
+lmer.dist.media.pruebas <- lmer(
+  distancia_media_blanco ~ prueba * tratamientos + (1 | id),
+  data = df.distancia.media.pruebas.flx
+)
+
+
+lmer.dist.media.pruebas.2 <- lmer(
+  distancia_media_blanco ~ prueba + tratamientos + (1 | id),
+  data = df.distancia.media.pruebas.flx
+)
+
+lmer.dist.media.pruebas.3 <- lmer(
+  distancia_media_blanco ~ prueba * tratamientos + (1 |tratamientos/ id),
+  data = df.distancia.media.pruebas.flx
+)
+
+lmer.dist.media.pruebas.4 <- lmer(
+  distancia_media_blanco ~ prueba + tratamientos + (1 |tratamientos/ id),
+  data = df.distancia.media.pruebas.flx
+)
+
+anova(lmer.dist.media.pruebas, lmer.dist.media.pruebas.2)
+anova(lmer.dist.media.pruebas.3, lmer.dist.media.pruebas.4)
+
+anova(lmerTest::lmer(distancia_media_blanco ~ prueba * tratamientos + (1 |tratamientos/ id),
+  data = df.distancia.media.pruebas.flx))
+
+# tbl_summary(lmer.dist.media.pruebas.3)
+
+tab_model(lmer.dist.media.pruebas.3)
+tab_model(lmer.dist.media.pruebas)
+
+# aov_latencias_post <- aov(latencia ~ tratamientos * stage + Error(id/stage), 
+#                           data = aov_latencias_post.df)
+drop1(lmer.dist.media.pruebas,test="Chisq"
+      )
+
+aov.dist.media.pruebas <- aov(distancia_media_blanco ~ tratamientos * prueba + Error(id), 
+             data = df.meandist.media.pruebas)
+
+
+```
+
+```{r EqDistanciaMedia}
+#| echo: false
+#| label: fig-EqDistanciaMedia
+#| fig-cap: Ecuación de regresión Distancia Media.
+
+equatiomatic::extract_eq(lmer.dist.media.pruebas, wrap = TRUE, terms_per_line = 4, operator_location = "start")
+
+```
+
+| Variable              | NumDF | DenDF  | F      | p      |
+| --------------------- | ----- | ------ | ------ | ------ |
+| Prueba                | 2     | 27.732 | 32.539 | <0.001 |
+| Tratamientos          | 2     | 34.469 | 7.227  | 0.002  |
+| Prueba x Tratamientos | 4     | 32.751 | 7.879  | <0.001 |
+: Tabla de análisis de varianza del modelo de efectos Mixtos con aproximado de Satterthwaite. {#tbl-pruebasdmedaovtab}
+
+##
+
+```{r DMedPlotEmmeanPruebas}
+#| echo: false
+#| label: fig-DMedPlotEmmeanPruebas
+#| fig-cap: "Distancia Media al annulus blanco en las tres Pruebas. Graficado con Media + error estándar."
+
+
+lmer.dist.media.pruebas.emm <- emmeans(lmer.dist.media.pruebas,  
+                        ~ tratamientos | prueba, cov.reduce = FALSE)
+
+
+lmer.dist.media.pruebas.emm.df <- as.data.frame(lmer.dist.media.pruebas.emm)
+
+lmer.dist.media.plot <- ggplot(lmer.dist.media.pruebas.emm.df,
+                    aes(
+                      x = prueba,
+                      y = emmean,
+                      group = tratamientos,
+                      color = tratamientos
+                    )) +
+  geom_line(linewidth = 0.3, linetype = "dashed", position = position_dodge(0.1)) +
+  geom_point(size = 4, position = position_dodge(0.1), aes(shape = tratamientos)) +
+  # geom_point(size = 7, shape = 21, position = position_dodge(0.1)) +
+  geom_pointrange(aes(ymin = emmean-SE, ymax = emmean+SE),
+                  size = 0.75, position = position_dodge(0.1)) +
+  scale_color_manual(values = c("#222831", "#00ADB5", "#FF2E63", "#FF9800", "#8675A9", "#862B0D")) +
+  labs(
+    # caption = "Plotted with SEM",
+    color = "Tratamientos",
+    shape = "Tratamientos",
+    x = "Prueba",
+    y = "Distancia (m)") +
+  ylim(0.1, 0.5) +
+  # scale_x_discrete(labels=c("entrenamiento_rev_1"="1", "entrenamiento_rev_2"="2")) +
+  # theme_classic()
+  # ggthemes::theme_clean() +
+  ggthemes::theme_clean() + 
+  theme(legend.position='top', axis.text = element_text(size = 12),axis.title = element_text(size = 15)) 
+
+lmer.dist.media.plot  + annotate(
+  "text",
+  label = "*",
+  x = "P-2",
+  y = .50,
+  size = 8.5,
+  colour =  "#00ADB5"
+) +
+  annotate(
+    "text",
+    label = "**",
+    x = "P-Rev",
+    y = .50,
+    size = 8.5,
+    colour =  "#FF2E63"
+  )
+
+
+
+
+```
+
+
+```{r DMedPCompsEmmeans}
+#| echo: false
+#| label: tbl-DMedPCompsEmmeans
+#| tbl-cap: "Contrastes significativos en Distancia Media."
+
+
+
+emmeans(lmer.dist.media.pruebas, pairwise ~ tratamientos | prueba, adjust = "tukey",  cov.reduce = FALSE)$contrasts |>
+  as_tibble() |>
+  dplyr::select(-df, -t.ratio) |>
+  dplyr::rename(Estimado = estimate) |>
+  dplyr::filter(p.value <= 0.05) |>
+  tidyr::separate(contrast, into = c("1", "2"), sep = " - ")  |> 
+  gt::gt()  |> 
+  tab_footnote("Comparaciones múltiples ajustadas con Tukey HSD") |> 
+  fmt_number(decimals = 3) |>
+  tab_style_body(
+    style = list(
+                 cell_text(color = "#222831")),
+    values = c("Flx")
+  ) |> 
+  tab_style_body(
+    style = list(
+                 cell_text(color = "#00ADB5")),
+    values = c("(Flx-CUMS)")) |>
+  tab_style_body(
+    style = list(
+                 cell_text(color = "#FF2E63")),
+    values = c(("(Sal-CUMS-F)"))
+    ) |> 
+  opt_stylize(style = 1)
+
+
+# emmeans(aov.dist.media.pruebas, pairwise ~ tratamientos | prueba, adjust = "tukey",  cov.reduce = FALSE)$contrasts |>
+#   as_tibble() |>
+#   dplyr::select(-df, -t.ratio) |>
+#   dplyr::rename(Estimado = estimate) |>
+#   dplyr::filter(p.value <= 0.05) |>
+#   tidyr::separate(contrast, into = c("1", "2"), sep = " - ")  |> 
+#   gt::gt()  |> 
+#   tab_footnote("Comparaciones múltiples ajustadas con Tukey HSD") |> 
+#   fmt_number(decimals = 3) |>
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#222831")),
+#     values = c("Flx")
+#   ) |> 
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#00ADB5")),
+#     values = c("(Flx-CUMS)")) |>
+#   tab_style_body(
+#     style = list(
+#                  cell_text(color = "#FF2E63")),
+#     values = c(("(Sal-CUMS-F)"))
+#     ) |> 
+#   opt_stylize(style = 1)
+  
+
+```
+
+
+
+
+## Literatura Citada
+
+::: {#refs}
+:::
+
+

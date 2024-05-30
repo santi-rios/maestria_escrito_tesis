@@ -22,6 +22,7 @@ format:
     theme: "journal" # cyborg, quartz, slate, solar, superhero, vapor,sandstone,lux,flaty,cosmo, journal, materia, minty,morph,pulse
     page-layout: full
     anchor-sections: true
+    code-link: true
     # smooth-scroll: true
   docx:
     toc: true
@@ -85,7 +86,7 @@ La flexibilidad conductual es la manifestación física de la flexibilidad cogni
 
 ### Estrés
 
-Richard Lazarus define al estrés en torno a una relación entre el individuo y el ambiente, en el cual un estímulo no placentero, aversivo y/o amenazante para la homeostasis de un individuo es experimentado de manera que exede los recursos para lidiar con él [@folkman2013].
+Richard Lazarus define al estrés en torno a una relación entre el individuo y el ambiente, en el cual un estímulo no placentero, aversivo y/o amenazante para la homeostasis de un individuo es experimentado de manera que excede los recursos para lidiar con él [@folkman2013; @lazarus2006].
 
 Diversos factores afectan la respuesta al estrés y la susceptibilidad de que desencadene trastornos, como depresivos o de ansiedad. Estos van desde aspectos psicológicos (experiencia subjetiva del estrés, recursos para lidiar con estresores), hasta biológicos (cascadas neuroendócrinas, procesamiento de información) [@tafet2016]. En presencia de estresores crónicos, impredecibles e incontrolables, la capacidad fisiológica de lidiar con estos no será suficiente, contribuyendo al desarrollo de desordenes depresivos y de ansiedad [@hill2012].
 
@@ -194,7 +195,9 @@ Un estudio por @vila-ballo2017a evidencía el papel del giro dentado en el apren
 #### Laberinto acuático de Morris
 
 
-Una forma de estudiar la relación entre flexibilidad cognitiva y la NHA en roedores es utilizando el protocolo de laberinto acuático de Morris [@hernandez-mercado2022]. En este laberinto, la flexibilidad cognitiva se estudia a través de un "aprendizaje reversa", donde se evalúa la capacidad de reaprendizaje cuando la plataforma de escape se traslada a una nueva posición. Las pruebas de aprendizaje reversa son útiles para evaluar la flexibilidad cognitiva en roedores, primates no humanos y humanos [@cognitive_uddin_2021]. 
+Una forma de estudiar la relación entre flexibilidad cognitiva y la NHA en roedores es utilizando el protocolo de laberinto acuático de Morris [@hernandez-mercado2022]. Este laberinto fue desarollado en 1981 por el científico Richard G. M. Morris [@morris1981] y hasta la fecha sigue siendo utilizando para evaluar distintos aspectos de la memoria en sus diversos protocolos [@othman2022]. 
+
+En este laberinto, la flexibilidad cognitiva se estudia a través de un "aprendizaje reversa", donde se evalúa la capacidad de reaprendizaje cuando la plataforma de escape se traslada a una nueva posición. Las pruebas de aprendizaje reversa son útiles para evaluar la flexibilidad cognitiva en roedores, primates no humanos y humanos [@cognitive_uddin_2021]. 
 
 De acuerdo a este paradigma, @garthe2009a utilizó este laberinto para investigar cómo la supresión de la neurogénesis adulta con temozolomida (TMZ) afectaba el rendimiento en esta prueba. Este tratamiento farmacológico condujo a un déficit de aprendizaje un aprendizaje espacial preciso, afectando particularmente la capacidad de adaptarse a nuevas condiciones dentro de tareas aprendidas, sugiriendo que las nuevas neuronas en el giro dentado son cruciales para el aprendizaje y la memoria espacial flexibles y precisos. Los resultados concuerdan con la hipótesis de que el giro dentado contribuye no solo a un mapa configuracional del entorno, sino que desempeña un papel crítico en los procesos de aprendizaje dinámicos, destacando el impacto significativo de la neurogénesis adulta en la plasticidad hipocampal.
 
@@ -1068,10 +1071,9 @@ estrategias_porcentajes_df <- estrategias_df |>
 
 Desde 1982, @place_morris_1982 entendía las limitaciones de utilizar las latencias de escape como una medida del aprendizaje espacial. En este artículo, Morris y colaboradores removieron por aspiración el hipocampo ventral y dorsal de ratas y observaron que estos animales, aunque aprendían la localización de la plataforma con el tiempo (menor latencia de escape), tomaban rutas menos directas hacia la plataforma en comparación de los controles. Para tratar de evaluar si el aprendizaje en los entrenamientos tenía un componente espacial, @developments_morris_1984 y colaboradores desarrollaron un sistema de análisis de la ruta de escape que cuantificaba la direccionalidad de la búsqueda (ángulo hacia la plataforma). Utilizando ratones con lesiones hipocampales y corticales, este artículo identificó que el aprendizaje espacial podía ser evaluado con la direccionalidad de la trayectoria del animal: a medida que el aprendizaje espacial mejoraba, el animal tomaba una direccionalidad más precisa hacia la plataforma (una linea recta). 
 
-Navegar por un nuevo entorno requiere varios procesos neurológicos, como prestar atención a los puntos de referencia, mapear su organización espacial relativa al agente, fijarse en una ubicación objetivo y trazar la mejor trayectoria espacial para alcanzarla. Las subregiones del hipocampo desempeñan roles distintos clave en tales procesos computacionales. El hipocampo desempeña un papel crucial en el aprendizaje espacial **alocéntrico**, que implica comprender las relaciones espaciales entre objetos de manera independiente del punto de vista. Las células de lugar en el hipocampo crean mapas cognitivos que permiten la navegación y orientación espacial. Además, las regiones CA3 y CA1 del hipocampo son esenciales para codificar y recuperar información espacial. El hipocampo integra información de la corteza entorrinal y parahipocampal, procesa tanto la navegación basada en la ruta como la actualización del mapa cognitivo mediante la integración del movimiento propio. Daños en el hipocampo, como en la enfermedad de Alzheimer o en el estrés crónico, afectan negativamente la capacidad de aprender y recordar mapas espaciales [@sharpening_berdugovega_2023].
+Navegar por un nuevo entorno requiere varios procesos neurológicos, como prestar atención a los puntos de referencia, mapear su organización espacial relativa al agente, fijarse en una ubicación objetivo y trazar la mejor trayectoria espacial para alcanzarla. Las subregiones del hipocampo desempeñan roles distintos clave en tales procesos computacionales. El hipocampo desempeña un papel crucial en el aprendizaje espacial **alocéntrico**, que implica comprender las relaciones espaciales entre objetos de manera independiente del punto de vista. Las células de lugar (neuronas que se activan preferencialmente en respuesta a una localización) en el hipocampo crean mapas cognitivos (representaciones mentales estructuradas) que permiten la navegación y orientación espacial [@okeefe1990]. Además, las regiones CA3 y CA1 del hipocampo son esenciales para codificar y recuperar información espacial. El hipocampo integra información de la corteza entorrinal y parahipocampal, procesa tanto la navegación basada en la ruta como la actualización del mapa cognitivo mediante la integración del movimiento propio. Daños en el hipocampo, como en la enfermedad de Alzheimer o en el estrés crónico, afectan negativamente la capacidad de aprender y recordar mapas espaciales [@sharpening_berdugovega_2023; @robins2022].
 
 Este papel del hipocampo en la capacidad de los roedores para resolver el laberinto de agua mediante la construcción de un mapa espacial alocéntrico está bien establecido [@eichenbaum1990]. En el MWM, las nuevas neuronas mejoran el rendimiento solo de aquellas tareas dependientes del hipocampo [@dupret2008], como el uso de estas estrategias alocéntricas [@garthe2016]. Por ejemplo, en un estudio, @garthe2009 suprimieron la neurogénesis adulta con temozolomida ({{< glossary TMZ add_to_table=true >}}) en ratones y evaluaron su rendimiento en una tarea del laberinto acuático de Morris, observando un déficit de aprendizaje altamente específico. Los ratones tratados con este fármaco mostraron limitaciones en adoptar estrategias de búsqueda espacialmente precisas, destacando el papel crucial de las nuevas neuronas en la flexibilidad y precisión del aprendizaje espacial. Estos hallazgos subrayan la importancia de las células granulares adultas en la generación de mapas métricos del entorno y vinculan directamente la plasticidad celular del hipocampo con la funcionalidad cognitiva. 
-
 
 A pesar de la importancia de evaluar las estrategias de búsqueda para evaluar la función del hipocampo, históricamente ha sido difícil de evaluar esta métrica. Como señala @wolfer1992, las limitaciones en hardware y software han dificultado obtener y analizar esta métrica.  A finales de la década pasada, el grupo de Garthe y Kempermann [@garthe2009] definieron patrones de búsqueda que los ratones utilizan para encontrar la plataforma en el MWM durante los entrenamientos, aunque su análisis sigue siendo más complejo que obtener las latencias de escape. De manera general, las han definido en 2: estrategias alocéntricas y egocéntricas [@fig-entEstrategias]. Cuando los animales utilizan estrategias alocéntricas, se basan en la relación posicional entre las señales distales alrededor de la piscina para encontrar la plataforma, independientemente de su propia posición. En cambio, en la navegación egocéntrica, el animal representa la ubicación de la plataforma utilizando señales internas que dependen de su propia posición. La navegación alocéntrica depende más de la integridad y función del hipocampo que la navegación egocéntrica. De este modo, el análisis de las estrategias de búsqueda desarrolladas por los roedores durante el aprendizaje en el laberinto acuático de Morris es un parámetro adecuado para evaluar el aprendizaje espacial dependiente del hipocampo [@hernandez-mercado2022].
 
@@ -1089,7 +1091,7 @@ Estrategias de búsqueda en los entrenamientos del MWM. En A y B, estrategias in
 
 :::
 
-Para cálcular las estrategias de búsqueda en el MWM, se utilizó el paquete de R "*Rtrack*" [@overall2020]. Overall, en colaboración con Garthe y Kempermann, toman como base las estrategias definidas por @garthe2009, pero mejoran el algorítmo de clasificación al utiliza un clasificador de *machine learning* (random forest, previamente entrenado con 3111 datos).
+Para calcular las estrategias de búsqueda en el MWM, se utilizó el paquete de R "*Rtrack*" [@overall2020]. Overall, en colaboración con Garthe y Kempermann, toman como base las estrategias definidas por @garthe2009, pero mejoran el algorítmo de clasificación al utiliza un clasificador de *machine learning* (random forest, previamente entrenado con 3111 datos).
 
 Para facilitar el análisis y debido a la falta de una *n* mayor (tanto en animales, como en tiempos), se agruparon las estrategias en 3 tipos (enfoque similar a @amelchenko2023): 
 
@@ -1098,6 +1100,7 @@ Para facilitar el análisis y debido a la falta de una *n* mayor (tanto en anima
 - Estrategias alocéntricas: búsqueda dirijida, búsqueda enfocada y nado directo (@fig-estrategiasalocentricas).
 
 - Perseverancia. Se considera aparte debido a la importancia de este fenómeno en la evaluación de la flexibilidad cognitiva (@fig-estrategiasalocentricas). 
+
 
 
 De acuerdo a estas clasificaciones, podemos calcular el porcentaje de estrategias utilizadas por día (@fig-porcentajesEstrategiasPlots).
@@ -1704,8 +1707,11 @@ Como señala @amelchenko2023, la evidencia del daño hipocampal en el uso de est
 
 ### Distancia Media al Annulus Blanco
 
-Esta métrica calcula la distancia promedio del roedor al centro de la plataforma. Como demostró @maei2009a, esta es una métrica muy sensible al aprendizaje espacial en el MWM. 
+Egocentricbased navigation relies mainly on the posterior parietal cortex (PPC; Figure 2) whereas hippocampus and parahippocampal cortex are crucial for allocentric navigation [@miniaci2018].
 
+Egocentric processing is viewpoint dependent and associative, relying on local landmarks in line of sight. This form of processing is not dependent on hippocampal processing: egocentric spatial memory representations are independent of the hippocampus, relying on the striatal circuit, whereas allocentric representations are thought to rely heavily on the hippocampal circuit. Vital for contextualizing info. index of hippocampal integrity [@miller2017].
+
+Esta métrica calcula la distancia promedio del roedor al centro de la plataforma. Como demostró @maei2009a, esta es una métrica muy sensible al aprendizaje espacial en el MWM. Esta métrica es más empleada para el análisis de las pruebas en el MWM, aunque se puede emplear para analizar los entrenamientos [@wolfer1998].
 
 ```{r dataframesDistanciaMediaENTS}
 #| echo: false
@@ -2665,7 +2671,7 @@ emmeans(lmer.dist.media.pruebas, pairwise ~ tratamientos | prueba, adjust = "tuk
 ```{r dmediaTABreg}
 #| echo: false
 #| eval: false
-#| label: tbl-dmediaTABreg
+# label: tbl-dmediaTABreg
 
 sjPlot::tab_model(lmer.dist.media.pruebas, aov.dist.media.pruebas$Within,
                   show.re.var = F,
@@ -3016,7 +3022,13 @@ Al analizar las pruebas con esta métrica, fallamos en detectar una diferencia e
 
 ### Tiempo en cuadrantes
 
-Evaluar el tiempo que el roedor pasa en el cuadrante blanco (cuatro cuadrantes imaginarios del mismo tamaño) ha sido la métrica clásica para el análisis de la memoria y aprendizaje espacial en el MWM por su facilidad. Sin embargo, no es la métrica más confiable para representar el aprendizaje [@maei2009a]. Además, a nivel de los modelos estadísticos es muy difícil evaluar esta prueba debido a que el tiempo pasado en los 4 cuadrantes no es homogéneo, generando una distribución no normal de los parámetros y  heterocedasticidad [@maugard2019]. Para tratar de lidiar con estos problemas se va a utilizar un modelo con efectos mixtos, el cual es más robusto a la violación de estos supuestos [@schielzeth2020].   
+Evaluar el tiempo que el roedor pasa en el cuadrante blanco (cuatro cuadrantes imaginarios del mismo tamaño) ha sido la métrica clásica para el análisis de la memoria y aprendizaje espacial en el MWM por su facilidad. Sin embargo, no es la métrica más confiable para representar el aprendizaje [@maei2009a]. Además, a nivel de los modelos estadísticos es muy difícil evaluar esta prueba debido a que el tiempo pasado en los 4 cuadrantes no es homogéneo, generando una distribución no normal de los parámetros y  heterocedasticidad [@maugard2019]. Para tratar de lidiar con estos problemas se va a utilizar un modelo con efectos mixtos, el cual es más robusto a la violación de estos supuestos [@schielzeth2020].  
+
+::: {#fig-cuadrantes layout-ncol=2}
+![Cuadrante original](figuras/wm_cuadrantes.png){#fig-cuadrantenorte}
+![Cuadrante reversa](figuras/wm_cuadrante_rev.png){#fig-cuadrantereversa}
+Cuadrantes en el Laberinto Acuático de Morris.
+:::
 
 Ajustamos un modelo lineal mixto (estimado usando REML) para predecir el tiempo en cuadrantes a partir de la prueba, tratamientos y el tipo de cuadrante (noreste, noroeste, sureste, suroeste) (fórmula: `tiempo_cuadrante ~ prueba * tratamientos * cuadrante`). El modelo incluyó a los sujetos como efecto aleatorio (fórmula: `~1 | id`). El poder explicativo total del modelo es sustancial (R2 condicional = 0.59). 
 
@@ -3287,6 +3299,12 @@ Lo más destacable de esta métrica es que se observa un olvido paulatino en la 
 
 Esta métrica evalúa el tiempo que los ratones pasan en una zona de 11 cm alrededor de la localización del annulus blanco. Es una métrica más sensible que evaluar el tiempo en cuadrantes, aunque no tanto como distancia media [@maei2009a].
 
+::: {#fig-zonas layout-ncol=2}
+![Zona original](figuras/wm_zona_ne.png){#fig-zonanorte}
+![Zona reversa](figuras/wm_zona_rev.png){#fig-zonarev}
+Zonas alrededor del annulus blanco en el Laberinto Acuático de Morris.
+:::
+
 Ajustamos un modelo lineal mixto (estimado usando REML) para predecir el tiempo en zona a partir de la prueba, tratamientos y el tipo de cuadrante (noreste, noroeste, sureste, suroeste) (fórmula: `tiempo_zona ~ prueba * tratamientos * cuadrante`). El modelo incluyó a los sujetos como efecto aleatorio (fórmula: `~1 | id`). El poder explicativo total del modelo es sustancial (R2 condicional = 0.70). 
 
 ```{r dfZonas}
@@ -3548,6 +3566,43 @@ De nuevo, se destaca que el grupo de Salina tiene una mayor persistencia en la z
 
 #### Cepa de ratones utilizada
 
+
+group of C57BL/6J and BALB/cJ mice received fluoxetine for 4 weeks during adulthood (8–12 weeks old). After a 3-week washout period, mice were tested for anxiety-like behaviors (novel open field, elevated plus-maze), fear conditioning and extinction, and stress-related responses to forced swim, as well as serotonin brain levels. Adolescent fluoxetine treatment did not increase adult measures of anxiety-, fear- or stress-related behaviors, or brain serotonin levels. The same duration of treatment in adulthood also had no effects on these measures when tested after a 3-week washout period. [@norcross2008a]
+
+C57BL/6J mice had high baseline activity and exploration of a new environment, suggesting a low level of anxiety. BALB/cByJ mice displayed defensive and protective behavior, with limited exploration of the new environment together with low locomotor activity. The response to diazepam was also different for each strain: C57BL/6J mice showed higher sensitivity to diazepam treatment than did BALB/cByJ [@lepicard2000]
+
+Exposure to 6 weeks of repeated injection resulted in an anxiety-like phenotype, decreased systemic inflammation (i.e., reduced plasma levels of TNFα and IL4), increased corticosterone reactivity, increased microglial activation and decreased neuronal differentiation in the dentate gyrus (DG). exposure to 6 weeks of permanent social isolation resulted in a depressive-like phenotype, increased plasma levels of TNFα, decreased plasma levels of IL10 and VEGF, decreased corticosterone reactivity, decreased microglial cell density and increased cell density for radial glia, s100β-positive cells and mature neuroblasts—all in the DG. Interestingly, combining the two distinct stress paradigms did not have an additive effect on behavioural and biological outcomes, but resulted in yet a different phenotype, characterized by increased anxiety-like behaviour, decreased plasma levels of IL1β, IL4 and VEGF, and decreased hippocampal neuronal differentiation, without altered neuroinflammation or corticosterone reactivity. Intraperitoneal injections were carried out according to recommended guidelines and as previously described26,27. Briefly, animals were scruffed and injected with saline volumes of 10 ml/kg body weight administered between 10:00 and 12:00 daily.Intraperitoneal injections were carried out according to recommended guidelines and as previously described26,27. Briefly, animals were scruffed and injected with saline volumes of 10 ml/kg body weight administered between 10:00 and 12:00 daily.
+[@dupreez2020]
+
+multiple injections of the non-toxic vehicle cyclodextrin moderately increased plasma corticosterone concentrations in female BALB/c mice. emale and male BALB/c mice (10–14 weeks old) [@drude2011a]
+
+BALB/c and C57BL/6 to evaluate memory and learning as cognitive functions. Young male mice, 7–8 weeks of age, from each strain were used. Y maze, object recognition and passive avoidance tasks were performed. Both strains of mice showed differences in the response to the passive avoidance and Y maze task. [@garcia2018]
+
+Pitman et al. (1988) referred to the fact that repeated exposure of an animal to a stressor can result in either habituation or sensitization in responsiveness to that stressor. Habituation of the animals to chronic stress is revealed by the fact that stress hormones return to basal levels during the experimentation period (Natelson et al., 1987). Habituation of the experimental animals has been reported in several homo- and heterotypic models (Azpiroz et al., 1999; Edgar et al., 2003; Konarska et al., 1990), and some authors have modified the basic protocols and proposed more drastic stressors (Glavin et al., 1994) and aversive procedures that may cause excessive harm to the experimental animal and modify physiological parameters (McCarty and Gold, 1996; Mawdsley and Rampton, 2005). Corticosterone levels increased in mice under stress and remained significantly higher in stressed mice compared to control animals throughout the experimental procedure, indicating that mice did not show habituation to the combined stress. Iinduce chronic stress in BALB/c mice, which affects the hypothalamicpituitary-adrenal (HPA) axis. The protocol is based on a combination of two mild physical stressors: restraint stress and forced swimming. Physical stressors were applied on an alternative schedule: one day restraint, next day swimming, during a 28-day period. Mice were sacrificed at days 7, 14, 21 and 28 and plasma was obtained. Optimized chromatographic system with electrochemical detection and a commercially available enzyme immunoassay kit were used to measure catecholamines [representative of the activation of the autonomic nervous system (ANS)] and corticosterone (representative of the activation of the HPA axis). [@zamora-gonzalez2013]
+
+BALB/c, but not C57Bl/6 mice, showed a poor learning performance in both the open field and passive avoidance inhibitory tasks. Also, CMS induced a diminished NO production by nNOS, associated with an increment in g and z PKC isoenzymes in BALB/c mice. In C57BL/6 mice, CMS had no effect on NO production, but increased d and decreased bI PKC isoforms. In vivo administration of a NOS inhibitor induced behavioral alterations in both strains. These results suggest a differential effect of stress, with BALB/c being more vulnerable to stress than C57BL/6 mice. This effect could be related to a differential regulation of NOS and PKC isoenzymes, pointing to an important role of NO in learning and memory [@palumbo2009].
+
+BALB/c and DBA/2, might exhibit sensitivity to chronic fluoxetine treatment. Our hypothesis was based on reports that antidepressants can have profound moodaltering effects in depressed or anxious patients, but have few effects in healthy individuals (Barr et al, 1997; Gelfin et al, 1998; Geyer and Markou, 2002).
+[@dulawa2004b]
+
+(3D) maze, a modification of the radial maze, to assess the effects of treatment for two weeks with a single daily dose of fluoxetine (20 mg/kg, i.p.) on anxiety in male BALB/c mice.
+[@abuhamdah2015]
+
+Strongyloides ratti Using multicolor flow cytometry, we show that S. ratti induces a distinct pattern of inhibitory checkpoint receptors by Foxp3+ Treg and Foxp3− T cells. Intensity of expression was highest in C57BL/6 and lowest in BALB/c mice, while the F1 cross had an intermediate phenotype or resembled BALB/c mice. Treg subsets expanded during infection in all three mouse strains. Similar to BALB/c mice, depletion of Treg reduced intestinal parasite burden and increased mucosal mast cell activation in S. ratti‑infected F1 mice. Our data indicate that Treg dominate the regulation of immune responses in BALB/c and F1 mice, while multiple regulatory layers exist in C57BL/6 mice that may compensate for the absence of Treg.[@hartmann2021]
+
+The rationale for using inbred strains is that all individuals are genetically identical with minimal phenotypic variation, allowing for more statistically powerful analyses. F1 hybrids between two inbred strains are also genetically identical to one another but are heterozygous at every locus at which the parental strains differ rather than homozygous. heoretical and empirical evidence suggests that this heterozygosity in F1 hybrids allow for potentially greater resilience in response to the inevitable stresses of laboratory environments. The purpose of this study was to characterize the differences in commonly used tests of physical performance (forelimb grip strength and rotarod) and anxiety-like behavior between the F1 hybrids created from BALB/c females mated to C57BL/6 males (called CB6F1 mice) and one of its parental strains, C57BL/6. We found significant correlations between anxiety-like behavioral measures and physical performance measures which are not traditionally associated with anxiety-like behavior, and which differ between strains.Inbreeding does efficiently reduce genetic differences among individuals. After 20 consecutive generations of sib-sib mating, 98.7% of loci between any two strain members should be homozygous (Casellas, 2011). After 40 generations, more than 99.8 percent of loci will be homozygous. Thus, genetic variation among strain mates approaches zero.a considerable body of evidence suggests that F1 hybrids between two inbred strains - which are also genetically identical to one another, although they are heterozygous at every genetic locus at which the parental strains had different alleles - exhibit less phenotypic variation for many traits than the individual strains themselves (Phelan and Austad, 1994).Inbreeding is recognized to be associated with poor health and reduced evolutionary fitness (Charlesworth and Willis, 2009) via increasing homozygosity of recessive deleterious alleles or by loss of heterosis.Another feature of inbred strains is that because allelic fixation will be random, they exhibit phenotypic idiosyncrasies, some of which are evident and known, but others of which may be subtle and rarely known. These features of inbred mouse phenotypic idiosyncrasy and variability motivated us to examine means and variation in several behavioral and other phenotypic traits with an inbred strain and its F1 hybrid.C57BL/6J inbred strain with its CB6F1J hybrid, a product of breeding a Balb/cJ female with a C57BL/6J male. In addition, this specific hybrid is known to perform well on cognitive tests associated with spatial learning (Harper, 2004) and is easily bred in house.ody composition, physical performance (rotarod and forelimb grip strength), physiological stress response (anesthesia recovery), and cognitive behavior (anxiety and nest building). physiological and behavioral tests, commonly used in the biomedical sciences. Most notably, we found a robust, genotype-dependent difference in presumed anxiety-like behavior with CB6F1 mice showing more anxiety-like behavior than C57BL/6 mice. We also found CB6F1 mice have enhanced nest building behavior and have differential physical capabilities. physical performance outcomes between genotypes, with CB6F1 mice exhibiting poorer performance on the short rotarod task and superior performance on the grip strength test. higher resting body temperatures in CB6F1 mice may also be due to an increase in anxiety or stress. It is known that stress and anxiety can lead to hyperthermia in mice. higher levels of an anxiety-like behavior, higher baseline stress levels, or decreased exploratory behavior in the CB6F1 mice compared to their C57Bl/6 counterparts. [@corder2023]
+
+CB6F1. This is a first-generation (F1) hybrid strain produced by crossing BALB/c females and C57BL/6 males. perform well in cognitive tasks associated with spatial learning (Roullet and Lassalle, 1995). [@harper2004a]
+
+Stress hormones such as cortisol and corticosterone are released during anxiety states and are known to impact the functioning of brain regions involved in memory processing, such as the hippocampus and prefrontal cortex [31-36]. Furthermore, the rate of adult neurogenesis (AN), the conept of neuronal production in selective brain regions well after the typical brain morphogenesis associated with neonatal development, has also been shown to independently affect cognition and anxiety-like behaviors in rodents [3739]. As the ventral dentate gyrus (DG) of the hippocampus is a well-documented area of AN in rodents [40] and has been associated with anxiety-related behaviors and cognitive function [27, 41-43], further investigation of these variables would be highly relevant for future studies to elucidate the relationship between anxiety and cognition.  [@li2024]
+
+In these same mice, there was a significant decrease in sagittal flat surface area of the hippocampus and pons in old versus young animals. The aging CB6F1 mouse would be a potential model to study the relationship between changes in brain morphometry and cognitive impairment and the identification of possible therapeutic targets. [@gandhay2023]
+
+Radial maze learning using exclusively distant visual cues reveals learners and nonlearners among inbred mouse strains.he device and procedure were specially designed to prevent the mice from using a response strategy or taking advantage of olfactory trails or other proximal cues. The results showed that the strains of mice were clearly split between those which succeeded (C57BL/6, DBA/2, CB6FI, B6D2F1) and those which failed (NZB, CBA, C3H/HE, BALB/c) to learn the task. [@roullet1995]
+
+
+La cruza se reproduce con éxito [@dorsch2020]
+
 En el protocolo experimental original se tenían contempladas otras pruebas conductuales para evaluar los estados de tipo ansioso y de tipo depresivo. Sin embargo, tenemos resultados problemáticos. Por ejemplo, parece ser que la fluoxetina tiene efectos ansiogénicos (@fig-perfieria, @fig-medio, @fig-centro), que la ketamina promueve conductas de tipo depresivas (@fig-inmovSegment) o que la solución salina tiene efectos antidepresivos (@fig-inmovtot). 
 
 
@@ -3566,6 +3621,8 @@ Estos hallazgos son cruciales, ya que indican que la presencia equilibrada de lo
 Además, investigaciones adicionales sobre la anatomía hipocampal en quimeras artificiales generadas por la agregación de embriones de las cepas C57BL/6J y BALB/cJ refuerzan la idea de la complejidad inherente al uso de modelos híbridos en estudios científicos. Contrario a lo esperado, las quimeras no siempre mostraron características intermedias entre las cepas parentales. En muchos casos, estas quimeras mostraron rangos fenotípicos que superaban cualitativa y cuantitativamente los de las cepas parentales consanguíneas [@crusio1990].
 
 Este hallazgo sugiere que los efectos observados en las quimeras pueden no representar simplemente una mezcla de los fenotipos de sus cepas parentales, sino que pueden manifestar características completamente nuevas y únicas. Esta variabilidad fenotípica intensifica los desafíos al intentar aislar los efectos de un genotipo particular en estudios que involucran modelos quiméricos o genéticamente heterogéneos. 
+
+Por último, @francis1995 reporta que distintas cepas de ratones (DBM2J, C57BL/6J,BALB/cByJ y CD-1) presentan diferencias en la fase de adquisición y reversa en el laberinto acuático de Morris. Estos investigadores reportan que los ratones C57 tienen un mejor desempeño en general en comparación de los ratones BALB/c. De manera similar, @upchurch1988 encontraron que los ratones C57BL/6 aprenden mejor que los ratones BALB/cB a localizar la plataforma escondida en el MWM.  
 
 Por lo tanto, en el contexto de mi experimento, la utilización de una cepa cruzada de C57BL/6J y BALB/cJ podría haber contribuido significativamente a los resultados inesperados, debido a la presencia de características fenotípicas no anticipadas que no son típicas de ninguna de las cepas parentales. Esto ilustra la importancia de una selección cuidadosa de la cepa y del entendimiento profundo del fondo genético en estudios de comportamiento y neurología, especialmente cuando se emplean modelos híbridos o quiméricos cuyas respuestas pueden ser impredecibles y altamente variables.
 
@@ -3848,6 +3905,43 @@ En conclusión, el estrés crónico produce una déficit de flexibilidad cogniti
 
 # ANEXO 
 
+Estretegias def
+
+Thigmotaxis
+
+Thigmotaxis is an anxiety-related behaviour and is characterised by a swim path that hugs the outer wall or where the subject comes repeatedly in contact with the wall. The subject does not move in a goal-directed manner but rather attempts to get out of the testing arena.
+Strategy 2: Circling
+
+The subject moves in repeated tight circles. This is distinct from one or two full-turn circles that are sometimes used by the subject to scan the surroundings and reorient. Circling may be anxiety-related.
+Strategy 3: Random
+
+The subject moves aimlessly throughout the arena with no attempt to search for a goal (or even awareness that a goal exists).
+
+Procedural strategies
+
+These strategies involve the use of egocentric behaviours, where the search context is relative to the subject itself. As there should be no local tactile, olfactory or visual information and because the subject should start in different positions relative to the goal, such strategies are unlikely to be consistently successful.
+Strategy 4: Scanning
+
+The subject moves in repetitive patterns, covering a broad region of the arena. The patterns can either be a ‘rolling loop’ where the centre of the loop continually changes, or a ‘zig-zag’. This behaviour can be localised but off-target or be more goal-focussed.
+Strategy 5: Chaining
+
+In this pattern, the subject has identified that the goal is located at a specific distance from the wall and thus moves at this distance in the hope of stumbling across it. It can be difficult to detect as the subject will often encounter the goal in less than one full circuit of the arena.
+
+Allocentric search strategies
+
+These strategies require the subject to orient themself using distal cues that are in the same frame of reference as the goal. Once a cognitive representation of the distal environment (a ‘spatial map’) has been constructed, local changes in start position become unimportant and a direct path to the goal can be rapidly calculated. A spatial map also allows a change in goal position to be quickly re-learned.
+Strategy 6: Goal-directed search
+
+The subject moves in a goal-oriented manner, but not necessarily always correctly. There may be orientation loops, path corrections and path retracing for re-orientation employed. Different from scanning, the path is not repetitive or covering a large area.
+Strategy 7: Corrected path
+
+The subject moves in an almost direct path to the goal, but makes one or two mistakes, which are corrected by reorientation. Errors can be a small loop to quickly scan the environment to allow re-orientation (‘orientation loop’), a course change (‘path correction’) or a larger loop where the subject returns to a previous point in the path and attempts the search again (‘re-orientation bight’).
+Strategy 8: Direct path
+
+The subject moves in a direct line to the goal.
+Strategy 9: Perseverance
+
+The search pattern involves a repeated re-visiting of a previous goal location. This strategy is only called when an old goal position is defined. In the case of a probe trial, where no goal is present, this would be considered a focal search. In the case of a goal position change, this strategy is termed ‘perseverance’.
 
 ```{r tablaregresionlatenciaspre}
 #| echo: false

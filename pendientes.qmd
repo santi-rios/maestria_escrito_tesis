@@ -1,0 +1,1345 @@
+---
+title: "Caracterización de los efectos de la Fluoxetina sobre el aprendizaje espacial y la flexibilidad cognitiva en un modelo de estrés crónico en ratón"
+# subtitle: ""
+# description: ""
+# abstract: |
+#     El estrés crónico tiene efectos profundos sobre distintos aspectos de la cognición, incluyendo la flexibilidad cognitiva dependiente del hipocampo (Tafet y Nemeroff, 2016). Estos impactos cognitivos pueden ser estudiados en modelos de roedores utilizando el Laberinto Acuático de Morris (MWM) (Hernández-Mercado y Zepeda, 2022).  Sin embargo, estos estudios han dependido predominantemente del análisis de métricas y métodos estadísticos que no necesariamente modelan la relación entre el estrés crónico y la flexibilidad cognitiva dependiente del hipocampo. Aunque estos métodos han aportado valiosas perspectivas, sus limitaciones para manejar conjuntos de datos biológicos complejos son cada vez más reconocidos. Esta problemática se observa en la creciente literatura que no ha logrado encontrar una relación clara entre el estrés crónico, mecanismos cognitivos afectados a nivel de hipocampo y el efecto antidepresivo de fármacos como fluoxetina (David et al., 2009). Este estudio explora las ventajas de utilizar técnicas de análisis que modelen mejor la relación para el estudio de la flexibilidad cognitiva. A través de un análisis comparativo que involucra a ratones sometidos a estrés crónico y tratamiento farmacológico con fluoxetina, demostramos cómo estos enfoques pueden proporcionar interpretaciones más matizadas de los datos, acomodando la variabilidad individual y la estructura jerárquica de los diseños experimentales comúnmente utilizados en esta área. Nuestros hallazgos revelan que estos enfoques no solo ofrecen una mayor flexibilidad y precisión predictiva, sino que también mejoran la comprensión de los efectos cognitivos del estrés y la eficacia de posibles intervenciones. Al integrar metodologías estadísticas avanzadas con protocolos experimentales rigurosos, esta investigación contribuye al perfeccionamiento de los modelos de neurociencia cognitiva y apoya el desarrollo de estrategias terapéuticas dirigidas para las alteraciones cognitivas relacionadas con el estrés.
+# keywords: |
+#     Morris Water Maze, Cognitive Flexibility, Mixed Models.
+title-block-banner: true
+author:
+  - name: Garcia Rios Santiago
+    email: santiago_gr@ciencias.unam.mx
+    affiliations:
+      - name: Facultad de Ciencias
+        url: https://www.fciencias.unam.mx/
+format: 
+  html:
+    lang: es  # figure, note, warning, code
+    embed-resources: true # self-contained file
+    # code-fold: true # retraer código
+    # code-summary: "Mostrar código"
+    theme: "journal" # cyborg, quartz, slate, solar, superhero, vapor,sandstone,lux,flaty,cosmo, journal, materia, minty,morph,pulse
+    page-layout: full
+    anchor-sections: true
+    # smooth-scroll: true
+  docx:
+    toc: true
+    number-sections: true
+    highlight-style: github
+    execute:
+      echo: false
+date: "today"
+editor: source
+  # markdown: 
+  #   wrap: 72
+# markdown:
+#     wrap: sentence
+# editor_options: 
+#   chunk_output_type: console
+# fig-cap-location: top
+tbl-cap-location: bottom
+crossref:
+  fig-title: '**Figura**'
+  fig-labels: arabic
+  title-delim: "**.**"
+  tbl-title: '**Tabla**'
+  tbl-labels: arabic
+execute:
+  echo: true  
+  warning: false
+  cache: true
+toc: true
+# toc-title: Contents
+number-sections: true
+comments:
+  hypothesis: true
+lightbox: true
+glossary:
+  path:  glossary.yml
+  popup: hover
+  show: true
+# bibliography: references.bib
+bibliography: zotlib.bib
+---
+
+## lmer
+
+### Interaction
+
+[fuente](https://stackoverflow.com/questions/17794729/test-for-significance-of-interaction-in-linear-mixed-models-in-nlme-in-r)
+This means that the condition coding is no longer contr.treatment. If I'm not mistaken, the main effects of Control and Treatment are now interpretable as their respective deviations from the group mean...
+
+    In your model, the factor items has three levels: E1, E2, and E3. The two contrasts test the difference between (a) E2 and E1, and (b) E3 and E1. The main effects of these contrasts are estimated for the level Control of the factor condition, since this is the reference category of this factor.
+
+...when the value of items is at its reference level of E1! Therefore:
+
+    Main effect Control = how much Control:E1 observations deviate from the mean of item E1.
+    Main effect Treatment = how much Treatment:E1 observations deviate from the mean of item E1.
+    Main effect E2 = how much Control:E2 observations deviate from the mean of item E2.
+    Main effect E3 = how much Control observations deviate from the mean of item E3.
+    Interaction Treatment:E2 = how much Treatment:E2 observations deviate from the mean of item E2
+    Interaction Treatment:E3 = how much Treatment:E3 observations deviate from the mean of item E3.
+
+
+An interaction occurs when one variable changes how another variable affects the response variable. When including an interaction term, be sure to leave in lower order terms for each interaction
+
+In a Regression model, should you drop interaction terms if they’re not significant?
+
+In an ANOVA, adding interaction terms still leaves the main effects as main effects.  That is, as long as the data are balanced, the main effects and the interactions are independent.  The main effect is still telling you if there is an overall effect of that variable after accounting for other variables in the model.
+
+But in regression, adding interaction terms makes the coefficients of the lower order terms conditional effects, not main effects.  That means that the effect of one predictor is conditional on the value of the other.  The coefficient of the lower order term isn’t the effect of that term.  It’s the effect only when the other term in the interaction equals 0.
+
+So if an interaction isn’t significant, should you drop it?
+
+If you are just checking for the presence of an interaction to make sure you are specifying the model correctly, go ahead and drop it.  The interaction uses up df and changes the meaning of the lower order coefficients and complicates the model.  So if you were just checking for it, drop it.
+
+But if you actually hypothesized an interaction that wasn’t significant, leave it in the model.  The insignificant interaction means something in this case–it helps you evaluate your hypothesis.  Taking it out can do more damage in specification error than in will in the loss of df.
+
+The same is true in ANOVA models.
+
+And as always, leave in any lower order terms, significant or not, for any higher order terms in the model.  That means you have to leave in all insignificant two-way interactions for any significant 3-ways.
+
+
+### nested and crossed
+
+Grouping factors like populations, species, sites. This is different from clustered data, where individual points may belong to more than one group at the same level.
+
+An example of hierarchical data might be: - students clustered
+
+Imagine you have 18 people assigned to two training groups, and their BMI is measured at three time points. There are both crossed and nested factors in this experiment.
+
+Crossed: Subject is crossed with time because every combination of subject and time point is represented by a value of BMI.
+
+Nested: Each subject is assigned to only one training group, and so not every possible combination of subject and group is represented by a value of BMI. By knowing the subject ID, you know exactly which training group they belong to. Thus subject is nested within training group. Nested Design: When one grouping factor is entirely within the levels of another grouping factor. For example, if subjects are only observed under one unique combination of treatment and stage, the design would be nested.If each subject experiences only specific combinations of stage and treatment, then it would be nested.
+
+For crossed factors, you can look at an interaction term. For nested factors, you can’t.  When the levels of one grouping factor occur with multiple levels of another grouping factor. For example, if each subject experiences all combinations of treatments and stages, the design is crossed. If each subject (ID) experiences all combinations of stages and treatments, then your design is crossed.
+
+each subject experiences only one treatment but all subjects go through all stages, your design is a mixed structure. More specifically:
+
+Crossed: Each subject experiences all stages.
+Nested: Each subject is nested within one specific treatment.
+
+This structure is known as a partially nested or split-plot design:
+
+Subjects nested within treatments: Each subject receives only one treatment.
+Crossed stages: All subjects are measured at each stage.
+
+Since id is nested within treatment, you should specify this nesting in your model. Here's the revised formula:
+
+R
+Copy code
+lmer(distance ~ stage * treatment + (1 | treatment/id), data = df)
+Explanation
+stage * treatment: Models the fixed effects of stages and treatments, including their interaction.
+(1 | treatment/id): Models the random effect of id nested within treatment. This means that the variation among subjects is accounted for within each treatment group.
+
+#### interaction in my design
+
+### Understanding the Interaction Term in Crossed and Nested Designs
+
+In statistical modeling, an interaction term allows you to examine how the effect of one factor varies at different levels of another factor. This is particularly relevant for crossed designs where each combination of factors is observed, allowing for the estimation of interaction effects.
+
+### Crossed Factors
+
+When factors are crossed:
+- Each level of one factor appears with each level of the other factor.
+- Interaction terms can be estimated because you have data for all combinations of factor levels.
+
+For example, in your experiment:
+- **Stage** (three levels) and **Treatment** (three levels) are crossed factors because each subject is measured at all stages.
+- The interaction term `stage * treatment` in your formula captures how the effect of treatment varies across stages, and vice versa.
+
+Crossed designs refer to the within-subject variables (i.e. timepoint, condition, etc.).
+### Nested Factors
+
+When factors are nested:
+- One factor's levels appear only within one level of another factor.
+- Interaction terms between nested factors cannot be estimated directly because not all combinations are observed.
+
+For example:
+- If `subject` is nested within `treatment`, each subject is only exposed to one treatment, not all.
+- This means there isn't a direct way to look at the interaction between `subject` and `treatment` because each subject only provides information within their specific treatment group.
+Nested designs refer to the between-subject variable.
+
+### graphical explanation nested vs crossed in lmer
+[fuente](https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified)
+
+Nested data can be encoded in at least 2 different ways.
+
+![](figuras_presentacion/nested.png)
+
+Here we have classes nested in schools, which is a familiar scenario. The important point here is that, between each school, the classes have the same identifier, even though they are distinct if they are nested. Class1 appears in School1, School2 and School3. However if the data are nested then Class1 in School1 is not the same unit of measurement as Class1 in School2 and School3. If they were the same, then we would have this situation:
+
+
+![](figuras_presentacion/nested2.png)
+
+The former is a nested design, and the latter is a crossed design.
+we would formulate these in lme4 using:
+
+(1|School/Class) or equivalently (1|School) + (1|Class:School)
+
+and
+
+(1|School) + (1|Class)
+
+if the data are really nested and not crossed, then we need to explicitly tell lme4:
+
+> m0 <- lmer(extro ~ open + agree + social + (1 | school/class), data = dt)
+
+> m1 <- lmer(extro ~ open + agree + social + (1 | school) + (1 |class), data = dt)
+summary(m1)
+
+the results differ because m0 is a nested model while m1 is a crossed model.
+
+Summary: TL;DR
+
+The difference between crossed and nested random effects is that nested random effects occur when one factor (grouping variable) appears only within a particular level of another factor (grouping variable). This is specified in lme4 with:
+
+(1|group1/group2)
+
+where group2 is nested within group1.
+
+Crossed random effects are simply: not nested. This can occur with three or more grouping variables (factors) where one factor is separately nested in both of the others, or with two or more factors where individual observations are nested separately within the two factors. These are specified in lme4 with:
+
+(1|group1) + (1|group2)
+
+It appears that each and every subject belongs to one and only one group. Thus, subjects are nested within groups, so you need the term:
+
+... + (1 | group_id / subject_id) + ...
+
+which will fit random intercepts for each group and each subject within a group.
+
+This leaves the question of how to treat the day variable: fixed or random. There isn't necessarily a black and white answer to this, but see the list of threads at the end of my answer for help on how to choose. The first thing to note is that day has only 4 levels. This isn't necessarily a problem if day is nested within group_id, since there will then be nday×ngroup=44
+
+intercepts.
+
+So, if treating day as random and nested within group we would have:
+
+response_time ~ experimental_condition + (1|group_id) + (1|group_id:subject_id) + (1|group_id:day)
+
+Alternatively if day is not nested within group we wouldn't fit random intercepts with only 4 levels, so treating day as fixed would make more sense in that scenario:
+
+response_time ~ experimental_condition + day + (1|group_id/subject_id)
+
+
+n the this latter model you should consider whether to fit an interaction term in the fixed part if the effect of the experimental condition differs by day:
+
+response_time ~ experimental_condition * day + (1|group_id/subject_id)
+
+
+
+    And under which (hypothetical) circumstances would one nest experimental_condition within day?
+
+Nesting experimental_condition within day makes sense if each experimental_condition belongs to one and only one day. That does not seem to be the case with your design. This would also bring up the problem of whether to fit a factor as random or variable. See the following threads for much discussion on that topic:
+
+### Context of Your Corrected `lmer` Formula
+
+In your corrected formula:
+```R
+model <- lmer(distance ~ stage * treatment + (1 | treatment/id), data = df)
+```
+
+- **Crossed factors**: `stage` and `treatment` are crossed, allowing for the estimation of the interaction term `stage * treatment`. This term tells you how the effect of treatment changes across different stages.
+- **Nested factors**: `id` (subject) is nested within `treatment`. The random effect `(1 | treatment/id)` accounts for the variation among subjects within each treatment. This setup doesn't directly estimate an interaction between `id` and `treatment` because `id` is unique to each `treatment` group, but it does account for individual differences within each treatment.
+
+- **Interaction term (`stage * treatment`)**: Possible because `stage` and `treatment` are crossed.
+- **Nested random effect (`(1 | treatment/id)`)**: Accounts for the nested structure of subjects within treatments but does not estimate an interaction between `subject` and `treatment`.
+
+This means your model can estimate how the relationship between `stage` and `distance` changes depending on `treatment` and vice versa, while accounting for the individual differences of subjects nested within each treatment group.
+
+
+### p significance
+hypothesis testing in linear mixed models (LMMs):
+
+From worst to best:
+
+    Wald Z-tests
+    Wald t-tests (but LMMs need to be balanced and nested)
+    Likelihood ratio tests (via anova() or drop1())
+    MCMC or parametric bootstrap confidence intervals
+Fit the models, a full model and a reduced model in which we dropped our fixed effect (bodyLength2):
+
+full.lmer <- lmer(testScore ~ bodyLength2 + (1|mountainRange) + (1|sample), 
+				  data = dragons, REML = FALSE)
+reduced.lmer <- lmer(testScore ~ 1 + (1|mountainRange) + (1|sample), 
+					     data = dragons, REML = FALSE)
+
+Compare them:
+
+anova(reduced.lmer, full.lmer)  # the two models are not significantly different
+
+Notice that we have fitted our models with REML = FALSE.
+
+REML stands for restricted (or “residual”) maximum likelihood and it is the default parameter estimation criterion for linear mixed models. As you probably guessed, ML stands for maximum likelihood - you can set REML = FALSE in your call to lmer to use ML estimates. However, ML estimates are known to be bias and with REML being usually less bias, REML estimates of variance components are generally preferred. This is why in our previous models we skipped setting REML - we just left it as default (i.e. REML = TRUE).
+
+REML assumes that fixed effects structure is correct. You should use maximum likelihood when comparing models with different fixed effects, as ML doesn’t rely on the coefficients of the fixed effects - and that’s why we are refitting our full and reduced models above with the addition of REML = FALSE in the call.
+
+Even though you use ML to compare models you should report parameter estimates from your final “best” REML model, as ML may underestimate variance of the random effects.
+
+NOTE 2: Models can also be compared using the AICc function from the AICcmodavg package. The Akaike Information Criterion (AIC) is a measure of model quality. AICc corrects for bias created by small sample size when estimating AIC. Generally, if models are within 2 AICc units of each other they are very similar. Within 5 units they are quite similar, over 10 units difference and you can probably be happy with the model with lower AICc. As with p-values though, there is no “hard line” that’s always correct.
+
+NOTE 3: There isn’t really an agreed upon way of dealing with the variance from the random effects in mixed models when it comes to assessing significance. So both, p-values and effect sizes have issues, although from what I gather p-values seem to cause more disagreement than effect sizes, at least in the R community.
+### anova
+returns the sequential decomposition of the contributions of fixed-effects terms or, for multiple arguments, model comparison statistics. For objects of class lmerMod the default behavior is to refit the models with ML if fitted with REML = TRUE, this can be controlled via the refit argument. See also anova.
+
+Yes, comparing two nested models using the `anova` function is a correct approach to test if the interaction term is significant. Here's a detailed explanation of why this method works and how to correctly perform and interpret it:
+
+#### Understanding the Models
+
+- **Model with Interaction (mod1)**:
+  ```R
+  mod1 <- lmer(distance ~ stage * treatment + (1 | treatment/id), data = df)
+  ```
+  This model includes the interaction term between `stage` and `treatment`.
+
+- **Model without Interaction (mod2)**:
+  ```R
+  mod2 <- lmer(distance ~ stage + treatment + (1 | treatment/id), data = df)
+  ```
+  This model includes only the main effects of `stage` and `treatment`, but no interaction term.
+
+#### Model Comparison Using ANOVA
+
+To test if the interaction term is significant, you compare the two models using the `anova` function. This function performs a likelihood ratio test, which assesses whether the more complex model (with the interaction term) significantly improves the fit to the data compared to the simpler model (without the interaction term).
+
+#### Performing the Comparison
+
+Here's how to perform the comparison in R:
+
+```R
+# Fit the models
+mod1 <- lmer(distance ~ stage * treatment + (1 | treatment/id), data = df)
+mod2 <- lmer(distance ~ stage + treatment + (1 | treatment/id), data = df)
+
+# Compare the models
+anova_result <- anova(mod1, mod2)
+
+# Print the result
+print(anova_result)
+```
+
+#### Interpreting the Results
+
+The `anova` function will output a table that includes:
+- Degrees of freedom (Df) for each model.
+- AIC (Akaike Information Criterion) and BIC (Bayesian Information Criterion) for each model.
+- Log-likelihood of each model.
+- Chi-squared statistic (Chisq) for the comparison.
+- P-value for the test.
+
+If the p-value is less than your significance level (commonly 0.05), you can conclude that the interaction term significantly improves the model, and therefore, the interaction between `stage` and `treatment` is significant.
+
+#### Example Output
+
+Here is a hypothetical example of what the output might look like:
+
+```plaintext
+Data: df
+Models:
+mod2: distance ~ stage + treatment + (1 | treatment/id)
+mod1: distance ~ stage * treatment + (1 | treatment/id)
+       Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)
+mod2   8  1300.5 1335.6 -642.3   1284.5
+mod1  14  1290.5 1344.1 -631.3   1262.5  22.0    6    0.001
+```
+
+In this example, the p-value (`Pr(>Chisq)`) is 0.001, which is less than 0.05, indicating that the interaction term significantly improves the model.
+
+#### Summary
+
+- **Approach**: Using `anova(mod1, mod2)` to test for the significance of the interaction term is appropriate.
+- **Interpretation**: A significant p-value from the `anova` test indicates that the interaction term is significant and improves the model.
+- **Next Steps**: If the interaction is significant, you should retain the interaction term in your model and interpret the interaction effects accordingly. If not, you can use the simpler model without the interaction term.
+
+Using `anova(mod1, mod2)` and `aov(mod1)` are two different approaches to testing the significance of interaction terms in your model. Here are the key differences:
+
+#### ANOVA Comparison of Nested Models (`anova(mod1, mod2)`)
+
+1. **Purpose**: The `anova` function is used to compare two nested models, i.e., models where one model is a simpler version of the other (the simpler model is nested within the more complex model).
+2. **Method**: It performs a likelihood ratio test to compare the fit of the two models.
+3. **Output**: It provides a chi-squared statistic and a p-value that indicate whether the more complex model (with the interaction term) significantly improves the fit compared to the simpler model (without the interaction term).
+
+#### ANOVA Table for a Single Model (`aov(mod1)`)
+
+1. **Purpose**: The `aov` function is used to fit an ANOVA model and produce an ANOVA table, which decomposes the variance of the response variable into components associated with each predictor and their interactions.
+2. **Method**: It fits a single model and provides F-statistics and p-values for each term in the model, including main effects and interactions.
+3. **Output**: It provides an ANOVA table with sums of squares, mean squares, F-values, and p-values for each term in the model.
+
+
+**Interpretation**: The p-value for the interaction term indicates whether the interaction is significant.
+
+##### lmertest anova
+
+In tests for the fixed effects of a linear mixed effect model, the
+F -statistics anova and the t-statistics summary functions are given, though p values for the
+corresponding F and t tests are not provided by the lme4 package. The reason is connected
+with the fact that generally the exact null distributions for the parameter estimates and test
+statistics are unknown. So the only way to judge about the significance of the effects is by
+some sort of approximation and/or simulation based approach.
+A common way is to use the
+likelihood ratio test (LRT). This test is fast and is available in the lme4 package. The downside
+is that it can produce anti-conservative p values. Satterthwaite’s method (Giesbrecht and Burns
+1985; Fai and Cornelius 1996) as implemented in the SAS software package (SAS Institute
+Inc. 1978, 2013) and wrapped it into anova and summary functions for an object returned
+by lmer. 
+Type I, II and III ANOVA tables as defined in the SAS software SAS Institute Inc. (1978)
+are provided by the lmerTest package. The Type I ANOVA table performs the sequential
+decomposition of the contributions of the fixed-effects and is the one produced by the anova
+method of the lme4 package. The Type I table is order dependent compared to the Type II
+and III tables, which do not depend on the order in which the effects are entered in the model.ype
+III hypothesis test is the same whether the data is balanced or not, so the test for the α
+effect would still be the one from Equation 8. In situations where there are missing cells
+(some factors, combinations of factors are missing) the Type III hypotheses may loose their
+simple interpretation. 
+
+
+#### Key Differences
+
+1. **Model Comparison vs. Term Significance**:
+   - `anova(mod1, mod2)` compares two nested models to see if the inclusion of the interaction term improves the model fit.
+   - `aov(mod1)` assesses the significance of each term within a single model, including main effects and interactions.
+
+2. **Likelihood Ratio Test vs. F-test**:
+   - `anova(mod1, mod2)` uses a likelihood ratio test, which is suitable for mixed-effects models and provides a chi-squared statistic.
+   - `aov(mod1)` uses an F-test, which is more traditional for fixed-effects ANOVA models and provides F-statistics.
+
+3. **Mixed-Effects Models**:
+   - `anova(mod1, mod2)` is specifically designed for comparing mixed-effects models (like those fitted with `lmer`).
+   - `aov(mod1)` is more straightforward for fixed-effects models, though it can be adapted to mixed-effects using the `Error` term syntax.
+
+#### Which One to Use?
+
+- **Mixed-Effects Models**: When dealing with mixed-effects models (like your `lmer` models), using `anova(mod1, mod2)` is generally preferred because it properly handles the random effects and uses a likelihood ratio test suited for these models.
+- **Fixed-Effects Models**: If you are only interested in the fixed effects and your model does not include random effects, or you are using a traditional ANOVA approach, `aov(mod1)` is appropriate.
+
+#### compare REML random effects
+
+we’re comparing models with the same fixed effects but different random effects so we can still use REML estimator that more accurately estimates random effects. Specifying refit = FALSE stops the function from refitting the models with FIML. If we were comparing models with different fixed effects, we would use FIML to estimate our models.
+
+
+```  
+# models
+ses_l1 <- lmer(math ~ 1 + ses + (1|schcode), data = data, REML = TRUE)
+ses_l1_random_cov0 <- lmer(math ~ 1 + ses + (1|schcode) + (0 + ses|schcode), data = data, REML = TRUE)
+
+# deviance test to compare model fit
+anova(ses_l1, ses_l1_random_cov0, refit = FALSE)
+
+## Data: data
+## Models:
+## ses_l1: math ~ 1 + ses + (1 | schcode)
+## ses_l1_random_cov0: math ~ 1 + ses + (1 | schcode) + (0 + ses | schcode)
+##                    npar   AIC   BIC logLik deviance  Chisq Df Pr(>Chisq)
+## ses_l1                4 48223 48251 -24108    48215                     
+## ses_l1_random_cov0    5 48223 48258 -24107    48213 2.0825  1      0.149
+```
+Let’s read our output. We have seven columns:
+
+    npar is the number of parameters estimated in the models. The only difference between the models is one has a random slope for SES and the other doesn’t, and you can see that one model estimates 4 parameters and the other 5 parameters.
+    AIC: Akaike’s Information Criterion, one measure of goodness of fit
+    BIC: Bayesian Information Criterion, another measure of goodness of fit
+    logLik: log likelihood
+    deviance: -2*logLik
+    Chisq: the difference betwen our models’ deviances
+    df: the degrees of freedom for the test, calculated as the difference in number of parameters between the models
+    Pr(>Chisq): the probability that we would find our chi-square value or greater if the null hypothesis that the models were the same was true
+
+There is no significant difference between our models’ deviance statistics: the model without the random slope has a deviance of 48215 and the model with the covariance has a deviance of 48213. The difference between these numbers is not significant, p = 0.149. Thus, there is no significant different in model fits and adding a random slope does not compromise model fit so we can add it if we think it’s informative.
+
+
+### aov vs lmer
+
+[fuente](https://heather-grab.github.io/Entom-4940/mixed.html)
+When analyzing data that involves repeated measures for the same subject, mixed models can be a better choice than a repeated measures ANOVA for a few reasons, including:
+
+    A mixed model can handle missing values, but a repeated measures ANOVA must drop the subject entirely if it is missing even a single measurement.
+
+    A mixed model can handle hierarchical clustering, but a repeated measures ANOVA cannot.
+
+    Repeated measures can be spaced at irregular intervals when using a mixed model
+
+### convergence
+
+[ver más](https://m-clark.github.io/posts/2020-03-16-convergence/)
+
+In linear regression, Ordinary Least Squares estimation is used to find a combination of parameters (intercepts and slopes) that minimize the residual sum of squares. OLS regression will select the regression line with the smallest residuals, which is the line that is as close as possible to the data points. You can see this process and play around with it on this interactive website: https://seeing-theory.brown.edu/regression-analysis/index.html#section1
+In multilevel modelling, we use maximum likelihood (ML) estimation instead of OLS estimation. In ML estimation, we have our data points and we want to find the combination of parameters (intercepts and slopes) that maximize the likelihood that we observed that data. This is an iterative process, where we select parameters that maximize the probability of getting our data (i.e., that maximize the likelihood). We select set after set of parameters, and eventually stop when the parameter sets aren’t getting better. You can play around with likelihood here: https://seeing-theory.brown.edu/bayesian-inference/index.html#section2 This video from Stat Quest walks through the concept:https://www.youtube.com/watch?v=XepXtl9YKwc
+We have two options for ML estimation in multilevel modelling: restricted maximum likelihood (REML) and full information maximum likelihood (FIML or ML). The key difference between them is how the estimation methods handle the variance components. When using REML, there is a penalty applied to the degrees of freedom when estimating the variance components. When using FIML, there is no such penalty and as a result the variance components are usually underestimated.Because we want accurate information about our variance components, we will usually use REML. We will only use FIML when we want to compare two models with different fixed effects.
+
+When you’re working with many predictors at once — for example, an intercept and a slope for SES and a slope for school type and variance terms for all of those fixed effects — it is harder to try all possible combinations. So, optimization algorithms (AKA optimizers) are used to try to find the ML estimates by examining a subset of possible combinations. However, these optimizers cannot always find the combination of parameters that maximizes the likelihood of observing your data; they can’t find a solution to the problem of “what paramaters maximize the likelihood of observing this data?”. When the optimizers cannot find a solution, the result is called non-convergence: the model did not converge on a solution.
+You should not use the parameter estimates from a non-converged solution.There are two main strategies to solve a non-convergence problem: change your optimizer or change your model.
+
+### singularity
+
+Singularity occurs when an element of your variance-covariance matrix is estimated as essentially zero as a result of extreme multicollinearity or because the parameter is actually essentially zero.
+
+You can find singularity by examining your variance-covariance estimates and the correlations between them. It will often show up as co/variances near zero or correlations between variances at -1 or 1. Let’s return to our example from Chapter 6, predicting math achievement from SES with a random slope:
+
+```
+ses_l1_random <- lmer(math ~ 1 + ses + (1 + ses|schcode), data = data, REML = TRUE)
+
+Matrix::bdiag(VarCorr(ses_l1_random))
+```
+If things look okay, no elements appear to be close to or zero. Our second method of investigation is looking at our overall output:
+
+```
+summary(ses_l1_random)
+
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr 
+##  schcode  (Intercept)  3.2042  1.7900        
+##           ses          0.7794  0.8828   -1.00
+##  Residual             62.5855  7.9111        
+## Number of obs: 6871, groups:  schcode, 419
+```
+
+
+Here, in our random effects section, we can see that the correlation between our random effects is -1.00, a sign of perfect multicollinearity. We can dig into the confidence intervals of our estimates up close to confirm this:
+
+```
+confint(ses_l1_random, oldNames = FALSE)
+```
+
+This will take a moment to run, but when it does we can see that the 95% confidence interval for the correlation between our random effects spans -1 to 1 (i.e. the entire possible range). 
+
+we can solve the issue with: random intercept (1|schcode) and random slope with no covariance (0 + ses|schcode) separately.
+
+In general, it is best practice to build a maximal multilevel model, one that includes all possible fixed and random effects that are not zero (Barr et al., 2013).This maximal model will produce parameter estimates with the least amount of bias and provide the best shot at your model fitting the data.
+
+
+### scaling
+
+[fuente](https://rpubs.com/jimsavage/scale_issues)
+
+
+
+## Diseño
+
+### Nestes vs crossed
+
+Relatively few mixed effect modeling packages can handle crossed random effects, i.e. those where one level of a random effect can appear in conjunction with more than one level of another effect. (This definition is confusing, and I would happily accept a better one.) A classic example is crossed temporal and spatial effects. If there is random variation among temporal blocks (e.g. years) ‘’and’’ random variation among spatial blocks (e.g. sites), ‘’and’’ if there is a consistent year effect across sites and ‘’vice versa’’, then the random effects should be treated as crossed.
+lme4 does handled crossed effects, efficiently
+
+### Grupo extra?
+
+lmer(distance ~ stage * treatment + (1 | treatment/id), data = df)
+This setup allows you to examine:
+
+Main effects of stage and treatment
+Interaction effect of stage and treatment
+
+The suggestion is to include an additional group (saline without stress) and change the model to:
+
+R
+Copy code
+lmer(distance ~ stage * injection * stress + (1 | treatment/id), data = df)
+
+This suggestion aims to:
+
+Provide a clearer control group (saline without stress).
+Simplify the interpretation by separating the effects of the drug (injection) and stress.
+Advantages of the Suggested Design
+More Comprehensive Controls: Including a saline group without stress allows you to differentiate the effects of the drug itself from the effects of stress.
+Simplified Factors: Using injection and stress as factors simplifies the comparison and interpretation of interactions.
+
+This model allows you to analyze:
+
+Main effects of stage, injection, and stress.
+Two-way interactions: stage * injection, stage * stress, injection * stress.
+Three-way interaction: stage * injection * stress.
+Making Solid Conclusions
+With this design, you can make more robust conclusions about:
+
+The effect of fluoxetine versus saline (main effect of injection).
+The effect of stress versus no stress (main effect of stress).
+How these effects change across stages (interaction terms).
+
+Advantages of the Current Model
+Simplicity: Fewer factors (just treatment and stage) make the model simpler to understand and interpret.
+Direct Comparison: Directly compares the specific treatments without needing to decompose into injection and stress factors.
+Less Data Complexity: With fewer interaction terms, the model is less complex and may be easier to fit, especially with limited data.
+
+Disadvantages of the Current Model
+Potential Confounding: Without a clear separation of drug and stress effects, it's harder to isolate which factor is driving observed differences.
+Less Granular Analysis: Does not allow for the analysis of how stress interacts specifically with the type of injection (drug vs. saline).
+Disadvantages of the Proposed Model
+Increased Complexity: More factors and interaction terms can make the model more complex and harder to interpret, especially if there are limited data points.
+Higher Data Requirements: Requires more data to reliably estimate the effects of additional factors and their interactions.
+Possible Overfitting: With more interaction terms, there's a risk of overfitting, particularly if the sample size is not large enough to support the additional complexity.
+
+### Variable y controles
+https://stats.stackexchange.com/questions/97179/how-are-standard-errors-affected-in-a-multivariate-regression
+One omitted variables bias / confounding bias as described by other comments so I won't repeat. However, if you're familiar with regression, it might be helpful to think about in a regression framework to understand the mechanical reasons.
+
+The second a usually less important reason is that adding (good) controls often improves your ability to measure the effect of variable of interest through shrinking the standard error.
+
+If the model is causal, which it seems from how you have phrased the question, then you want to include ”confounders”. In essence, variables that impact both the variable of interest and the outcome variable.
+
+@wysocki2022 dice:
+- It is common practice in correlational or quasiexperimental studies to use statistical control to remove confounding effects from a regression coefficient. Controlling for relevant confounders can debias the estimated causal effect of a predictor on an outcome; that is, it can bring the estimated regression coefficient closer to the value of the true causal effect. But statistical control works only under ideal circumstances. When the selected control variables are inappropriate, controlling can result in estimates that are more biased than uncontrolled estimates.
+- Causal inference involves estimating the magnitude of causal effects given an assumed causal structure. We use Pearl’s (1995) definition of causality, namely, that X is a cause of Y when an intervention on X (e.g., setting X to a particular value) produces a change in Y.
+- Identifying a single causal effect requires accounting for and removing confounding effects without inducing spurious effects.
+- Controlling for a variable that shares variance with the outcome but not the predictor will decrease the amount of residual variance in the outcome, which, in turn, lowers the standard error of the estimated regression coefficient and increases power.
+- Frequently, however, researchers aim to develop and test theories of psychological processes, and this endeavor almost always involves making and testing causal hypotheses. Although it is rare that causal inference is explicitly acknowledged as the goal in nonexperimental studies (Grosz etal., 2020), a key component of theory building is proposing a set of principles that explains a process and then formulating a model based on these principles (Borsboom et al., 2021)—in other words, positing a set of causal hypotheses. 
+- psychology journals have found that more than 50% of the studies reviewed gave no justification for the inclusion of specific control variables (Becker, 2005; Bernerth & Aguinis, 2016; Breaugh, 2008)
+- Carlson and Wu (2012) noted that when researchers did justify their control variables, they typically did so by noting the statistical association between the predictor and the control (e.g., the predictor and third variable correlate at .40, so it is appropriate to control for the third variable).
+- available advice is often too vague (e.g., “offer rational explanations, citations, statistical/empirical results, or some combination”; Becker, 2005, p. 278), too minimalistic (e.g., use a theoretical model to motivate control variable selection; Breaugh, 2006), or is of little practical use (e.g., provide evidence that control variables are accomplishing their intended purpose; Carlson & Wu, 2012).
+- researchers should outline the theory behind their decision to include/exclude control variables (Berneth & Aguinis, 2016; Edwards, 2008).
+- causal language and causal thinking in psychology (Dablander, 2020; Grosz etal., 2020; Rohrer, 2018)
+- when a central goal of a regression analysis is to learn about a process, the only way to qualify a variable as a good control is to consider the causal model that connects the control, predictor, and outcome.
+- confounder is a variable that is a (direct or indirect) cause of both X and Y.
+- confound-blocker: causal effect of coffee on concentration, it may be important to control for the confounding effect of sleep (because less sleep may lead to both greater caffeine consumption and lower concentration). can be blocked either by measuring and controlling for the confounder itself—hours of sleep—or by measuring and controlling for another variable along the confounding path (e.g., desire for coffee).
+- collider: When two variables share a common effect, the common effect is called a collider between that pair of variables. Controlling for a collider will induce a spurious (i.e., noncausal) association between the variables that are causes of the collider.if regressing hard work on IQ produced a simple regression coefficient of zero, controlling for college-student status (which is positively affected by both hard work and IQ) would induce a spurious negative effect between these variables.
+- mediator: A mediator is a variable that is caused by X and is a cause of Y. if a researcher is interested only in the direct effect, controlling for a mediator could induce bias if the mediator and the outcome share a common cause (Fig. 3g). When such a common cause exists, the mediator is a collider for the predictor and this common cause. 
+- proxy: A proxy is caused by X and has no causal relation to Y. this does not mean the proxy is a good or sensical measure of the predictor.
+- more complicated. For instance, a causal effect may be confounded by a large set of variables, of which many are unmeasured. Measuring all confounders is not necessary if there is a more proximate variable through which many (or all) of the confounders influence the outcome or predictor.
+- Because the goal of statistical control is to remove a confounding effect without blocking the causal effect, it is important for a researcher to identify and measure the control variable at a time when it serves as a confounder between the predictor and outcome rather than a time when it serves as a mediator.
+- measuring the same variables across time allows for the removal of a specific kind of unmeasured confounding, namely, time-invariant confounding. A time-invariant confounder (Fig. 7, left) is a confounder whose level and effects do not change across the measured time points.In contrast, a time-varying confounder (Fig. 7, right) is a variable whose level or effect changes between measured time points.
+- One way to remove unmeasured time-invariant confounds is to use a fixed-effects model.
+- Rather than controlling for a specific variable, the fixed-effects model simultaneously controls for all the attributes of individuals that do not vary over time. Although fixedeffects models remove the effects of unmeasured timeinvariant confounders, they do not remove the effects of time-varying confounders. Therefore, considering whether time-varying confounders exist for a pair of variables and making a plan, if needed, to deal with them is still important when a fixed-effects model is estimated.
+- many statisticians prefer the term “adjust” over “control” in the context of regression. The concern is that statistical control may be mistakenly conflated with (the stronger) experimental control (e.g., Gelman, 2019).
+
+Recall that one of the strengths of regression is that it provides an answer to the unique effect of each IV on your DV when all other IVs in the model are held constant.
+
+"Controlling for X" simply means including X as one of your IVs. You can then make statements about the effect of your IV of interest on the DV independent of the variable(s) you controlled for.
+
+The reason is that if the explanatory variable isn't controlled, it might be correlated with other omitted variables which also impact your outcome variable, which would lead to omitted variable bias in your estimate. Furthermore, you might have reverse causality, where the outcome variable has a causal effect on the explanatory variable.
+
+Control variables are included in regression analyses to estimate the causal effect of a treatment on an outcome. In this paper, we argue that the estimated effect sizes of controls are unlikely to have a causal interpretation themselves, though. This is because even valid controls are possibly endogenous and represent a combination of several different causal mechanisms operating jointly on the outcome, which is hard to interpret theoretically. Therefore, we recommend refraining from interpreting marginal effects of controls and focusing on the main variables of interest, for which a plausible identification argument can be established. 
+Multivariate regression: main purposes of these methods is to control for confounding influence factors between a treatment and an outcome in order to obtain consistent causal effect estimates. scholars often overstate the role of control variables in regressions.
+while essential for the identification of causal effects, control variables do not necessarily have a causal interpretation themselves. his is because even valid controls are often correlated with other unobserved factors, which render their marginal effects uninterpretable from a causal inference perspective. Causal diagrams have already been established as a powerful tool for determining which control variables are relevant to a given regression model. A valid causal interpretation of control variables rests on strong assumptions and usually requires accounting for all influence factors of the outcome variable under study. Since this is unlikely to be fulfilled in many research contexts, we recommend authors to exercise caution when interpreting control variables and consider omitting estimated coefficients of control variables from regression tables. Beyond pure prediction tasks, the purpose of regression analysis in organizational research is typically to build and test theories that explain the causal mechanisms underlying a studied phenomenon.Research designs based on control variables are employed to estimate the causal effect of a treatment variable on an outcome. As such, the treatment variable cannot be endogenous, otherwise estimates would be biased and other, more suitable research designs (such as instrumental variables, regression discontinuity designs, etc.) should be applied. By contrast, control variables can be endogenous (Frölich, 2008) and, as we argued in the preceding theoretical discussion, will likely be so in practice.∗∗ Controls should be chosen to close all backdoor paths between a treatment and outcome, based on a theoretical model of the context under study.We emphasize that we agree with Becker (2005) in that control variables should be carefully discussed and authors need to justify their validity based on prior theory.
+[@hunermund2023]
+
+
+less scrutiny than other methodological topics, and research has yet to show how adding or dropping a control variable can damage causal inferences.this article challenges the view that additional control variables always strengthens causal conclusions. This study first illustrates the purification role of statistical control variables, and then quantifies the omitted variable bias.Adding inappropriate control variables, however, may reduce the effect sizes to such a degree that relationships appear insignificant, when the opposite is true. Including irrelevant variables may also partial out substantive effects rather than reduce bias, ultimately leading to false negative findings, or Type II errors
+often overlook the possibility that adding control variables can produce larger effect sizes (or suppression effects). In certain situations, although two variables have little to no correlation (and no causal relationship), adding control variables can lead to significantpositive or negative regression coefficients, due to overcontrol bias and endogenous selection bias (Elwert & Winship, 2014; Elwert, 2013).
+if the added control variable represents reality of causal structure, then the statistical conclusion is valid . However, thoughtlessly adding a control variable that violates the theoretical assumption can produce a different causal inference that changes the interpretation of the hypothesis.
+AGs provide a visual representation of the causal relationship among variables. Since DAGs make no assumption regarding the probability distribution of variables, such graphs are widely viewed as nonparametric structural equation models (SEMs). random variables (or nodes, vertices, could be observed or unobserved), arrows (edges showing the directed causal effects), and missing arrows (strong assumption of no causaleffects). “Acyclic” means that in any DAG, there are no directed cycles (paths that can be traced from a starting variable and back to that variable).
+Although Meehl (1971) criticized the universal tendency of including control variables, social scientists still believe that uncorrected correlation is spurious and biased, and that one mustinclude control variables to purify biased causal effects. A close look at DAGs reveals that such an assumption is valid only when a variable exists to handle the confounding bias that occurs when the control variable causes the independent and dependent variables.
+if one views the common method as an omitted variable, one should know that the common method does not always damage causal inferences if the biased estimators are significant (no type II error) and underestimate true positive or negative effects (Cells 2 and 3 in Table 2). If scholars can provide strong evidence that the common method underestimates true causal effects, readers should have more confidence in the empirical findings because the true estimators will be stronger than the biased ones (without controlling for common method bias).
+Scholars generally believe that omitted variable bias is bad, as it fails to rule out alternative explanations. For causal inferences to have practical implications, estimators from any statistical analysis must satisfy two criteria: unbiasedness and efficiency (Greene, 2008). As for unbiasedness, the estimator from the sample should equalize to that from the population. Regarding efficiency, the estimator’s variance should be at least as small as that of any other unbiased estimators. Hence, it is not rare to see requestsfrom reviewers calling for the inclusion of more control variables so that one can minimize the risk of this bias.Yet, omitted variable bias can be bothgood and bad, and scholars need to know how to differentiatebetween them.  Omitted variable bias is bad if one fails to controlfor a confounder.If theory suggests that mileage is a confounder that causally affects a car’s price and the likelihood of being foreign-made (Fig. 4d), then one should control for mileage to minimize confounding bias (Panel B of Table 1). If mileage is a confounder, controlling it will rule out the alternative explanation, concluding that there is no price difference between domestic and foreign cars. If mileage is a confounder, one should interpret causal effects using Model 2 in Panel B of Table 1: foreign-made cars are more expensive than domestic cars by $1767.292 (p < 0.05). Failing to control for mileage will produce a bad omittedvariable bias, since it does not consider confounding effects, wrongly concluding that there is no causal effect between being foreign-made cars and auto price, resulting in a type II error (a false negative, where one finds support for a null hypothesis that should be rejected).
+[@li2021b]
+
+
+ [@rohrer2018]
+
+Multicolinealidad
+
+### Simulating data
+
+## tasting baseline
+
+Testing for baseline differences is often propagated because of the belief that it shows whether randomization was successful and it identifies real or important differences between treatment arms that should be accounted for in the statistical analyses. Especially the latter argument is flawed, because it ignores the fact that the prognostic strength of a variable is also important when the interest is in adjustment for confounding. In addition, including prognostic variables as covariates can increase the precision of the effect estimate. This means that choosing covariates based on significance tests for baseline differences might lead to omissions of important covariates and, less importantly, to inclusion of irrelevant covariates in the analysis.
+[@deboer2015]
+
+## mapa cognitivo
+
+ver 
+- https://en.wikipedia.org/wiki/Place_cell
+- @okeefe1979
+- @eichenbaum2015
+- @muller1996
+- @mackintosh2002
+- @dudchenko2010
+- @schmidt2013
+- @eichenbaum1999
+- @moser2015
+- @ambrogioni2023
+- @kim2020
+- @garthe2012
+- @cuneo2012
+- @ormond2022
+
+## Presentación resultados
+
+@gallagher1993
+
+@weitzner2015
+
+@molecular_tian_2022
+
+@thonnard2021
+
+@thonnard2019
+
+@dong2013
+
+@li2023
+
+@wolfer1998
+
+@garthe2016
+
+@zavvari2020 sal flx y flx mas estrés
+
+Mixed-Design ANOVA: Combines between-subject and within-subject factors, allowing some factors to be tested within the same participants and others between different participants.
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7175433/
+
+https://link.springer.com/article/10.1186/1742-7622-5-2
+Lords paradox
+use of analysis of covariance (ANCOVA) within non-experimental studies
+relationship between a continuous outcome and a categorical exposure being reversed when an additional continuous covariate is introduced to the analysis.
+additional covariate is a measure made at baseline within a longitudinal study, where the outcome is the same variable measured some time later (e.g. following an intervention).
+Therefore, the aim is to measure change in the outcome by adjusting for the baseline measurements, and the categorical covariate might be the exposure/control groups – this is the familiar design for ANCOVA.
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3994136/
+If the pretest score is included as a covariate, regression to the mean will lead to biased results if two critical conditions are satisfied: (1) the property is correlated with pretest scores and (2) pretest scores include random errors.
+In 1999, Campbell and Kenny [1] devoted an entire book to warning about the dangers of statistical adjustments in comparisons of treatment effects between non-randomized groups.
+
+https://pubmed.ncbi.nlm.nih.gov/26745598/
+The pretest-posttest control group design can be analyzed with the posttest as
+dependent variable and the pretest as covariate (ANCOVA) or with the difference
+between posttest and pretest as dependent variable (CHANGE). These 2 methods
+can give contradictory results if groups differ at pretest, a phenomenon that is
+known as Lord’s paradox
+
+
+https://journals.sagepub.com/doi/10.1177/0193841X8000400204?__cf_chl_tk=OqzrrDwqxeYN.WiPvrxSnq92wxPSJN8yDaIQVCtaUCE-1716693752-0.0.1.1-1642
+Campbell and Erlebacher (1970) describe how the selection of experi-
+mental and control groups matched on IQ scores, but from populations
+with different means, can give rise to an artifactual finding. 
+
+https://academic.oup.com/ije/article/34/1/215/638499
+Regression to the mean
+RTM is a statistical phenomenon that occurs when repeated measurements are made on the same subject or unit of observation. It happens because values are observed with random error. By random error we mean a non-systematic variation in the observed values around a true mean (e.g. random measurement error, or random fluctuations in a subject). Systematic error, where the observed values are consistently biased, is not the cause of RTM. It is rare to observe data without random error, which makes RTM a common phenomenon.
+The problem of RTM is not restricted to individual measurements. We now give an example where the effect of RTM is compounded by categorizing subjects into groups based on their baseline measurement(s).
+If subjects are randomly allocated to comparison groups the responses from all groups should be equally affected by RTM. With two groups, placebo and treatment, the mean change in the placebo group provides an estimate of the change caused by RTM (plus any placebo effect). The difference between the mean change in the treatment group and the mean change in the placebo group is then the estimate of the treatment effect after adjusting for RTM.
+
+
+https://academic.oup.com/ije/article/35/3/520/735787
+distinct problems about causation that are discussed by Morton. One is to discriminate which of two alternative and mutually exclusive causes lies at the basis of some observed phenotype.
+The second problem of causation is quite different. It is the problem of the analysis into separate elements of a number of causes that are interacting to produce a single result. In particular, it is the problem of analyzing into separate components the interaction between environment and genotype in the determination of phenotype.
+If an event results from the joint operation of a number of causative chains and if these causes ‘interact’ in any generally accepted meaning of the word, it becomes conceptually impossible to assign quantitative values to the causes of that individual event. Only if the causes are utterly independent could we do so.It is obviously even more absurd to say what proportion of a plant's height is owed to the fertilizer it received and what proportion to the water, or to ascribe so many inches of a man's height to his genes and so many to his environment. But this obvious absurdity appears to frustrate the universally acknowledged program of Cartesian science to analyze the complex world of appearances into an articulation of causal mechanisms. The solution offered to this dilemma, a solution that has been accepted in a great variety of natural and social scientific practice, has been the analysis of variation. That is, if we cannot ask how much of an individual's height is the result of its genes and how much a result of its environment, we will ask what proportion of the deviation of height from the population mean can be ascribed to deviation of environment from the average environment and how much to the deviation of this genetic value from the mean genetic value.the result of the analysis has a historical (i.e., spatiotemporal) limitation and is not in general a statement about functional relations. So, the genetic variance for a character in a population may be very small because the functional relationship between gene action and the character is weak for any conceivable genotype or it may be small simply because the population is homozygous for those loci that are of strong functional significance for the trait. The analysis of variation cannot distinguish between these alternatives even though for most purposes in human genetics we wish to do so.
+What has happened in attempting to solve the problem of the analysis of causes by using the analysis of variation is that a totally different object has been substituted as the object of investigation, almost without noticing it.
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5965552/
+paradox of murder in desert” (Smullyan, 1978): A caravan of three (A, B, and C) were going through the Sahara Desert, where one night they pitched tents. A hated C and decided to murder him by putting poison in the water of his canteen (C’s only water supply). B, who also wanted to murder C, didn’t realize that C’s water was already poisoned, and he drilled a small hole in C’s canteen so that the water would slowly leak out. As a result, several days later C died of thirst. The question is, who was the murderer, A or B? According to one argument, B was the murderer, since C never did drink the poison put in by A; hence, he would have died even if A hadn’t poisoned the water. According to the opposite argument, A was the real murderer, since B’s actions had absolutely no effect on the outcome; once A poisoned the water, C was doomed, and hence A would have died even if B had not drilled the hole. Which argument do you agree with?
+
+In the two-factor situation, to determine the cause(s), we need to know the outcome (B or not B) in all of the following situations: (1) not A and not C, (2) A, but not C, (3) not A, but C, and (4) A and C.
+
+If A implies B, and not A implies sometimes not B, then A is a cause of B in some situations (with C and/or without C). Of course, the statement is equally true when factors A and C are exchanged.
+
+For a variable to be a confounder in a clinical trial it must satisfy three conditions (Chang, 2014):
+
+    It must be associated with the treatment (the main factor).
+    It must be a predictor (not necessarily a cause) of the outcome being measured.
+    It must not be a consequence of the treatment (the main factor) itself.
+
+we can see that in multiple regression one should use baseline confounders, but not variables that result from treatment (or main effect) as covariates.want to point out that we should not encourage any predictor to be included in a multiple regression model if the predictor is a consequence of other predictors in the model.
+When there is a high correlation we will have a collinearity problem, that is, there are infinitely many models that equally fit the data.
+
+
+
+https://sci-hub.se/https://doi.org/10.1111/ejn.13610
+Beyond differences in means: robust graphical methods to
+compare two groups in neuroscience
+If many changes are necessary to improve the quality of neuroscience research, one relatively
+simple step could have great pay-offs: to promote the adoption of detailed graphical methods,
+combined with robust inferential statistics. Here we illustrate how such methods can lead to a
+much more detailed understanding of group differences than bar graphs and t-tests on means.
+the standard least squares technique underlying t-tests
+and ANOVAs is often inappropriate because its assumptions are easily violated.
+
+Chronic Fluoxetine Stimulates Maturation and Synaptic
+Plasticity of Adult-Born Hippocampal Granule Cell
+- beh + flx solamente
+
+----
+
+es, a mixed effects model can be used to account for an unbalanced factorial design. In fact, mixed effects models are particularly well-suited for handling unbalanced data and complex experimental designs. Here’s why and how they can be used:
+
+Why Mixed Effects Models Work for Unbalanced Designs
+Flexibility: Mixed effects models are flexible in accommodating different sample sizes across the levels of your factors. This is particularly useful when the data are unbalanced, meaning the number of observations is not the same for all conditions.
+
+Hierarchical Structure: These models can incorporate both fixed effects (the main effects and interactions of your experimental factors) and random effects (variations attributable to subjects, trials, or other grouping factors).
+
+Handling Missing Data: Mixed effects models can handle missing data more effectively than traditional ANOVA, making them robust for unbalanced designs.
+
+Precision: They provide more accurate estimates of the effects by correctly partitioning the variance attributable to different sources.
+
+How to Implement Mixed Effects Models
+Specify Fixed Effects: Define your fixed effects as the main factors and their interactions. For a 2x2 factorial design, this would include:
+
+The main effect of Factor A.
+The main effect of Factor B.
+The interaction effect between Factor A and Factor B.
+Specify Random Effects: Include random effects to account for the variability within subjects or other relevant grouping factors. Common random effects include:
+
+Random intercepts for subjects (to account for individual differences).
+Random slopes if you expect the effect of a factor to vary across subjects.
+Model Formulation: In statistical software (e.g., R, Python), you can specify mixed effects models using packages like lme4 in R or statsmodels in Python. A typical formulation in R might look like this:
+
+R
+Copy code
+library(lme4)
+model <- lmer(response ~ FactorA * FactorB + (1 | Subject), data = your_data)
+summary(model)
+Here, response is the dependent variable, FactorA and FactorB are your independent variables, and (1 | Subject) specifies random intercepts for each subject.
+
+Benefits Over Traditional ANOVA
+Robustness: Mixed effects models provide robust estimates even with unequal sample sizes.
+Variance Decomposition: They can separate variability due to individual differences from the experimental manipulation, leading to more precise estimates.
+Handling Complexity: These models handle complex data structures, such as nested and crossed designs, more efficiently.
+Example Scenario
+Imagine a neuroscience study investigating the effects of a cognitive task (simple vs. complex) and a type of brain stimulation (sham vs. real) on reaction times. Due to practical constraints, the number of participants completing each condition varies (e.g., more participants in the sham conditions due to dropouts in the real stimulation conditions).
+
+Using a mixed effects model allows you to:
+
+Account for the different number of observations in each condition.
+Include random effects for participants to control for individual differences.
+Properly estimate the main effects and interaction between task type and stimulation type despite the imbalance.
+Conclusion
+Mixed effects models are a powerful tool for analyzing unbalanced factorial designs in neuroscience. They allow for accurate estimation of effects while accounting for the complexities inherent in real-world data, such as variability among subjects and missing data.
+
+---
+p significance 
+
+https://community.cochrane.org/sites/default/files/uploads/inline-files/Interpreting%20statistical%20significance.pdf
+
+https://www.scielo.br/j/bpsr/a/DhwrWkLLkhHVbdgTZGtMqyD/?format=pdf&lang=en
+
+---
+https://keithlohse.github.io/mixed_effects_models/lohse_MER_section_03_factorial.html
+
+mixed-effect model…
+
+Because we have a single within-subject factor, we will need to add a random-effect of subject to account for individual differences between subjects. By partitioning the between-subjects variance out of our model, we can fairly test the effect of condition, because our residuals will now be independent of each other.
+
+
+wo-way RM ANOVA as a mixed-effect model…
+
+Because we now have two crossed factors, we need to account not only for the fact that we have multiple observations for each participant, but we have multiple observations for each person at each level of each factor.
+
+For instance, for the effect of Condition, we actually have Condition effects at Trial 1, Trial 2, Trial 3, and Trial 4. The converse is also true for the effect of Time, we have four different trials in Condition A, Condition B, and Condition C. Thus, in order to appropriately account for the statistical dependencies in our data, we need to add random-effects of “time:subID” and “condition:subID” to the model.
+
+The colon operator (“:”) means that we are crossing or multiplying these factors. That is, if we have subject ID’s A, B, and C and Trials 1, 2, 3, and 4, then we end up with A1, A2, A3, A4, B1, B2, B3, B4, etc.
+
+For more information on how random-effects are specified and what they mean in R, I recommend looking at this discussion on Stack Exchange: https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified
+
+# First we will define our model
+mod2 <- lmer(speed ~ 
+               # Fixed Effects:
+               time*condition + 
+               # Random Effects
+               (1|subID)+ (1|time:subID) + (1|condition:subID), 
+               # Define your data, 
+             data=DATA, REML=TRUE)
+
+# We can then get the ANOVA results for our model:
+anova(mod2)
+
+MER as Mixed-Factorial ANOVA with One Crossed Factor
+(2 (Age) x 3 (Condition) ANOVA Example
+
+For this example, we will now consider both the between-subject factor of age, as well as the within-subject factor of condition. Do to this, we will average over the different trials (1, 2, 3, and 4) to get one observation in each condition. This design is sometimes referred as a “mixed-factorial” design, because we have a mix of between-subjects and within-subject factors. Depending on your background, you might be more familiar with this as a “split plot” design. Split plot comes from agronomy (where a lot of statistics where developed!) and refers to the fact that some plots are assigned to different levels of Factor A (e.g., Treatment versus Control), but within each plot there is a second level of randomization to different levels of Factor B (e.g., Conditions A, B, or C). Both terms describe the same thing but differ in their unit of analysis. In psychology, a single person is usually the experimental unit (hence “within-subject” variables) whereas in agronomy or biology a physical area might be the unit of analysis (hence “split-plot” variables). The more general way to talk about these terms is as nested- versus crossed-factors.
+
+    For fully nested factors, an experimental unit is represented in only one of the factors (e.g., a person can only be in the treatment group or the control group).
+    For fully crossed factors, an experimental unit is represented at all levels of the factor (e.g., e.g., a person is tested in conditions A, B, and C).
+
+In our example, participants are nested within age-group, because each person is represented at only one level of that factor (i.e., you are only a younger adult or older adult). However, Condition is a crossed factor, because each person is represented at all levels of Condition (i.e., each person was measured in all three conditions). We can see this more clearly if we plot all of our data.
+
+Mixed Factorial ANOVA as a mixed-effect model…
+
+For this mixed-factorial design, we need to account for the fact that we have multiple observations coming from each person, so we will add a random-effect of “subID”. After accounting for this statistical dependence in our data, we can now fairly test the effects of Age Group, and Condition with residuals that are independent of each other.
+
+# First we will define our model
+mod3 <- lmer(speed ~ 
+               # Fixed Effects:
+               age_group*condition + 
+               # Random Effects
+               (1|subID), 
+               # Define your data, 
+             data=data_COND, REML=TRUE)
+
+# We can then get the ANOVA results for our model:
+anova(mod3)
+Multi-Way Mixed Factorial ANOVA as a mixed-effect model…
+
+For this mixed-factorial design, we need to account for the fact that we have multiple observations coming from each person, but we also need to acocunt for the fact that we multiple observations for each Condition and on each Trial. In order to account for this dependence in our data, we need to include random-effects of subject, subject:condition, and subject:time. Adding these random-effects to our model will make our mixed-effects model statistically equivalent to the mixed-factorial ANOVAs that we ran above.
+
+# First we will define our model
+mod4 <- lmer(speed ~ 
+               # Fixed Effects:
+               age_group*condition*time + 
+               # Random Effects
+               (1|subID)+(1|condition:subID)+(1|time:subID), 
+               # Define your data, 
+             data=DATA, REML=TRUE)
+
+# We can then get the ANOVA results for our model:
+anova(mod4)
+
+Nested by design: model fitting and interpretation in a mixed model era
+With nested data structures, the interaction variance is pooled with the main effect variance of the nested factor. Crossed designs are required to separate the two components.In a two-way factorial design (such as a classical two-way anova scenario), there are four biological sources of variance that can potentially be estimated. caution is required for the cases of crossed but unbalanced designs. In such cases, the separation of the variance will be less precise, and the more so, the more unbalanced the design. Balanced sampling increases the power to separate variance components and is therefore an important aim in data collection. But unbalanced designs are common in ecology and evolution, in particular in field studies where it is often difficult to ensure perfect balance. Therefore, mixed models, which provide appropriate estimators, are particularly valuable for such unbalanced data sets. 
+random-slope models) can also be applied to repeated-measures designs with missing data (partially crossed) or without missing data (fully crossed); usually, subjects are modelled as a random (intercept) effect, the treatment as a fixed effect and the temporal/sequential effect of the treatment as random slopes.
+structured data’, ‘grouped data’ or ‘clustered data’ over ‘nested data’ in this case, because this terminology avoids the confusion with nested factors, and it importantly allows for crossed random effects.
+Grouping structures might arise from repeated measurements on the same individuals, but also from spatial or temporal structure, family structures, social groups of organisms, etc. At the lowest hierarchical level, there are individual observations. Individual observations are grouped by random factors. Random factors therefore constitute the grouping level. Because of the modelling of different levels of grouping, mixed models are often called hierarchical or multilevel models,Random factors are predictors where the distribution of individual coefficients is explicitly modelled by hyperparameters (see Table 2), in the typical case by estimating the between-group variance (Gelman & Hill 2007). Unlike fixed factors that are estimated purely based on observations made for a particular factor level, the estimates of random factors are influenced by the population mean; in fact, their estimates are drawn towards the population mean (‘shrinkage’, see Table 2; McCulloch & Neuhaus 2005; Snijders & Bosker 2011). There exists an extensive discussion about fixed and random effects (see below). In practical applications, variables are modelled as random effects if the primary interest lies in estimating variances, while fixed factors are used for estimating the mean effect of a treatment. If the random-effect variance is low, there is little potential for strong group-level fixed effects (although they might still become significant with sufficient data,
+
+Generalized linear mixed models: a
+practical guide for ecology and
+evolution
+REML for crossed random effects or unbalanced design
+
+Random effects structure for testing interactions in linear mixed-effects models
+To what extent is this ANOVA logic applicable to tests of interactions in mixed-effects models? To address this question, Monte Carlo simulations.
+
+
+---
+
+https://www.graphpad.com/guides/prism/latest/statistics/stat_three-way_anova_is_often_misus.htm
+
+When three way ANOVA is used to analyze data, the results often do not answer the questions the experiment was designed to ask.
+
+To determine if fluoxetine can prevent cognitive deficits in a chronic stress model in mice.
+
+Argument Against Using Three-Way ANOVA:
+Overview:
+When using a three-way ANOVA to analyze this data, the results may not provide clear answers to the experimental questions, as previously discussed. Here's a breakdown of why this might be less useful:
+
+Effect of Fluoxetine:
+The null hypothesis here would be that across all stress conditions and time points, the average cognitive function in mice treated with fluoxetine equals that in mice not treated with fluoxetine. However, this does not directly address the core question of whether fluoxetine prevents cognitive deficits specifically under stress conditions. Averaging across all conditions and time points muddles the specific effects you're interested in.
+
+Effect of Stress:
+This tests whether the average cognitive function across all fluoxetine conditions and time points differs between stressed and non-stressed mice. Yet, this does not clarify how fluoxetine interacts with stress over specific time points. The averaging dilutes the meaningful differences, making this P value less informative.
+
+Effect of Time:
+This tests whether the average cognitive function changes over time across all treatment and stress conditions. Given that cognitive function may vary over time, this does not directly address the interaction between fluoxetine, stress, and time, which is more pertinent to the experimental goal.
+
+Interaction of Fluoxetine and Stress:
+This tests if the effect of fluoxetine on cognitive function depends on the presence of stress, averaged over all time points. While this partially addresses the experimental question, including all time points can obscure early or late specific responses, making this interaction less insightful.
+
+Interaction of Fluoxetine and Time:
+This examines whether the difference in cognitive function between fluoxetine-treated and untreated mice is consistent over time, averaged over stress conditions. This does not focus on how stress affects this interaction, thus not fully addressing the main experimental question.
+
+Interaction of Stress and Time:
+This evaluates whether the effect of stress on cognitive function changes over time, averaged over fluoxetine conditions. The experimental interest lies specifically in how fluoxetine modifies the impact of stress over time, making this interaction not entirely relevant.
+
+Three-Way Interaction of Fluoxetine, Stress, and Time:
+This P value is particularly challenging to interpret, as it tests a complex null hypothesis that is not straightforward. It’s difficult to distill specific insights from this result, making it not very useful for the experimental goals.
+
+Alternative Approach:
+
+Two-Way ANOVA:
+One could simplify the analysis by focusing on subsets of the data. For instance, analyze the data for each stress condition separately using two-way ANOVA with factors for fluoxetine and time. This yields P values that are more directly relevant to the experimental questions:
+
+Effect of Fluoxetine: This tests if fluoxetine affects cognitive function within each stress condition, averaged over time points.
+Effect of Time: This checks if cognitive function changes over time for each fluoxetine condition, within each stress group.
+Interaction of Fluoxetine and Time: This tests if the effect of fluoxetine changes over time within each stress group, addressing how fluoxetine impacts cognitive function at different time points.
+Linear Regression:
+Another option would be to use linear regression to model cognitive function over time for each treatment within each stress condition. This approach would allow you to:
+
+Compare Slopes: Determine if the rate of change in cognitive function (slope) differs with fluoxetine treatment within each stress condition.
+Understand Interactions: Directly test if fluoxetine impacts the cognitive function trajectory differently under stress conditions over time.
+Specific Subset Analysis:
+To specifically address the impact of adding the saline without stress group, you could perform a targeted analysis comparing:
+
+Saline without Stress vs. Saline with Stress: This helps in understanding the baseline impact of stress without the drug.
+Fluoxetine with Stress vs. Saline with Stress: This directly addresses the primary experimental question.
+By using these alternative approaches, the analysis aligns more closely with the biological questions and yields results that are easier to interpret and more directly relevant to the experimental goals. This avoids the complexities and potential misinterpretations of a three-way ANOVA.
+
+
+
+----
+@mcavoy2015
+adult-born DGCs in re-activation coupled modulation of sparseness through feed-back inhibition to govern global remapping in the DG.
+
+
+
+modulation of interference (Becker, 2005; Wiskott et al., 2006; Becker and Wojtowicz, 2007; Garthe et al., 2009; Deng et al., 2010; Sahay et al., 2011a; Burghardt et al., 2012), memory resolution (Aimone et al., 2011), input specific reactivation (Tashiro et al., 2007; Aimone et al., 2011), memory persistence (Arruda-Carvalho et al., 2011; McAvoy et al., 2014; Wang et al., 2014) and forgetting (Chambers et al., 2004; Deisseroth et al., 2004; Weisz and Argibay, 2012; Akers et al., 2014).
+
+blocking adult hippocampal neurogenesis enhances or impairs discrimination under conditions of high, but not low, interference (Sahay et al., 2011b; Kheirbek et al., 2012; Nakashiba et al., 2012; Niibori et al., 2012; Tronel et al., 2012).
+
+Theoretical and experimental studies have posited a critical role for the DG in modulating interference between similar inputs through pattern separation, a process by which similar inputs are made more distinct during storage (McNaughton and Morris, 1987; O’Reilly and McClelland, 1994; Gilbert et al., 2001; Rolls and Kesner, 2006; Bakker et al., 2008; Treves et al., 2008). At a network level, pattern separation in the DG is supported by encoding of similar inputs by differential firing rates of place cells (rate remapping) or the recruitment of nonoverlapping ensembles of neurons (or global remapping; Leutgeb et al., 2007; Neunuebel et al., 2013; Neunuebel and Knierim, 2014).
+
+We recently proposed that adult-born DGCs modulate sparseness of activity in the DG through recruitment of feed-back inhibition to influence pattern separation (Sahay et al., 2011a). We hypothesized that young adult-born DGCs recruit feed-back inhibition via mossy cells and hilar interneurons to dictate sparseness of activity in the DG and this in turn, influences global remapping.
+
+@nakashiba2012
+pattern separation requires adult-born young GCs but not old GCs, and older GCs contribute to the rapid recall by pattern completion. Our data suggest that as adult-born GCs age, their function switches from pattern separation to rapid pattern completion.
+
+@sahay2011
+Here we show that inducible genetic expansion of the population of adult-born neurons through enhancing their survival improves performance in a specific cognitive task in which two similar contexts need to be distinguished. Mice with increased adult hippocampal neurogenesis show normal object recognition, spatial learning, contextual fear conditioning and extinction learning but are more efficient in differentiating between overlapping contextual representations, which is indicative of enhanced pattern separation. Furthermore, stimulation of adult hippocampal neurogenesis, when combined with an intervention such as voluntary exercise, produces a robust increase in exploratory behaviour. However, increasing adult hippocampal neurogenesis alone does not produce a behavioural response like that induced by anxiolytic agents or antidepressants. Together, our findings suggest that strategies that are designed to increase adult hippocampal neurogenesis specifically, by targeting the cell death of adult-born neurons or by other mechanisms, may have therapeutic potential for reversing impairments in pattern separation and dentate gyrus dysfunction such as those seen during normal ageing14.
+
+
+----
+@lods2021
+formation, storage and use of memories is critical for normal adaptive functioning such as problem solving, thinking, or decision making, to name a few, and can be at the center of a variety of cognitive disorders,.
+For more than a century, the process by which memories are stabilized over time to become insensitive to disruption has been known as memory consolidation1. classic view has been challenged, since we now know that consolidated memories are not permanently stable, but can again become malleable when recalled or reactivated.
+
+
+Tronson, N. C. & Taylor, J. R. Molecular mechanisms of memory reconsolidation
+
+
+NHA - helps to separate new memories from old ones by preventing interference between similar traces. Clelland, C. D. et al. A functional role for adult hippocampal neurogenesis in spatial pattern separation. Tronel, S. et al. Adult-born neurons are necessary for extended contextual discrimination. Sahay, A. et al. Increasing adult hippocampal neurogenesis is sufficient to improve pattern separation. Anacker, C. & Hen, R. Adult hippocampal neurogenesis and cognitive flexibility - linking memory and mood.
+
+Someevidencealsoindicatesthat newborn neurons play an important role in active forgetting and memory clearance
+Akers, K. G. et al. Hippocampal neurogenesis regulates forgetting during adulthood and infancy. Science 344, 598–602 (2014). 22. Frankland, P. W. & Josselyn, S. A. Hippocampal neurogenesis and memory clearance. Neuropsychopharmacology 41, 382–383 (2016). 23. Feng, R. et al. Deficient neurogenesis in forebrain-specific presenilin-1 knockout mice is associated with reduced clearance of hippocampal memory traces.
+
+We find that remote memory retrieval activates two different populations of adult-born neurons: neurons that were immature (1–2-week old) at the time of learning and neurons that were already mature (6-week old) during learning.
+we demonstrate that only the population that was immature at the time of learning is necessary for both the maintenance and the update of memory after its reactivation—two hallmarks of memory reconsolidation.
+
+
+-----
+https://www.data-to-viz.com/caveat/consistency.html
+
+https://www.data-to-viz.com/caveat/cut_y_axis.html
+In general, in a time-series, use a baseline that shows the data not the zero point” - Edward Tufte
+
+By its design, a bar graph emphasizes the absolute magnitude of values associated with each category, whereas a line graph emphasizes the change in the dependent variable (usually the y value) as the independent variable (usually the x value) changes.
+
+    Barplot: With this kind of chart there is consensus: your Y-axis should starts at 0
+    Line plot: Here however there is no consensus, even if in general you don’t have to start at 0.
+
+https://callingbullshit.org/tools/tools_misleading_axes.html
+a line graph does not need to include zero on the dependent variable axis.
+the two types of graphs are telling different stories. By its design bar graph emphasizes the absolute magnitude of values associated with each category, whereas a line graph emphasizes the change in the dependent variable (usually the y value) as the independent variable (usually the x value) changes.
+A line graph doesn't draw the attention to the absolute magnitudes of the values, because there is little visual density
+
+https://qz.com/418083/its-ok-not-to-start-your-y-axis-at-zero
+Their point is that truncating the y-axis, as we often do in line charts, exaggerates what the data really say. Some people consider it a maxim that the y-axis should always be zeroed. They think to do otherwise amounts to lying.
+Charts should convey information and make a point. We make charts to illustrate ideas that have context beyond their x- and y-axes. Forcing the y-axis to start at zero can do just as much to obscure and confuse the point as the opposite.
+Truncate the y-axis to emphasize what you’re trying to show.
+A common complaint of this is that it gives the appearance of severity when none exists.
+
+First, this is why charts have scales. Blaming a chart’s creator for a reader who doesn’t look at clearly labeled axes is like blaming a supermarket for selling someone food he’s allergic to.
+econd, the degree to which the chart emphasizes certain aspects of the data is a judgement of storytelling not chart-making. Sure, this mindset can yield misleading displays, but how is that different than words? Charts should be fair, not impartial.
+Truncate the y-axis when small movements are important.
+
+
+https://chezvoila.com/blog/yaxis/
+
+
+http://stephanieevergreen.com/y-axis/
+The bars in a bar chart encode the data by their length, so if we truncate the length by starting the axis at something other than zero, we distort the visual in a bad way. My friend Chris Lysy calls this the “Cable News Axis” because it’s so common in TV news programming.
+Data nerds don’t always agree that other graph types should have to start at zero.
+
+Outside of bar charts, whether the y-axis must start at zero is still a matter of debate. There are cases where it wouldn’t make any sense.
+
+
+
+https://www.data-to-viz.com/caveat/connect_your_dot.html
+Connect your dots when the X-axis is ordered
+
+
+
+-------
+https://heather-grab.github.io/Entom-4940/mixed.html
+A mixed model can handle hierarchical clustering, but a repeated measures ANOVA cannot.
+
+Repeated measures can be spaced at irregular intervals when using a mixed model.
+Random effects are factors for which the levels are samples from a larger population about which we’re trying to draw conclusions. Individual subject ID, for example, is a random effect because a) you could go out and sample more individuals who would be different from the ones you have and b) you’re inferring something about the whole population from the sub-group included in your analysis.
+
+Another way to think about random effects is that they capture variation that exists but that isn’t relevant to your question, like variation between individual subjects for which you have repeated measures. Where you have non-independence or pseudoreplication, include a random effect for that element even if it is not significant in the model, so that reviewers know you properly accounted for it.
+
+nteraction terms
+
+An interaction occurs when one variable changes how another variable affects the response variable.
+
+Nested vs crossed
+
+An example from https://www.theanalysisfactor.com/the-difference-between-crossed-and-nested-factors/:
+
+Imagine you have 18 people assigned to two training groups, and their BMI is measured at three time points. There are both crossed and nested factors in this experiment.
+
+Crossed: Subject is crossed with time because every combination of subject and time point is represented by a value of BMI.
+
+Nested: Each subject is assigned to only one training group, and so not every possible combination of subject and group is represented by a value of BMI. By knowing the subject ID, you know exactly which training group they belong to. Thus subject is nested within training group.
+
+For crossed factors, you can look at an interaction term. For nested factors, you can’t
+
+correlation between fixed effects (not with the intercept) - if fixed effects are highly correlated, you have a situation called “multicollinearity.” These highly correlated effects should not be included in one model together. Instead, you can make separate models that include either one or the other, and compare the models using model comparison to decide which covariate to keep.
+
+Random slopes
+
+What about situations when there is a different relationship between the predictor and response variables across the different levels of the random factor? You can allow each random factor to vary not only in intercept but also in slope.
+
+
+
+https://www.theanalysisfactor.com/the-difference-between-crossed-and-nested-factors/
+Crossing and Nesting
+
+Two factors are crossed when every category of one factor co-occurs in the design with every category of the other factor. In other words, there is at least one observation in every combination of categories for the two factors.
+
+A factor is nested within another factor when each category of the first factor co-occurs with only one category of the other. In other words, an observation has to be within one category of Factor 2 in order to have a specific category of Factor 1. All combinations of categories are not represented.
+
+If two factors are crossed, you can calculate an interaction. If they are nested, you cannot because you do not have every combination of one factor along with every combination of the other.
+
+When you’re not sure whether two factors in your design are crossed or nested, the easiest way to tell is to run a cross tabulation of those factors.
+
+In traditional multivariate approaches of analyzing repeated measures data, we ignore issues of nesting and crossing and use different names for these same concepts. Factors that Subject is nested within, like Training group, are called between-subjects factors. Factors that Subject is crossed with, like Time, are called within-subjects factors
+
+Those concepts are helpful and valid. But you can see bigger design and analysis issues if you translate them into crossed and nested factors. This becomes very, very important when you expand your analysis of repeated measures beyond traditional approaches to mixed models approaches.
+
+It also becomes extremely important in clustered designs, which don’t necessarily have repeated measures, but do have some sort of nesting of individuals within some larger group.
+
+The combinations of nesting and crossing in designs with many factors can get quite complex. It gets even more confusing when you also have to decide whether to make factors fixed or random. Remember to use the cross tabulations to help you sort it out
+
+--------
+https://www.theanalysisfactor.com/repeated-measures-approaches/
+These include balanced data (if even one observation is missing, the subject will get dropped) and equal correlations among response variables.  It also has the limitation that it cannot do post-hoc tests on the repeated measures factor, which I consider a huge limitation.
+It, too, controls for non-independence among the repeated observations for each individual, but it does so in a conceptually different way.  Rather than the correlation among an individual’s repeated observations, it actually adds one or more random effects for individuals to the model.
+The model equation therefore includes extra parameters for any random effects.  They take the form of additional residual terms, and the model estimates the variance of each.
+
+This literally means the model controls for the effects of individual.  The simplest mixed model, the random intercept model, controls for the fact that some individuals always have higher values than others.  By controlling for this variation, we’ve taken it out of the original residual
+Individual growth curve models are a specific type of mixed model that uniquely models each individual’s value of the outcome over time.  They are particularly useful when the research question is about how covariates affect not only the value of the dependent variable, but its change over time.
+
+The biggest advantage of mixed models is their incredible flexibility.  They handle clustered individuals as well as repeated measures (even in the same model).  They handle crossed random factors as well as nested.
+
+You can treat Time as continuous or categorical. You can measure covariates just once per individual or repeatedly at each observation.  Unbalanced data are no problem, and even if some outcomes are missing for some individuals, they won’t be dropped from the model.
+
+The biggest disadvantage of mixed models, at least for someone new to them, is their incredible flexibility. It’s easy to mis-specify a mixed model, and this is a place where a little knowledge is definitely dangerous.
+
+----
+https://www.theanalysisfactor.com/multilevel-models-with-crossed-random-effects/
+
+----
+https://gkhajduk.github.io/2017-03-09-mixed-models/
+
+----
+
+https://dynamicecology.wordpress.com/2015/02/05/how-many-terms-in-your-model-before-statistical-machismo/
+collinearity – the more terms you have, the more likely you are getting some highly correlated explanatory variables. And when you have highly correlated explanatory variables, the “bouncing beta problem” means you are basically losing control of the regression (i.e. depending on arbitrary properties of your particular data, the computer algorithm can assign almost all of the explanatory power – i.e slope – to either one or the other correlated variable – or in other words – if you drop even one data point the answer can completely change).
+Confoundment – Hurlbert raises the possibility that if you have only a few sites you can accidentally get some unmeasured factor that varies across your sites leading you to mistakenly think the factor you manipulated was causing things when in fact its the unmeasured factor that is confounded with your sites by chance.
+Bad degrees of freedom/p-values – Hurlbert’s second concern with pseudo-replication (which is totally unrelated to confoundment and is not fixable by experimental design) relates to  p-values. This is because non-independence of error terms violates assumptions and essentially leads us to think we have more degrees of freedom than we really have, which since we divide by degrees of freedom to get p-values leads us to think our p-values are lower than than they really are (i.e. p-values are wrong in the bad way – technically known as anti-conservative). This is a mathematically true statement so the debate comes in with how worried we should be about inflated p-values..If we decide are worried we can just stop using p-values
+o, in summary, adding variables is a very weak substitute for good up front experimental design. It might be justified when the added variables are known to be important and are used to control for confoundment with sampling problems in an observational context.
+
+----
+https://www.sciencedirect.com/science/article/pii/S0749596X19300695
+for effects with more than one numerator degrees of freedom, e.g., for experimental factors with more than two levels, the ANOVA omnibus F-test is not informative about the source of a main effect or interaction. Because researchers typically have specific hypotheses about which condition means differ from each other, a priori contrasts (i.e., comparisons planned before the sample means are known) between specific conditions or combinations of conditions are the appropriate way to represent such hypotheses in the statistical model. Many researchers have pointed out that contrasts should be “tested instead of, rather than as a supplement to, the ordinary ‘omnibus’ F test” (Hays, 1973, p. 601). In this tutorial, we explain the mathematics underlying different kinds of contrasts (i.e., treatment, sum, repeated, polynomial, custom, nested, interaction contrasts), discuss their properties, and demonstrate how they are applied in the R System for Statistical Computing (R Core Team, 2018). In this context, we explain the generalized inverse which is needed to compute the coefficients for contrasts that test hypotheses that are not covered by the default set of contrasts. A detailed understanding of contrast coding is crucial for successful and correct specification in linear models (including linear mixed models). Contrasts defined a priori yield far more useful confirmatory tests of experimental hypotheses than standard omnibus F-tests.
+Every contrast consumes exactly one degree of freedom. Every degree of freedom in the ANOVA source-of-variance table can be spent to test a specific hypothesis about a difference between means or a difference between clusters of means.
+how to incorporate categorical effects from factors with discrete levels into LMMs. One approach to analyzing factors is to do model comparison; this is akin to the ANOVA omnibus test, and again leaves it unclear which groups differ from which others. An alternative approach is to base analyses on contrasts, which allow us to code factors as independent variables in linear regression models.
+
+----
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5925602/
+A common belief is that if the omnibus test is significant, there must exist at least two groups that are significantly different and vice versa. Thus, when the omnibus test is significant, but no post-hoc between-group comparison shows significant difference, one is bewildered at what is going on and wondering how to interpret the results. At the end of the spectrum, when the omnibus test is not significant, one wonders if all post-hoc tests will be non-significant as well so that stopping after a nonsignificant omnibus test will not lead to any missed opportunity of finding group difference.
+]. Since for most models, post-hoc tests with significant levels adjusted to account for multiple testing do not have exactly the same type I error as the omnibus test as in the case of ANOVA, it is more difficult to evaluate performance of the hierarchical procedure. For example, the Bonferroni correction is generally conservative.
+
+Given our findings, it seems important to always perform pairwise group comparisons, regardless of the significance status of the omnibus test and report findings based on such group comparisons.
+
+
+-----
+
+[@grech2018]
+Spatial memory is the cognitive process of noticing, encoding, and retrieving landmarks in the surrounding environment, to allow an organism to navigate and exist in the world. It is important for survival, by enabling searching and finding safety and food and being able to return to found places without issue. It is the domain of the hippocampus and medial temporal lobe, with links to the retrosplenial cortex and parietal cortex.
+allocentric learning is impaired after hippocampal lesioning.One of the first studies to demonstrate this was by Morris et al. [38] in rats. They demonstrated that lesioning the hippocampus of rats resulted in an inability to navigate the MWM.
+Other lesion studies indicate the perirhinal cortex, entorhinal cortex and parietal cortices to be involved in allocentric search navigation. 
+egocentric navigation appears to have a broader network.
+The flow of spatial information in this model begins with sensory and contextual stimuli from the neocortex moving through the entorhinal cortex where egocentric information is encoded. The signal then moves to the fascia dentata of the hippocampus where is it thought that this mix of information is organised and sent to the CA3 and CA1 field of the hippocampus. It is here that the construction of the spatial map is thought to be accommodated with place and misplace cell systems. This model paved the way for future research and identification of other specialised cell types such as head direction cells located between the entorhinal cortex and CA1 in the postsubiculum [49], boundary cells in the subiculum [50], grid cells in the entorhinal cortex [51] and speed cells in the medial entorhinal cortex [52]. Edvard and May-Britt Moser (grid cells), along with John O’Keefe (place cells), were awarded the Nobel prize in Physiology or Medicine in 2014 for their work in investigating these cells underlying the spatial representations of space in the brain. Grid cells, similar to place cells, fire in response to changing position in an environment [51]. These cells differ, however, in their response to a change in environment [53]. When exposed to a new environment, grid cells maintain their representation of space and can therefore represent universal metrics such as distance and direction. These properties suggest that grid cells are involved in path integration [54], a navigational method that integrates movement, direction and speed to compute location. Importantly, path integration primarily relies on an egocentric reference frame because the abovementioned movement, direction and speed are all relative to self [12]. On the other hand, place cells undergo remapping and adopt new, unrelated representations when exposed to novel environments. The resulting allocentric map includes locations predominantly independent of the path taken to get there [55].
+
+----
+@garthe2013
+It has also been found that information is conveyed directly from the EC to CA3 (Anderson et al., 2006). Because input relayed via the DG to CA3 is delayed compared to contents using the direct connection, it has been hypothesized that adult neurogenesis facilitates the fine-tuning of how the DG makes orthogonalization and storage in CA3 more efficient (Wu and Leung, 1998). The highly recurrent network str
+In spatial tasks, spiking of CA3 pyramidal cells is highly correlated with the animals’ specific position in the arena (Nadel and O’Keefe, 1978). Place cells appear upon introduction to a new environment (Hill, 1978; Shapiro et al., 1997)and provide the neuronal basis for the concept of cognitive maps in the hippocampus. Intriguingly, it was found that spatial specificity of place cells in CA3 does not depend on input from the DG (McNaughton et al., 1989). After ablation of more than twothird of all granule cells in the DG, CA3 pyramidal neurons still showed selective place fields (Figure 1). The study revealed, that the mossy fibers provide information regarding the actual context and thus input from the DG does not seem to be relevant in determining where but when hippocampal place cells fire. While the spatial specificity of place cells in the hippocampus basically represents a built-in property of hippocampal circuitry, the input from the DG allows to link a specific location to the actual behavioral context, i.e., approaching the actual goal from the present location in the most efficient way. Although hippocampal learning is generally taken as an equivalent for spatial learning, this finding together with the fact that sensory information of nearly all modalities is fed into the hippocampus underscores the necessity to keep a much broader role of the DG in dealing with contexts in mind. The specific relevance of these findings in the context of adult neurogenesis is discussed below.
+Considering the amount of information fed into the hippocampus via the EC, the storage capacity of the CA3 network turns out to be rather limited and therefore, the main function generally assigned to the DG is the compression and orthogonalization of activity patterns to make them suitable for storage in CA3 (Marr, 1971; Treves et al., 2008). That pattern separation is indeed a key function of the DG was elegantly demonstrated by Hunsaker et al. (Hunsaker and Kesner, 2008).
+t has been proposed that without efficient pattern separation representations related to new unknown contexts that have to be stored in CA3 would interfere with older, already encoded ones, thereby preventing the effective storage and retrieval of highly similar but nonetheless different representations (Aimone et al., 2006, 2009; Wiskott et al., 2006; Appleby and Wiskott, 2009; Appleby et al., 2011). Because adult hippocampal neurogenesis adds new neurons to the DG, it is assumed that the function of adult neurogenesis is to prevent such “catastrophic interference” by keeping pattern separation in the DG effective while facing a high variety of different but partly overlapping contexts—that is: input-patterns—over life time.
+Some protocols include a platform reversal after animals have learned to navigate to a given goal position. As previously mentioned, the spatial relationships between specific spatial contexts and the platform position change upon goal reversal and thus successful navigation has to be relearned. As discussed later, reversal learning appears to represent a functional challenge where adult neurogenesis is especially relevant for separating contexts effectively.
+It is presumed that the role of the hippocampus is to localize the animal on the cognitive map, and that it facilitates efficient navigation through a host of other anatomical and functional structures.
+In essence, learning the water maze is based on the successful integration of egocentric, route-based knowledge into an allocentric representation that is independent of recognizing specificcontextsaspartsofalreadyknownroute.
+
+a meta-analysis of the water maze studies revealed three domains of the task that were repeatedly shown being specifically affected by an absence of new hippocampal neurons: task acquisition, probe trial performance, and re-acquisition after moving the platform to another location (reversal). While most studies found a lower probe trial performance, an impaired task acquisition is less consistently reported, and only a few studies observed the reversal phenotype upon moving the platform to a new position.
+
+Considering the essential types of information processing in the DG and CA3, theoretical models predicted a critical role for adult neurogenesis in learning tasks that specifically stress an animals’ ability to discriminate spatially complex and highly similar contexts (Appleby and Wiskott, 2009; Appleby et al., 2011).
+
+la fase de reversa representa una re adquisición donde el mapa cognitivo se actualiza. Este fenotipo de reversa involucra la habilidad del DG para separar contextos Wiskott, L., Rasch, M. J., and Kempermann, G. (2006)
+
+calculating the relative amount of time spent in the correct goal quadrant. This measurement, however, cannot be considered to be highly specific, since the probability is high that an animal enters the goal quadrant that is covering 25% of the pool surface just by chance
+
+The increasing contribution of allocentric knowledge is represented by an increase in the accuracy with which an animal is able to approach a hidden goal directly.
+
+. Lesions of the hippocampus effectively prevent such allocentric strategies to occur (Eichenbaum et al., 1990),
+
+The characteristics defining a certain strategy are described by a maximum of two numerical parameters such as pool coverage, time spent in zone, or agglomeration.
+
+other strategies. Therefore, a given strategy does not represent the activity of a single functional system of the brain. However, lesions to specific brain structures prevent the associated function to contribute to all strategies it is relevant. For example, lesioning the superior colliculus effectively prevents an animal to turn toward any kind of cue and thus this will effect all strategies following random swimming (Dräger and Hubel, 1975; Ellard and Goodale, 1988), Figure 4C.Animals with lesions to the posterior cingulate cortex show an strongly impaired route navigation (Sutherland and Hoesing, 1993). Such animals can show taxis behaviors and even travel along know routes, but will never develop a preference for the hidden platform that represents the reward. Of specific importance for addressing the functional relevance of adult neurogenesis, animals without a working hippocampus cannot form an allocentric cognitive map and thus have to rely on egocentric strategies. Consequently, route-based and even directed search patterns can be found, but as the strategies become more straight, precise and thus allocentric, animals with hippocampal lesions fail (Morris et al., 1982; Eichenbaum et al., 1990). Morris et al., 1982; Eichenbaum et al., 1990). However, egocentric route-based strategies can be highly efficient for solving the task and thus, decreasing latencies or path lengths can be found in animals with hippocampal lesions. For example Schallert et al. showed that using a specific and sophisticated protocol allows to find the hidden platform exclusively by means of an highly egocentric strategy (Day and Schallert, 1996). Such egocentric strategies can be rather direct, causing short latencies that mimic the efficiency of allocentric strategies but missing their flexibility.
+Therefore, analyzing the strategies helps to increase the specificity in addressing the functional effects of new hippocampal neurons and to rule out both unwanted and underestimated side effects not attributable to adult neurogenesis. As an example, convolution analysis revealed that failing to use hippocampusdependent strategies following ablation of adult neurogenesis was not due to a generally impairment in “strategy switching” (and thus executive control) but due to selective deficits in applying spatially/contextually specific and thus hippocampus-dependent strategies (Garthe et al., 2009).
+
+In essence, it is the flexible use of known contexts that facilitates the acquisition of egocentric route-knowledge. A single water maze trial represents not only a swim path leading to the hidden platform but also a sequence of episodes experienced within a short time window and in specific contexts.
+successful differentiation of contexts and combining those contexts into an allocentric cognitive map allows the use of directed and efficient search strategies.
+we propose that the addition of new neurons to the DG allows adapting rapidly to the new context.to address the potential contribution of adult neurogenesis in situations where multiple goals that are associated to similar contexts have to be separated, one has to use an experimental water maze protocol that provides a single or multiple platform reversal.
+
+
+-----
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9299307/
+
+Statistically speaking, in a factorial experimental design, interaction effects can be observed if the impact of one factor changes based on the levels of another factor
+If the variables meet the assumptions for parametric analyses, the statistical evaluation of a factorial design can be achieved via an analysis of variance (Anova), which separates the portion of effect that can be specifically attributed to each factor (main effect) from that representing their interdependence (interaction effect).
+A frequent mistake when using this approach, is the tendency to read interaction effects even where there are none [12]. For example, a difference between fearful and neutral stimuli in the control group and the absence of such difference in the lesion group tends to be interpreted as evidence for a difference between the two groups [12]. Critically, this kind of conclusion is often reported even in absence of a statistically significant interaction or a direct comparison between the effect sizes of the contrasts between the two groups [12]. This erroneous interpretation can be found both in null hypothesis significance testing (NHST).A more classical debate, however, concerns the mistakes characterizing the interpretation of a correctly reported statistically significant (typically intended as p < 0.05) interaction effect. 
+First, the interaction effect represents a global difference between factors, which hardly fits into the typical neuroscientific experimental logic, characterized by direct comparisons of experimental groups or conditions, or subtractive methods. Thus, rather than taking a more global perspective, it is classically used to test very specific differences—i.e., hypotheses—between groups or conditions. Second, previous literature addressing how to interpret the interaction effect tended to adopt technical terminologies and methods that may not be easily accessible without a strong statistical background. Crucially, practical examples and guidelines on how to correctly perform and interpret interactions with currently available statistical tools are missing.
+
+To provide a complete interpretation, it is essential to observe how values are modulated by all levels of the factors simultaneously.
+
+While the presence of a statistically significant interaction effect accounts for all these changes at once, contrasting pairs of levels ignores (one at a time) one crucial comparison conceived as a control condition for the initial hypothesis (e.g., if we focus on comparing the control and lesion group in the fearful condition, we are ignoring the possibility of a difference between groups also in a neutral control condition) [2], thus disregarding the interaction as a global effect.
+A further problem with post-hoc pairwise comparisons is that, even if we do find a statistically significant difference in the experimental group but not in the control group, we cannot conclude that there is no effect in the latter [13, 20, 31, 32]. Nevertheless, the initial hypothesis is often based on this implicit assumption. Following the NHST approach, a p > 0.05 does not allow us to conclude that there is no difference between the two conditions. The absence of evidence for a difference between conditions is not evidence of the absence of difference between conditions. When such a crucial piece of information for our hypothesis—e.g., the absence of effect in the control group—is taken for granted only because p > 0.05, the resulting conclusion is necessarily flawed from a statistical point of view
+
+Although reporting observed (raw) means and errors (e.g., standard deviation, standard error) is always desirable, these are not appropriate for interpreting interaction effects emerging from a statistical model that accounts and corrects for the variability associated with all factors considered. As such, observed means and errors cannot represent the statistical interaction resulting from the Anova.
+type III sum of squares) assumes that the total variance of the model is given by the variance of each individual factor (main effect) plus the variance represented by the interdependence between the factors (interaction effect). To disentangle the main effects from interactions, each effect is evaluated after removing all the others. Thus, each effect is estimated based on the residual variance that can be specifically ascribed to it, cutting away the variance attributed to other main or interaction effects. Model estimated marginal means and errors, on the other hand, represent the estimation of each effect “cleansed” of the variability due to other factors included in the statistical model [1, 2, 7, 21, 38]. In contrast, observed (raw) means and errors contain the interaction effect as well as the main effect of each individual factor.observed and model-estimated errors are always different. This is a crucial piece of information for the inferential conclusions of a post-hoc analysis because the result of a t-test is based on a comparison of the errors and, thus, how these are calculated plays a big role in the final result. If pairwise comparisons are necessary, they should always be based on estimated marginal means and errors, as they represent the parameters net of the other effects controlled within the initial Anova model.
+
+As previously stated, a statistically significant interaction should be intended as a global effect, indicative of the presence of different trends among all the sub-group/sub-conditions involved, in which each factor is evaluated net of the influence of all other factors.
+
+-----
+Brain-behavior correlations: Two paths toward
+reliability
+ observation pushes human neuroscience toward
+study designs that either maximize sample sizes to detect small effects or maximize effect sizes using
+focused investigations.
+ Given its link to clinical vari-
+ation, research that includes descriptions
+of cross-sectional brain-behavior rela-
+tionships is often published in high-
+impact journals and improves chances
+of grant funding. As a result, researchers
+may feel systematic pressure to search
+for such relationships.However, both the human brain and
+behavior are complex. The likelihood of
+finding a strong, direct mapping between
+any given brain region and behavioral
+measure across the general population
+is small. For example, depression has
+numerous symptoms, which can appear
+in different combinations, and are each
+likely driven by many brain areas and their
+intertwined functions. 
+
+----
+
+https://www.nature.com/articles/nrn3475
+Improving reproducibility in neuroscience is a key priority and requires attention to well-established, but often ignored, methodological principles
+
+
+-----
+
+Beyond t test and ANOVA: applications of mixed-effects models for more rigorous statistical analysis in neuroscience research
+
+VER IMAGEN!!
+intra-class-correlation (ICC), which is a metric to quantify the degree of correlation due to clustering. We also introduce the concepts of “design effect” and “effective sample size,” and discuss why conventional methods such as t-test and ANOVA are not appropriate for this example.
+ICC is a widely used metric to quantify the degree to which measurements from the same group are correlated. Depending on the specific settings that are concerned, different definitions have been proposed.Random effects, first proposed in (Fisher, 1919), refer to variables that are not of direct interest - however, they may potentially lead to correlated outcomes. A major difference between fixed and random effects is that the fixed effects are considered as unknown parameters whereas the random effects are considered as random variables drawn from a distribution (e.g., a normal distribution).It is generally agreed that a fixed effect captures a parameter at the population level; as such, it should be a constant across subjects / clusters. Population-level treatment effects, which are often of direct scientific interest, are included in the fixed-effects. When scientifically relevant, predictors (such as age and gender) whose effects are not expected to change across subjects should also be treated as fixed effects. In contrast, a random effect captures cluster-specific effects (e.g., due to the animal or the cell considered), which are only relevant for capturing the dependence among observations and are typically of no direct relevance for assessing scientific hypotheses. Indeed, the mice in a study are a sample from a large population and they are randomly chosen among all possible mice. Thus, the animal-specific effects are often not of primary interest; hence, they are added to the random-effects component.In addition to cluster-specific means, a linear mixed effects model may include additional terms that describe the variability observed within a cluster (e.g., an animal or cell). Most often, this is the case when measurements are taken at different times from within the same animal and cell and it may be important to account for possibly different cluster-specific trajectories over time.
+the random-effects coefficients are drawn from a given distribution (typically Gaussian). Therefore, Bayesian analysis provides a natural alternative for analyzing the data considered in this Primer. One inherent advantage of Bayesian analysis is that it is easy to incorporate prior information on all the parameters in the model, including both the fixed-effects coefficients and the parameters involved in the variance-covariance matrices. In particular, the Bayesian framework allows practitioners to consider distributions of the random effects that are far from Gaussian, or to consider more flexible covariance structures needed to characterize the underlying data generating process. In the frequentist framework (see Glossary Box 1 and Appendix 1 of the Supplemental Materials), computational algorithms can become formidably complex and prohibitive in those cases. The Bayesian framework obtains inference on the parameters of interest by means of the posterior distribution, which results from combining the prior information with the data using the Bayes’ theorem. Therefore, Bayesian inference does not rely on asymptotic approximations that may be invalid with limited sample sizes.Once the likelihood and the priors have been specified, Bayesian inference often requires the use of sophisticated sampling methods to get quantities from the posterior distribution, generally denoted as Markov chain Monte Carlo (MCMC) algorithms like the Gibbs sampling. n a Bayesian framework, the 95% credible interval is an uncertainty estimate that identifies the shortest interval containing 95% of the posterior distribution of the parameter of interest (highest posterior density interval). Hypothesis testing on the parameters of the mixed-effects models can be conducted by comparing the marginal likelihoods under two competing models, via the so-called Bayes factor. The use of a Bayesian approach and Bayes factors has been sometimes advocated as an alternative to p-values since the Bayes factor represents a direct measure of the evidence of one model versus the other. 
+
+----
+https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.00002/full
+
+One approach to using LMMs is to systematically compare the full LMM to other models which are the same except for one term missing. The comparison is done using a likelihood-ratio test (LRT), and the test statistic χ2, degrees of freedom and p-value are reported for the missing term. A p-value of less than 0.05 (see below) is often considered to indicate that the missing term contributed significantly to the model fit.
+Although LMMs are useful for both confirmatory hypothesis tests and exploratory analyses, it is important to distinguish between these two when reporting results. The former are tests based on hypotheses, which were posited before data collection, and motivated the study design (Tukey, 1980). After data collection, the planned tests are performed and the test statistics and degrees of freedom are reported along with a p-value, which is thought to indicate the probability that the value of the test statistic or greater would have been obtained under the null hypothesis. In contrast, exploratory analyses are based on statistical tests which are motivated by the pattern of results observed after data collection. In neuroscience, there is pressure to publish studies with p-values below 0.05, which is often considered to be “significant,” although this pressure has often been criticized (Rosenthal and Gaito, 1963; Rosnow and Rosenthal, 1989; Nuzzo, 2014). This leads to several different exploratory analyses being performed, and when a significant result is found, this exploratory analysis is reported as if it were a confirmatory test. The result is distortions in the literature and difficulties in reproducibility of published results (Ioannidis, 2005; Simmons et al., 2011; Wagenmakers et al., 2012; Ioannidis et al., 2014).
+
+----
+Statisticians unite to call on scientists to abandon the phrase "statistically significant" and outline a path to a world beyond "p<0.05"
+Statistics are being used to give credibility, rather than to spark thoughtful discussion and investigation around the results.
+
+Before i made a turn to statistics, my background was in psychology and i was seeing that shit all the time. People used increasingly complex statistical methods that they didnt understand (even if their usage didnt really make sense in a particular research) just for their work to seem more rigorous and "scientific".
+
+https://www.tandfonline.com/doi/full/10.1080/00031305.2019.1583913
+my concern is how can we boil this down to something simple enough that the average layperson cares about
+Don’t Say “Statistically Significant”
+
+----
+@marascuilo1970
+
+is not unusual for the writer to present the discussion as though the results implied that the differences in the means for Factor A in one or more of the levels of Factor B were responsible for the significant interaction. a rejected interaction hypothesis reveals an effect which is attributable to the joint effect of two or more variables, and which may or may not be detected when simple differences between cell means are examined. Such a situation might potentially be found in the case of disordinal interactions where mean treatment differences may be small but reversed at different levels of the variable.
+More importantly, even though nested comparisons somewhat resemble interaction comparisons, they are not part of the statistical model that defines interaction effects. Instead, they represent comparisons for a design which is better termed a factor within levels design and which should be analyzed according to the simple effects model described by Winer (1962, section 5.10).
+The same problem exists whenever a researcher rejects the hypothesis of no interaction and then proceeds to make cell comparisons graphically or analytically within a row or column. This is frequently suggested by the nature of the manipulated or controlled variables, or by the investigator's intuition, in order to preserve the interpretability of the results. A
+Oftentimes, the questions asked by an investigator are concerned with differences among treatments or conditions within each level of another factor. (At least, this is what is implied on the basis of his interpretation of the data.) Too often, however, the method of analysis followed is the already presented factorial model, even though the information desired may be precisely obtained through a few manipulations of sources of variance and degrees of freedom in what is called a nested or simple effects design. To say that Treatment B2 interacted with SES or IQ level A, might not be very informative. Indeed, it is a meaningless statement since "interaction", as defined by the mathematical model, is a property of more than one level of each factor: However, interpretation might be facilitated if the differences in the B factor are examined individually within each level of the A factor. As the literature suggests, this is perhaps what many researchers would prefer to do. Once this is done, one may compare the treatment means within each level of the blocking factor to find which treatments are most or least potent. This is quite different from searching for a significant interaction. In this case, the fixed-effects ANOVA model assumes that each observation can be partitioned into four mutually orthogonal components as follows:
+Assumption 5, since sometimes the nesting variable chosen represents populations or levels which are qualitatively, as well as quantitatively, different from one another. In such cases, unless the homogeneity of variance assumption is met or compensated for-as is required for full factorial designs-one might be advised to abandon a nested design in favor of separate analyses (and hence separate estimates of 0-2) for each level of the nesting variable.
+In general, it seems that interactions are identified in an intuitive way that is unrelated to the definition of the concept as made in the ANOVA mathematical model. The intuitive model that seems to serve as the source of this error is similar to the model adopted in explaining the synergistic effect that may occur when two relatively mild drugs are administered simultaneously to a patient. When a synergistic effect occurs, the total response outweighs the sum of the separate responses to the drugs when administered individually.
+A significant interaction is, therefore, a component that involves every cell of the design and not just the cell representing the joint administration of the two drugs. Thus, in a 2 x 2 factorial design, under the ANOVA model, a significant interaction is equally attributable to all cells of the design and not to any one specific cell.
+interaction in the ANOVA design does not correspond to the intuitive notion that many researchers tend to possess.
+Interaction is a characteristic which must involve at least two rows or two columns in an I x J ANOVA design. Accordingly, when "interactions" are not really interactions, but differential effects within rows or within columns, it would be better to analyze the data according to a nested or treatment within levels design.
+Which is the appropriate design for behavioral research? Unfortunately, there is no definitive answer to this question except to say that it invariably depends upon the research questions of the investigator. Some would argue that nested designs are preferable for independent variables that are not manipulated by the researcher, but which are defined by nature or social conditions.These are frequently referred to as status or demographic variables. Familiar examples include Sex: [male, female], Race: [Caucasian, Negro, Oriental, Other], Intelligence: [high, middle, low], SES: [high, middle, low], etc. Yet nesting would not be the solution if one's hypotheses dictate comparisons among different levels of such variables. On the other hand, if one is solely concerned with looking at treatment differences within populations,a nested design would be preferable to a factorial design.
+
+-------
+@kee2007
+In theory, a comparison of two experimental effects requires a statistical test on their difference. In practice, this comparison is often based on an incorrect procedure involving two separate tests in which researchers conclude that effects differ when one effect is significant (P < 0.05) but the other is not (P > 0.05).
+“The percentage of neurons showing cue-related activity increased with training in the mutant mice (P < 0.05), but not in the control mice (P > 0.05).” “Animals receiving vehicle (control) infusions into the amygdala showed increased freezing to the conditioned stimulus compared with a control stimulus (P < 0.01); in animals receiving muscimol infusions into the amygdala, this difference was abolished (F < 1).” To support this claim, they needed to report a statistically significant interaction (between amount of training and type of mice), but instead they reported that one effect was statistically significant, whereas the other effect was not.
+when researchers compared the effects of a pharmacological agent versus placebo; patients versus controls; one versus another task condition, brain area or time point; genetically modified versus wild-type animals; younger versus older participants; etc. We describe three general types of situations in which the error occurs and illustrate each with a prototypical (fictive) example. researchers contrast the significance levels of the two effect sizes instead of reporting the significance level of a direct statistical comparison between the effect sizes. The claim that the effect of the optogenetic manipulation on P3 amplitude is larger in the virally transduced animals than in the control animals requires a significant interaction between the manipulation (photoinhibition versus baseline) and group (virally transduced versus control mice). Because the plotted results reflect the group averages of individual averages that we generated ourselves (for ten mice in each group), we know that the interaction in this example is not significant (P > 0.05). Thus, the claim that the researchers intend to make is not statistically valid. 
+Second, comparing effect sizes during a pre-test and a post-test can be seen as a special case of the situation described above, in which the pre-test (before the experimental manipulation) is the control condition and the post-test (after the manipulation) is the experimental condition. An example is “Acute fluoxetine treatment increased social approach behavior (as indexed by sniff time) in our mouse model of depression (P < 0.01)” (Fig. 1b). Errors of this type are less common and often less explicit. In this example, the researchers contrast only the post-test scores of the two groups, on the tacit assumption that they need not take into account the corresponding pre-test scores, perhaps because the pre-test scores do not reliably differ between groups. Thus, the researchers implicitly base their claim on the difference between the significant post-test difference and the nonsignificant pre-test difference, when instead they should have directly compared the effect sizes, for example, by examining the time × group interaction in a repeated-measures analysis of variance.
+An example would be “Escape latency in the Morris water maze was affected by lesions of the entorhinal cortex (P < 0.05), but was spared by lesions of the perirhinal and postrhinal cortices (both P values > 0.1), pointing to a specific role for the enthorinal cortex in spatial memory” (Fig. 1c). Although this type of conclusion is less salient than the explicit claim of a difference between brain areas, the specificity claim nevertheless requires a direct statistical comparison. That is, at the very least, spatial memory should be more impaired in animals with enthorinal lesions than in animals with lesions in other areas. Thus, the specificity claim requires that the researchers report a significant time × lesion type interaction, followed by significant pair-wise comparisons between the specific brain area and the other brain areas.
+
+-------
+@boisgontier2016
+Repeated measures ANOVA is a statistical model that allows for both between-subject factors (when subjects are measured only in one of the conditions of the factor) and within-subject factors (when subjects are measured in each condition of the factor). This model can correctly account for non-independence in observations within subjects/animals, but only if each observation is performed in a different condition from an exhaustive set of predefined (i.e., fixed) conditions, not at several occasions for the same condition.
+Moreover, in neuroscience, subjects/animals are often observed in a limited number of conditions that only represent a random sample from the whole population of possible conditions, just as subjects/animals only represent a random sample from the whole population of possible subjects/animals. Ignoring this randomness of conditions, i.e., treating both subjects/animals and conditions as fixed effects, but only treating subjects/animals as a random effect, is also likely to result in an increase of type I errors. Both ANOVA and repeated measures ANOVA disregard the sampling variability of conditions.
+Linear mixed models (LMM) have been developed to take into account both the nested (multiple observations within a single subject/animal in a given condition) and crossed (subjects/animals observed in multiple conditions) structure of the data, thereby providing results with acceptable type I error rates. Moreover, treating both subjects/animals and conditions as random effects allows generalizing the results to the population of subjects/animals, but also to the population of conditions. (Barr et al., 2013). Finally, LMM allow incomplete and unbalanced data to be used, continuous and categorical predictors to be combined, and information loss due to averaging over observations
+
+----
+@meteyard2020a
+We can account for random differences between sampled participants in their response to cue type by specifying a model term corresponding to random slopes for the effect of cue type, that is, to deviations between participants in the coefficient for cue type. We can calculate the average naming accuracy within each cue condition across participants. To get the fixed effect result, we can then (as in an ANOVA) compare the four cue types to each other and see on average the effect of cue type on naming accuracy.
+LMMs have grown very popular in modern Psychology because they enable researchers to estimate (fixed) effects while properly taking into account the random variance associated with participant, items or other sampling units.
+Historically, the dominant approach for repeated measures data in psychology has been to aggregate the observations. Typically, in Psycholinguistics, a researcher would calculate the mean latency of response for each participant, by averaging over the RTs of each stimulus, to get the average RT by-participants within a condition for a set of stimuli.
+The means of the by-participants or by-items latencies would be compared using Analysis of Variance (ANOVA) in, respectively, by-participants (F1 or F_s) or by-items (F2 or F_i) analyses.
+The minF’, F1 and F2 analyses are also restricted to situations where data have been collected according to a factorial design. That is, comparing outcomes recorded for different levels of a categorical factor or different conditions of an experimental manipulation. However, researchers often seek to examine the relationships between continuous outcome and continuous experimental variables. Cohen (1983) demonstrated that the cost of dichotomizing continuous variables is to substantially reduce the sensitivity of analyses.where the relationship between outcome and experimental variables cannot be assumed to take a monotonic function
+Lorch and Myers (1990) recommended that the researcher conduct a twostep analysis, firstly, conducting a regression analysis separately for each participant, e.g., predicting a participant’s response latencies from variables indexing stimulus properties and then, secondly, conducting an analysis of the per-participant coefficients estimates. This approach, sometimes known as slopes-as-outcomes analysis, has been used in some highly cited experimental Psychology studie
+However, the approach does not take into account variation between participants in the uncertainty about coefficients estimates (e.g., if one participant has fewer observations than another). That is, in a two-step analysis it is not possible to distinguish variation between per-participant coefficients and error variance (Snijders & Bosker, 2011). As well as avoiding the language-as-a-fixed-effect-fallacy, LMMs are also a solution to the limitations of slopes-as-outcomes analyses, as they ‘shrink’ – or pool - estimates towards sampling unit means (e.g., participant means) when there are fewer data points for that grouping (e.g., more missing data points for a participant, Gelman & Hill, 2007).
+More generally, an analysis that fails to account for potential differences between sampling units in the slopes of experimental variables can mis-estimate the robustness of observed effects (Gelman, 2014). For example, one half of participants may show an effect in a positive direction and half show an effect in a negative direction. If this variation is not captured, the estimated direction of the average effect across all participants can be misleading
+In an ANOVA, the participant average RT for the high and low frequency words would be calculated. In an LMM, this would be the coefficient for frequency (e.g. Figure 4a). However, a random effect may also be fit to model how this effect differs for each participant (e.g. Figure 4b). In this case, the model only has available 20 data points per participant (10 high and 10 low) and this may simply be insufficient to complete the computation (Bates et al., 2015). With more complex random effect structures (e.g., maximal structures for some designs, after Barr et al., 2013) and perhaps no change in how researchers plan experiments, it is unsurprising that convergence issues have become increasingly common.
+Convergence issues may mean that the fitting of random effects for some terms is not possible. Random effect variances that are close to zero indicate there is little variance to be accounted for in the data. Random intercepts and slopes that show high or near perfect correlations may indicate over-fitting.
+he mixed-effects model may incorporate terms to estimate effects or interactions between effects within and across levels of the hierarchical data structure (i.e. effects due to participant attributes, stimulus properties, or trial conditions).
+In addition, for LMMs, we can usefully consider the power to accurately estimate fixed effect coefficients, random effect variances, averages for particular sampling units or interactions across those units (Scherbaum & Ferreter, 2009; Snijders, 2005).For fixed effects, power in LMMs does not increase simply as the total sample of observations increases. Observed outcome values within a grouping (e.g., trial response values for a given participant) may be more or less correlated. If this correlation (the intra-class correlation for a given grouping) is high, adding more individual data points for a grouping does not add more information (Scherbaum & Ferreter, 2009). In other words, if the responses across trials from a particular participant are highly correlated, the stronger explanatory factor is the participant, not the individual trials or conditions (as we saw in the example in Section 1.1). Getting the participant to do more trials does not increase power.
+The general recommendation is to have as many sampling units as possible, since this is the main limitation on power (Snijders, 2005), where sampling units consist of the sets by which the lowest level of observations (e.g., trial-level observations) are grouped, where groupings can be expected to cause correlations in the data. Fewer sampling units will mean that effects estimates are less reliable (underestimated standard errors, greater uncertainty over estimates;
+Assumptions for LMMs
+linearity, random distribution of residuals, homoscedasticy;except that LMMs are used because the independence assumption is violated because we know,  For LMMs, we assume that residual errors and random effects deviations are normally distributed
+that cause non-independence in the data; (2) random slopes for any within-subject effects; and (3) random slopes for interactions that are completely within-subjects.
+complex random effect structures may prevent the model from converging. This often occurs because the random effects specified in the model are not present in the data. For example, when a random effect is included to estimate variance associated with differences between participants in the effect of a within-subjects interaction between variables, while in the data the interaction does not substantially vary between participants, researchers would commonly find that the random effect cannot be estimated. Solutions to convergence problems may include the simplification of model structure (Brauer and Curtin, 2018; Matuscheck et al, 2017), using Principal Components Analysis to determine the most meaningful slopes (Bates et al., 2015), switching to alternate optimization.
+Brauer and Curtin (2018), where a step-by-step guide is provided for dealing with convergence issues
+4.1.5 Model comparison and model selection There is a tradition of data analysis in psychological research in which factorial ANOVAs are used to test all possible main effects and interactions, given a study design, in an approach that appears objective.
+In the context of testing data from an experimental design (e.g., the kind of factorial design that would traditionally be analysed using an ANOVA), it is sensible for the fixed effects to be defined around the experimental conditions (see, e.g., Barr et al, 2013; Schad, Vasishth, Hohenstein & Kliegl, 2018).
+Likelihood Ratio Tests (LRTs). LRTs apply when models are nested (the terms of the simpler model appear in the more complex model) and the models are compared in a pairwise fashion (see discussions in Luke, 2016; Matuschek et al., 2017). If not nested, models can be evaluated by reference to information criteria. Aho et al. (2014) argue that AIC and BIC may be differently favoured in different inferential contexts (e.g., in their account, whether analyses are exploratory (AIC) or confirmatory (BIC)), and we highlight, for interested readers, a rich literature surrounding their use (e.g., Burnham & Anderson, 2004; see, also, McElreath, 2015). However, LRT model comparisons are often useful as a simple means to evaluate the relative utility of models differing in discrete components (models varying in the presence vs. absence of hypothesized effects).
+The LRT statistic is formed as twice the log of the ratio of the likelihood of the more complex (larger) model divided by the likelihood of the less complex (smaller) model (Pinheiro & Bates, 2000). It can be understood as a comparison of the strength of the evidence, given the same data, for the more complex versus the simpler model. The likelihood comparison yields a p-value (e.g., using the anova() function in R) because the LRT statistic has an approximately 2 distribution, assuming the null hypothesis is true (that the simpler model is adequate), with degrees of freedom equal to the difference between the models in the number of terms.When comparing models using LRTs, successive models should differ in either their fixed effects or their random effects but not both. This is because (a) models tested with LRTs must be nested and (b) a change in the random effect structure will change the values of the fixed effects (and vice versa). Models can be generated using maximum likelihood (ML) or restricted maximum likelihood (REML). Both methods solve model fitting by maximizing the likelihood of the data given the model. When comparing models that differ in their fixed effects, it is recommended to use ML estimation for the models. This is because REML likelihood values depend on the fixed effects in the model (
+
+4.1.6 Testing the significance of fixed effects
+Researchers familiar with ANOVA will know that significance tests typically require the specification of model and error (denominator) degrees of freedom. Computing degrees of freedom for significance tests in LMMs is a non-trivial problem (Baayen at al., 2008; Bates, 2006; Luke, 2016).
+For models with a hierarchical structure it is not clear how to define the denominator degrees of freedom (e.g., by number of observations, number of participants, or number of random effects). As Luke (2016) notes, researchers may prefer to use model comparison with LRTs to evaluate the significance of a fixed effect as this method does not require computation of denominator degrees of freedom.
+equivalent of ANOVA omnibus and follow up tests, they can perform an LRT when a fixed effect is added to the model (omnibus test) and then compute contrasts (the follow up tests) from the model
+reporting means or coefficient estimates and confidence intervals but not p-values (Cumming, 2013a; 2013b) or interpreting p-values as just another piece of information about the likelihood of the result (Wasserstein, Schirm & Lazar, 2019).
+American Statistical Association’s statement on p-values (Wasserstein & Lazar, 2016).
+
+====
+@schad2019
+treatment contrast is often used in intervention studies, where one or several intervention groups receive some treatment, which are compared to a control group. A second contrast of widespread use is the sum contrast. This contrast compares each tested group not against a baseline / control condition, but instead to the average response across all groups.Sum contrasts also have an important role in factors with two levels, where they simply test the difference between those two factor levels
+
+/-=--
+
+Neurogenesis may relate to some but not all types of hippocampal-dependent learning
+Usingthetoxinmethylazoxymethanolacetate(MAM)forproliferatingcells,wetestedwhether reductionofneurogenesisaffectedlearningandperformanceassociated withdifferenthippocampaldependenttasks:spatialnavigationlearningin aMorriswatermaze
+
+pecifically,treatmentwiththeantimitoticagentreducedthe amountoffearacquiredafterexposuretoatracefearconditioning paradigmbutdidnotaffectcontextualfearconditioningorspatialnavigationlearningintheMorriswatermaze.
+As an animal associates a neutral stimulus with a fearful one, it also learns to fear the context in which the stimuli were presented. This type of learning, known as contextual fear conditioning, is reportedly dependent on the hippocampal formation
+
+depletion of the newly generated neurons did not affect subsequent acquisition of spatial memories in the Morris water maze task (Fig. 1), which is dependent on the hippocampus
+
+tasks as well as contextual fear and trace eyeblink conditioning, lesions to the hippocampus are less effective as more time elapses between acquisition and recollection of the memory (Kim et al., 1995; Squire and Zola, 1996).Moreover, it may explain why depletion of the adult-generated population did not affect spatial maze learning. This type of learning is apparently dependent on the hippocampus not only for acquisition but also for various stages in retrieval and long-term storage (Riedel et al., 1999), and thus a more stable population of neurons may be involved, such as those in areas CA3 and CA1 (Hampson and Deadwyler, 1999; Lever et al., 2002). It would be interesting to evaluate the effect of neuron depletion on spatial memory tasks that require the hippocampus but for more temporally limited operations, such as those that engage working memory (Galani et al., 1998). The idea that new neurons in the brain cont
+
+----
+Preferential incorporation of adult-generated granule cells into spatial memory networks in the dentate gyrus
+We show that as new granule cells mature, they are increasingly likely to be incorporated into circuits supporting spatial memory. By the time the cells are 4 or more weeks of age, they are more likely than existing granule cells to be recruited into circuits supporting spatial memory. This preferential recruitment supports the idea that new neurons make a unique contribution to memory processing in the dentate gyrus.
+
+he majority of these newborn neurons become integrated into existing dentate gyrus circuitry within 3 weeks, extending axons along the mossy fiber tract to CA3 and receiving excitatory synaptic input from perforant path afferents8–13. Whether these new neurons are subsequently integrated into memory networks is unknown. Previous studies have used irradiation or antimitotic agents such as methylazoxymethanol acetate (MAM) to suppress adult neurogenesis in rodents. Such manipulations impair learning in trace eye-blink14 and fear15 protocols, but not in several other hippocampus-dependent tasks15–17. Because suppression of adult neurogenesis after these manipulations is typically incomplete18,19, learning may be supported by either residual adult-generated neurons or even existing granule cells1.
+o circumvent this issue, we used immunohistochemical approaches to visualize the recruitment of new neurons into circuits supporting water maze memory in intact mice. We labeled adult-generated granule cells with the proliferation marker 5-bromo-2¢-deoxyuridine (BrdU)20,21. To identify dentate gyrus neurons processing spatial information, we quantified expression of the immediate-early genes c-fos (also known as Fos)andArc (encoding the activity-regulated cytoskeletal-associated protein), after behavioral testing22. A major advantage of the water maze is that training in the hidden version of this task produces stable, long-lasting spatial memories in mice23.In addition, unlike with some forms of hippocampal learning such as contextual fear24 or trace eye-blink25 conditioning, the expression of this memory is continuously dependent on the hippocampus, including the dentate gyrus23,26–28. Our experiments reveal that adultgenerated neurons are recruited into dentate gyrus circuits supporting spatial memory in an age-dependent manner. Furthermore, we show that by the time new neurons are 4–8 weeks of age, they are preferentially recruited into circuits supporting spatial memory compared with existing granule cells.
+
+
+-----
+
+https://people.math.ethz.ch/~meier/teaching/anova/random-and-mixed-effects-models.html#fig:chocolate-interaction-plot-html
+The main effect of background can be thought of as a two-sample t-test with two groups having 10 observations each. Think of taking one average value per rater. Hence, we get 2⋅10−2=18
+degrees of freedom.
+As we allow for a rater specific chocolate type preference, we have to check whether the effect of chocolate is substantially larger than this rater specific variation. The rater specific variation can be thought of as the interaction between rater and chocolate type. As rater is nested in background, rater has 9 degrees of freedom in each background group. Hence, the interaction has ((9+9)⋅3=54
+) degrees of freedom.
+The same argument as above holds true for the interaction between background and chocolate type.
+A between-subjects factor is a factor that splits the subjects into different groups. For the machines data, such a thing does not exist. However, for the chocolate data, background is a between-subjects factor because it splits the 20 raters into two groups: 10 with rural and 10 with urban background. On the other hand, a within-subjects factor splits the observations from an individual subject into different groups. For the machines data, this is the machine brand (factor Machine with levels A, B and C). For the chocolate data, this is the factor choc with levels A, B, C and D. Quite often, the within-subjects factor is time, e.g., when investigating growth curves.
+
+Why are such designs popular? They are of course needed if we are interested in individual, subject-specific, patterns. In addition, these designs are efficient because for the within-subjects factors we block on subjects. Subjects can even serve as their own control!
+
+The lmer model formula of the corresponding models all follow a similar pattern. As a general rule, we always include a random effect for each subject (1 | subject). This tells lmer that the values from an individual subject belong together and are therefore correlated. If treatment is a within-subjects factor and if we have multiple observations from the same treatment for each subject, we will typically introduce another random effect (1 | subject:treatment) as we did for the chocolate data. This means that the effect of the treatment is slightly different for each subject. Hence, the corresponding fixed effect of treatment has to be interpreted as the population average effect. If we do not have replicates of the same treatment within the subjects, we would just use the random effect per subject, that is (1 | subject).
+
+If treatment is a between-subjects factor (meaning we randomize treatments to subjects) and if we track subjects across different time-points (with one observation for each time-point and subject) we could use a model of the form y ~ treatment * time + (1 | subject) where time is treated as a factor; we are going to see this model again in Chapter 7. Here, if we need the interaction between treatment and time it means that the time-development is treatment-specific. Or in other words, each treatment would have its own profile with respect to time. An alternative approach would be to aggregate the values of each subject (a short time-series) into a single meaningful number determined by the research question, e.g., slope, area under the curve, time to peak, etc. The analysis is then much easier as we only have one observation for each subject and we are back to a completely randomized design, see Chapter 2. This means we would not need any random effects anymore and aov(aggregated.response ~ treatment) would be enough for the analysis. Such an approach is also called a summary statistic or summary measure analysis (very easy and very powerful!). For more details about the analysis of repeated measurements data, see for example Fitzmaurice, Laird, and Ware (2011).
+For example, we assumed independence between the different random effects. When using a term like (1 | treatment:subject), each subject gets independent random treatment effects all having the same variance. One can also use (treatment | subject) in the model formula. This allows not only for correlation between the subject specific treatment effects, but also for different variance components, one component for each level of treatment. A technical overview also covering implementation issues can be found in Bates et al. (2015). With repeated measurements data, it is quite natural that we are faced with serial (temporal) correlation.
+
+Split-Plot Designs
+experimental designs that contain experimental units of different sizes, with different randomizations.To fit such a model in R, we use a mixed model approach. The whole-plot error, acting on plots, can easily be incorporated with (1 | plot). The split-plot error, acting on the subplot level, is automatically included, as it is on the level of individual observations.
+
+
+Incomplete Block Designs
+With such unbalanced data or unbalanced design, the aforementioned properties typically do not hold anymore. We still use least squares to estimate the parameters. The estimates will look more complicated. However, this is not a problem these days as we can easily calculate them using R. More of a problem is the fact that the sum of squares cannot be uniquely partitioned into different sources anymore. This means that for some part of the variation of the data, it is not clear what source we should attribute it to.
+
+Typically, people use an appropriate model comparison approach instead. As seen before, for example in Table 4.6, the sum of squares of a factor can be interpreted as the reduction of residual sum of squares when adding the corresponding factor to the model. In the balanced situation, it would not matter whether the remaining factors are in the model or not; the reduction is always the same. Unfortunately, for unbalanced data this property does not hold anymore.
+Main effects are interpreted as average effects, two-way interaction effects are interpreted as deviations from the main effects model, i.e., the correction for an effect that depends on the level of the other factor, and the three-way interaction is an adjustment of the two-way interaction depending on the third factor. Or in other words, if there is a three-way interaction it means that the effect of factor A depends on the level combination of the factors B and C, i.e., each level combination of B and C has its own effect of A. This typically makes interpretation difficult.
+

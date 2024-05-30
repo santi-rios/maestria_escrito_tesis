@@ -129,5 +129,6 @@ convergió: |
 indices confiables: |
     'se refieren principalmente al tamaño efectivo de la muestra (ESS) de las estimaciones posteriores.SS (Effective Sample Size): Indica el tamaño de la muestra efectiva de las estimaciones posteriores después de considerar la correlación entre muestras consecutivas en las cadenas MCMC. Un ESS alto significa que las estimaciones del parámetro se basan en una cantidad suficiente de información independiente, lo cual es crucial para la precisión de las estimaciones. Generalmente, un ESS más alto (por ejemplo, en los miles) es deseable y se considera un indicador de fiabilidad en las estimaciones.'
 
+
 Rhat : |
     '(o factor de reducción potencial): Es una medida que se utiliza para evaluar la convergencia de las cadenas MCMC. Un valor de Rhat cercano a 1.00 (por ejemplo, 1.001 o 1.002) indica que las cadenas han convergido bien. Valores de Rhat superiores a 1.1 pueden sugerir problemas de convergencia y que las cadenas necesitan más iteraciones o revisión en el proceso de muestreo.'  
